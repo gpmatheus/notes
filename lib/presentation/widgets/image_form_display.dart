@@ -19,7 +19,7 @@ class ImageFormDisplay extends StatefulWidget {
 
   final Content? content;
   final List<Content> contentsList;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   State<StatefulWidget> createState() => _ImageFormDisplayState();
@@ -41,7 +41,11 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
   void initState() {
     super.initState();
 
-    scrollController = ScrollController(initialScrollOffset: widget.scrollController.offset);
+    scrollController = ScrollController(
+      initialScrollOffset: widget.scrollController != null 
+        ? widget.scrollController!.offset 
+        : 0.0
+    );
 
     _animationController = AnimationController(
       vsync: this,
@@ -79,7 +83,7 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                controller: ScrollController(initialScrollOffset: widget.scrollController.offset),
+                controller: scrollController,
                 shrinkWrap: true,
                 itemCount: widget.contentsList.length,
                 itemBuilder: (context, index) {

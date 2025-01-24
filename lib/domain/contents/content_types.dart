@@ -38,7 +38,7 @@ class ContentsType {
       Key? key, 
       Content? content, 
       List<Content> contentsList, 
-      ScrollController scrollController
+      ScrollController? scrollController
     ) {
       return TextFormDisplay( 
         content: content,
@@ -60,7 +60,7 @@ class ContentsType {
       Key? key, 
       Content? content, 
       List<Content> contentsList, 
-      ScrollController scrollController
+      ScrollController? scrollController
     ) {
       return ImageFormDisplay(
         content: content,
@@ -82,7 +82,7 @@ class ContentsType {
       Key? key, 
       Content? content, 
       List<Content> contentList, 
-      ScrollController scrollController
+      ScrollController? scrollController
     ) {
       return const Text('desenho');
     }
@@ -102,6 +102,6 @@ class ContentsType {
     Key? key, 
     Content? content, 
     List<Content> contentList,
-    ScrollController scrollController,
+    ScrollController? scrollController,
   ) form;
 }

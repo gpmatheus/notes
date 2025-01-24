@@ -15,7 +15,7 @@ class TextFormDisplay extends StatefulWidget {
 
   final Content? content;
   final List<Content> contentsList;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   State<StatefulWidget> createState() => _TextFormDisplayState();
@@ -44,7 +44,9 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
-                    controller: ScrollController(initialScrollOffset: widget.scrollController.offset),
+                    controller: ScrollController(
+                      initialScrollOffset: widget.scrollController != null ? widget.scrollController!.offset : 0.0
+                    ),
                     shrinkWrap: true,
                     itemCount: widget.contentsList.length,
                     itemBuilder: (context, index) {

@@ -33,7 +33,7 @@ class _NoteScreenState extends State<NoteScreen> {
   Note? _note;
   bool _loading = false;
   List<Content>? _contents;
-  final ScrollController _scrollController = ScrollController();
+  ScrollController? _scrollController;
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy - HH:mm');
 
   @override
@@ -118,6 +118,8 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   Widget _bodyContent() {
+
+    if (_contents != null && _contents!.isNotEmpty) _scrollController = ScrollController();
 
     return (_contents != null && _contents!.isNotEmpty)
       ? Column(
@@ -248,8 +250,8 @@ class _NoteScreenState extends State<NoteScreen> {
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // await Future.delayed(const Duration(microseconds: 500));
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent, 
+        _scrollController!.animateTo(
+          _scrollController!.position.maxScrollExtent, 
           duration: const Duration(seconds: 1), 
           curve: Curves.easeOut
         );
