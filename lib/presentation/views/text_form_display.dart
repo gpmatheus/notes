@@ -76,7 +76,7 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
                     keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
                     maxLines: 5,
-                    minLines: 2,
+                    minLines: 3,
                     autofocus: true,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),

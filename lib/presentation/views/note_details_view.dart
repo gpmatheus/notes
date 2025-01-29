@@ -6,23 +6,22 @@ import 'package:notes/domain/entities/content.dart';
 import 'package:notes/domain/entities/note.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/domain/usecases/manage_contents.dart';
-import 'package:notes/presentation/widgets/add_button_layer.dart';
+import 'package:notes/presentation/utils/actions_content.dart';
+import 'package:notes/presentation/widgets/add_button.dart';
 import 'package:notes/presentation/widgets/content_container.dart';
 import 'package:notes/presentation/widgets/loading_screen.dart';
 
 class NoteScreen extends StatefulWidget {
-  const NoteScreen({
+  NoteScreen({
     super.key, 
     this.note, 
-    required this.noteId, 
-    required this.readNotesUsecase, 
-    required this.manageContents}
-  );
+    required this.noteId,
+  });
 
   final Note? note;
   final String noteId;
-  final MaintainNotes readNotesUsecase;
-  final ManageContents manageContents;
+  final MaintainNotes readNotesUsecase = MaintainNotes.instance;
+  final ManageContents manageContents = ManageContents.instance;
   
   @override
   State<StatefulWidget> createState() => _NoteScreenState();
@@ -135,17 +134,17 @@ class _NoteScreenState extends State<NoteScreen> {
                   final content = _contents![index];
                   return ContentContainer(
                     actions: [
-                      ContainerActions(
+                      ActionsContent(
                         icon: const Icon(Icons.delete_rounded), 
                         name: 'Delete', 
-                        callback: (Content content) {
+                        onClick: (Content content) {
                           _deleteContent(context, content, index);
                         }
                       ),
-                      ContainerActions(
+                      ActionsContent(
                         icon: const Icon(Icons.edit_rounded), 
                         name: 'Edit', 
-                        callback: (Content con) async {
+                        onClick: (Content con) async {
                           final Content? resCont = await _navigateToForm(
                             context, 
                             con.contentsType()

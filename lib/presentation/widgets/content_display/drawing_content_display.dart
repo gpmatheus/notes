@@ -1,46 +1,7 @@
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:notes/domain/entities/content.dart';
 import 'package:notes/domain/entities/drawing.dart';
-
-class TextContentDisplay extends StatelessWidget {
-
-  final String text;
-
-  TextContentDisplay({super.key, required Content content}) : 
-    text = (content as TextContent).text;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Card(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(text),
-        )
-      ),
-    );
-  }
-  
-}
-
-class ImageContentDisplay extends StatelessWidget {
-
-  final File imageFile;
-
-  ImageContentDisplay({super.key, required Content content}) : 
-    imageFile = (content as ImageContent).file;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.file(imageFile);
-  }
-  
-}
 
 class _DrawingPainter extends CustomPainter {
   final Drawing drawing;

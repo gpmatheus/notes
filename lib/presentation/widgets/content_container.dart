@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:notes/domain/entities/content.dart';
+import 'package:notes/presentation/utils/actions_content.dart';
 
 class ContentContainer extends StatelessWidget {
   const ContentContainer({
@@ -13,7 +14,7 @@ class ContentContainer extends StatelessWidget {
 
   final Widget contentWidget;
   final String? header;
-  final List<ContainerActions>? actions;
+  final List<ActionsContent>? actions;
   final Content content;
 
   @override
@@ -27,42 +28,7 @@ class ContentContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    header == null ? '' : header!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  if (actions != null && actions!.isNotEmpty) ... {
-                    IconButton(
-                      icon: const Icon(Icons.more_vert_rounded),
-                      color: Colors.grey[600],
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => ListView(
-                            padding: const EdgeInsets.all(16.0),
-                            children: [
-                              for (ContainerActions ac in actions!)
-                                ListTile(
-                                  leading: ac.icon,
-                                  title: Text(ac.name),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    ac.callback(content);
-                                  },
-                                )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  }
-                ],
-              ),
+              _getHeader(context),
               contentWidget,
             ],
           ),
@@ -71,17 +37,46 @@ class ContentContainer extends StatelessWidget {
     );
   }
 
-}
+  Widget _getHeader(BuildContext context) {
+    return SizedBox(
+      height: 42.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            header == null ? '' : header!,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          if (actions != null && actions!.isNotEmpty) ... {
+            IconButton(
+              icon: const Icon(Icons.more_vert_rounded),
+              color: Colors.grey[600],
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => ListView(
+                    padding: const EdgeInsets.all(16.0),
+                    children: [
+                      for (ActionsContent ac in actions!)
+                        ListTile(
+                          leading: ac.icon,
+                          title: Text(ac.name),
+                          onTap: () {
+                            Navigator.pop(context);
+                            ac.onClick(content);
+                          },
+                        )
+                    ],
+                  ),
+                );
+              },
+            ),
+          }
+        ],
+      ),
+    );
+  }
 
-class ContainerActions {
-
-  const ContainerActions({
-    required this.icon,
-    required this.name,
-    required this.callback,
-  });
-
-  final Icon icon;
-  final String name;
-  final Function(Content content) callback;
 }

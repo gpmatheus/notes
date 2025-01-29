@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/domain/entities/content.dart';
 import 'package:notes/presentation/widgets/content_container.dart';
-import 'package:notes/presentation/widgets/content_display.dart';
+import 'package:notes/presentation/widgets/content_display/image_content_display.dart';
 
 class ImageFormDisplay extends StatefulWidget {
   
@@ -29,7 +29,7 @@ class ImageFormDisplay extends StatefulWidget {
 class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerProviderStateMixin {
 
   final ImagePicker _imagePicker = ImagePicker();
-  late final ScrollController scrollController;
+  late final ScrollController _scrollController;
   ImageContent? _imageContent;
 
   late AnimationController _animationController;
@@ -41,7 +41,7 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
   void initState() {
     super.initState();
 
-    scrollController = ScrollController(
+    _scrollController = ScrollController(
       initialScrollOffset: widget.scrollController != null 
         ? widget.scrollController!.offset 
         : 0.0
@@ -70,7 +70,7 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
   @override
   void dispose() {
     _animationController.dispose();
-    scrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
   
@@ -83,7 +83,7 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                controller: scrollController,
+                controller: _scrollController,
                 shrinkWrap: true,
                 itemCount: widget.contentsList.length,
                 itemBuilder: (context, index) {

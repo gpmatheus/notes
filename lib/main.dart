@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notes/config/init.dart';
-import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/presentation/views/home.dart';
 
 void main() async {
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange.shade100),
         useMaterial3: true,
       ),
-      home: Home(readNotesUsecase: MaintainNotes.instance)
+      home: Home()
     );
   }
 }

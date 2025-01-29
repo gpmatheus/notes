@@ -5,9 +5,11 @@ import 'package:notes/data/datasources/image_contents_data_resource.dart';
 import 'package:notes/data/datasources/interfaces.dart';
 import 'package:notes/data/datasources/text_contents_data_resource.dart';
 import 'package:notes/domain/entities/content.dart';
-import 'package:notes/presentation/widgets/content_display.dart';
-import 'package:notes/presentation/widgets/image_form_display.dart';
-import 'package:notes/presentation/widgets/text_form_display.dart';
+import 'package:notes/presentation/widgets/content_display/drawing_content_display.dart';
+import 'package:notes/presentation/widgets/content_display/image_content_display.dart';
+import 'package:notes/presentation/widgets/content_display/text_content_display.dart';
+import 'package:notes/presentation/views/image_form_display.dart';
+import 'package:notes/presentation/views/text_form_display.dart';
 
 class ContentsType {
 
