@@ -81,19 +81,21 @@ class ImageContentDataResource extends ContentDataSource {
     try {
       int effected = 0;
       content as ImageContent;
+      ImageContent? resultContent;
       await _database.transaction((txn) async {
 
         // atualiza o arquivo da imagem
-        List<Map<String, Object?>> conRes = await txn.query(
+        List<Map<String, Object?>> imConRes = await txn.query(
           'image_content',
           where: 'content_id = ?',
           whereArgs: [contentId]
         );
-        if (conRes.isEmpty) throw Exception('No content');
-        final String imageFileName = conRes.first['image_file_name'] as String;
+        if (imConRes.isEmpty) throw Exception('No content');
+        final String imageFileName = imConRes.first['image_file_name'] as String;
         final String? newImageFileName = await imageRes.substituteImage(imageFileName, content.file.path);
         if (newImageFileName == null) throw Exception('No content');
 
+        final DateTime lastEdited = DateTime.now();
         // atualiza o banco de dados
         effected = await txn.update(
           'image_content',
@@ -107,14 +109,31 @@ class ImageContentDataResource extends ContentDataSource {
           await txn.update(
             'content',
             {
-              'last_edited': DateTime.now().toIso8601String(),
+              'last_edited': lastEdited.toIso8601String(),
             },
             where: 'id = ?',
             whereArgs: [contentId]
           );
         }
+
+        List<Map<String, Object?>> conRes = await txn.query(
+          'content',
+          where: 'id = ?',
+          whereArgs: [contentId]
+        );
+        if (conRes.isEmpty) throw Exception('No content');
+        final conResMap = conRes.first;
+        resultContent = ImageContent.existing(
+          id: contentId, 
+          createdAt: DateTime.tryParse(conResMap['created_at'] as String), 
+          lastEdited: lastEdited, 
+          imageFileName: imageFileName, 
+          file: content.file,
+        );
       });
-      return effected > 0 ? content : null;
+      return effected > 0 
+      ? resultContent
+      : null;
     } catch (e) {
       return null;
     }

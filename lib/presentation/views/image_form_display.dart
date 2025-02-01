@@ -31,6 +31,7 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
   final ImagePicker _imagePicker = ImagePicker();
   late final ScrollController _scrollController;
   ImageContent? _imageContent;
+   late final List<Content> _contentsList;
 
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
@@ -41,8 +42,17 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
   void initState() {
     super.initState();
 
+    final contents = [...widget.contentsList];
+    if (widget.content != null) {
+      contents.remove(widget.content);
+      _imageContent = widget.content as ImageContent;
+    }
+    _contentsList = contents;
+
+
     _scrollController = ScrollController(
-      initialScrollOffset: widget.scrollController != null 
+      initialScrollOffset: widget.scrollController 
+        != null && widget.scrollController!.positions.isNotEmpty
         ? widget.scrollController!.offset 
         : 0.0
     );
@@ -82,21 +92,25 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                controller: _scrollController,
-                shrinkWrap: true,
-                itemCount: widget.contentsList.length,
-                itemBuilder: (context, index) {
-                  final content = widget.contentsList[index];
-                  return ContentContainer(
-                    content: content,
-                    contentWidget: content.contentsType().displayer(widget.key, content),
-                    header: content.lastEdited == null 
-                      ? 'Criado em ${_dateFormat.format(content.createdAt)}'
-                      : 'Editado em ${_dateFormat.format(content.lastEdited!)}'
-                  );
-                }
-              ),
+              child: _contentsList.isNotEmpty
+              ? ListView.builder(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  itemCount: _contentsList.length,
+                  itemBuilder: (context, index) {
+                    final content = _contentsList[index];
+                    return ContentContainer(
+                      content: content,
+                      contentWidget: content.contentsType().displayer(widget.key, content),
+                      header: content.lastEdited == null 
+                        ? 'Criado em ${_dateFormat.format(content.createdAt)}'
+                        : 'Editado em ${_dateFormat.format(content.lastEdited!)}'
+                    );
+                  }
+                )
+              : const Center(
+                  child: Text('No content'),
+                )
             ),
           ),
           if (_imageContent != null) ... [
@@ -124,7 +138,14 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
                       ),
                       IconButton(
                         onPressed: () {
-                          _navigateBack(_imageContent!);
+                          ImageContent con;
+                          if (widget.content == null) {
+                            con = ImageContent(file: _imageContent!.file);
+                          } else {
+                            con = widget.content as ImageContent;
+                            con.file = _imageContent!.file;
+                          }
+                          _navigateBack(con);
                         }, 
                         icon: Icon(
                           Icons.check_circle_rounded,

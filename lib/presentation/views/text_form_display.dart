@@ -94,11 +94,18 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
                       padding: const EdgeInsets.all(4.0),
                       child: IconButton(
                         onPressed: () { 
+                          TextContent con;
+                          if (widget.content == null) {
+                            con = TextContent(text: textController.text.trim());
+                          } else {
+                            con = widget.content as TextContent;
+                            con.text = textController.text.trim();
+                          }
                           Navigator.pop(
                             context, 
                             textController.text.isEmpty 
                             ? null 
-                            : TextContent(text: textController.text.trim())
+                            : con
                           );
                         }, 
                         icon: const Icon(Icons.send_rounded)

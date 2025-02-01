@@ -64,6 +64,8 @@ class TextContentDataResource extends ContentDataSource {
   @override
   Future<Content?> updateContent(String contentId, Content content) async {
     content as TextContent;
+    TextContent? resultContent;
+    final DateTime lastEdited = DateTime.now();
     int effected = await _database.update(
       'text_content',
       {
@@ -76,14 +78,30 @@ class TextContentDataResource extends ContentDataSource {
       await _database.update(
         'content',
         {
-          'last_edited': DateTime.now().toIso8601String(),
+          'last_edited': lastEdited.toIso8601String(),
         },
         where: 'id = ?',
         whereArgs: [contentId]
       );
     }
-    print(effected);
-    return effected > 0 ? content : null;
+
+    List<Map<String, Object?>> conRes = await _database.query(
+      'content',
+      where: 'id = ?',
+      whereArgs: [contentId]
+    );
+    if (conRes.isEmpty) throw Exception('No content');
+    final resConMap = conRes.first;
+    resultContent = TextContent.existing(
+      id: contentId, 
+      createdAt: DateTime.tryParse(resConMap['created_at'] as String), 
+      lastEdited: lastEdited, 
+      text: content.text,
+    );
+
+    return effected > 0 
+    ? resultContent 
+    : null;
   }
   
   @override

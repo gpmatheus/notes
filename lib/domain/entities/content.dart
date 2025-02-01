@@ -33,7 +33,7 @@ abstract class Content {
 }
 
 class TextContent extends Content {
-  final String text;
+  String text;
 
   final ContentsType _contentType = ContentsType.text;
 
@@ -93,7 +93,7 @@ class ImageContent extends Content {
 }
 
 class DrawingContent extends Content {
-  final Drawing drawing;
+  Drawing drawing;
 
   final ContentsType _contentType = ContentsType.drawing;
 
