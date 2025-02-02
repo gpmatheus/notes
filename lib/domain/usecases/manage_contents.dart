@@ -1,5 +1,6 @@
 
 import 'package:notes/data/dao/content_dao.dart';
+import 'package:notes/data/dao/note_dao.dart';
 import 'package:notes/domain/entities/content.dart';
 
 class ManageContents {
@@ -8,14 +9,15 @@ class ManageContents {
 
   static final ManageContents _instance = ManageContents._init();
 
-  static get instance {
-    return _instance;
-  }
+  static get instance => _instance;
 
   final ContentDao _contentDao = ContentDao.instance;
 
+  final NoteDao _noteDao = NoteDao.instance;
+
   Future<Content?> createContent(String noteId, Content content) async {
-    return await _contentDao.insertContent(noteId, content);
+    final int count = await _noteDao.getContentsCount(noteId);
+    return await _contentDao.insertContent(noteId, content, count);
   }
 
   Future<bool> deleteContent(Content content) async {

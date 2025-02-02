@@ -1,10 +1,12 @@
 
+import 'dart:convert';
+
 import 'package:notes/config/configurations/sqlite_config.dart';
 import 'package:notes/data/datasources/interfaces.dart';
 import 'package:notes/domain/entities/note.dart';
 import 'package:sqflite/sqflite.dart';
 
-class NoteLocalDataSourceImpl implements NoteDataSource {
+class NoteLocalDataSourceImpl extends NoteDataSource {
 
   final Database _database = SqliteHelper.instance.database!;
 
@@ -40,16 +42,18 @@ class NoteLocalDataSourceImpl implements NoteDataSource {
     final {
       'id': id as String,
       'name': name as String,
-      'created_at': createdAt as DateTime,
-      'last_edited': lastEdited as DateTime,
+      'created_at': createdAt as String,
+      'last_edited': lastEdited as String?,
+      'content_positions': positions as String,
     } = res.first;
 
     return Note(
       id: id,
       name: name,
       contents: null,
-      createdAt: createdAt,
-      lastEdited: lastEdited
+      createdAt: DateTime.tryParse(createdAt),
+      lastEdited: lastEdited != null ? DateTime.tryParse(lastEdited) : null,
+      contentPositions: jsonDecode(positions) as List<int>,
     );
   }
 
@@ -62,6 +66,7 @@ class NoteLocalDataSourceImpl implements NoteDataSource {
         'name': name as String,
         'created_at': createdAt as String,
         'last_edited': lastEdited as String?,
+        'content_positions': positions as String,
       } in res)
       Note(
         id: id,
@@ -69,6 +74,7 @@ class NoteLocalDataSourceImpl implements NoteDataSource {
         contents: null,
         createdAt: DateTime.tryParse(createdAt),
         lastEdited: lastEdited != null ? DateTime.tryParse(lastEdited) : null,
+        contentPositions: jsonDecode(positions) as List<int>,
       )
     ];
   }
@@ -83,6 +89,25 @@ class NoteLocalDataSourceImpl implements NoteDataSource {
     );
     if (effected == 0) return null;
     return note;
+  }
+  
+  @override
+  Future<List<int>?> changeContentsOrder(String noteId, List<int> positions) async {
+    int effected = await _database.update(
+      'note',
+      {
+        'content_positions': jsonEncode(positions)
+      },
+      where: 'id = ?',
+      whereArgs: [noteId]
+    ); 
+    if (effected == 0) return null;
+    return positions;
+  }
+  
+  @override
+  Future<int> getContentsCount(String noteId) {
+    return super.getContentsCountValue(noteId, _database);
   }
   
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:notes/domain/entities/content.dart';
 import 'package:notes/domain/entities/note.dart';
+import 'package:sqflite/sqflite.dart';
 
 abstract class NoteDataSource {
 
@@ -11,6 +12,18 @@ abstract class NoteDataSource {
   Future<List<Note>> getNotes();
   Future<Note?> updateNote(String noteId, Note note);
   Future<bool> deleteNote(String noteId);
+  Future<List<int>?> changeContentsOrder(String noteId, List<int> positions);
+  Future<int> getContentsCount(String noteId);
+
+  Future<int> getContentsCountValue(String noteId, Database database) async {
+    var result = await database.rawQuery(
+      """SELECT COUNT(*) FROM content
+        WHERE content.note_id = $noteId
+      """
+    );
+    int? count = Sqflite.firstIntValue(result);
+    return count ?? 0;
+  }
 }
 
 abstract class ContentDataSource {

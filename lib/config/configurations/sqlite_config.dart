@@ -69,7 +69,8 @@ class SqliteConfig implements AppConfig {
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         created_at TEXT NOT NULL,
-        last_edited TEXT
+        last_edited TEXT,
+        content_positions TEXT NOT NULL
       );
     """;
     await database.execute(createNote);

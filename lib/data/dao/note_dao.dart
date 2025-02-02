@@ -55,4 +55,12 @@ class NoteDao {
     }
     return notes;
   }
+
+  Future<List<int>?> changeContentsOrder(String noteId, List<int> positions) async {
+    return _dataSource.changeContentsOrder(noteId, positions);
+  }
+
+  Future<int> getContentsCount(String noteId) {
+    return _dataSource.getContentsCount(noteId);
+  }
 }

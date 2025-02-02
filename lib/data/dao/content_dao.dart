@@ -8,13 +8,11 @@ class ContentDao {
 
   static final ContentDao _instance = ContentDao._init();
 
-  static get instance {
-    return _instance;
-  }
+  static get instance => _instance;
 
   final Map<String, Content> _contents = {};
 
-  Future<Content?> insertContent(String noteId, Content content) async {
+  Future<Content?> insertContent(String noteId, Content content, int index) async {
     final dataSource = content.contentsType().localDataResource;
     Content? insertContent = await dataSource.createContent(noteId, content);
     if (insertContent != null) _contents[content.id] = content;

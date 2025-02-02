@@ -23,8 +23,12 @@ class MaintainNotes {
   }
 
   Future<Note?> createNote(String name) async {
-    Note note = Note(name: name);
+    Note note = Note(name: name, contentPositions: []);
     return noteDao.insertNote(note);
+  }
+
+  Future<List<int>?> changeContentsOrder(String noteId, List<int> positions) async {
+    return noteDao.changeContentsOrder(noteId, positions);
   }
 
 }
