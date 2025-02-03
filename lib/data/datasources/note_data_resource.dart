@@ -1,6 +1,4 @@
 
-import 'dart:convert';
-
 import 'package:notes/config/configurations/sqlite_config.dart';
 import 'package:notes/data/datasources/interfaces.dart';
 import 'package:notes/domain/entities/note.dart';
@@ -44,7 +42,6 @@ class NoteLocalDataSourceImpl extends NoteDataSource {
       'name': name as String,
       'created_at': createdAt as String,
       'last_edited': lastEdited as String?,
-      'content_positions': positions as String,
     } = res.first;
 
     return Note(
@@ -53,7 +50,6 @@ class NoteLocalDataSourceImpl extends NoteDataSource {
       contents: null,
       createdAt: DateTime.tryParse(createdAt),
       lastEdited: lastEdited != null ? DateTime.tryParse(lastEdited) : null,
-      contentPositions: jsonDecode(positions) as List<int>,
     );
   }
 
@@ -66,7 +62,6 @@ class NoteLocalDataSourceImpl extends NoteDataSource {
         'name': name as String,
         'created_at': createdAt as String,
         'last_edited': lastEdited as String?,
-        'content_positions': positions as String,
       } in res)
       Note(
         id: id,
@@ -74,7 +69,6 @@ class NoteLocalDataSourceImpl extends NoteDataSource {
         contents: null,
         createdAt: DateTime.tryParse(createdAt),
         lastEdited: lastEdited != null ? DateTime.tryParse(lastEdited) : null,
-        contentPositions: jsonDecode(positions) as List<int>,
       )
     ];
   }
@@ -90,24 +84,55 @@ class NoteLocalDataSourceImpl extends NoteDataSource {
     if (effected == 0) return null;
     return note;
   }
-  
+
   @override
-  Future<List<int>?> changeContentsOrder(String noteId, List<int> positions) async {
-    int effected = await _database.update(
-      'note',
-      {
-        'content_positions': jsonEncode(positions)
-      },
-      where: 'id = ?',
-      whereArgs: [noteId]
-    ); 
-    if (effected == 0) return null;
-    return positions;
-  }
-  
-  @override
-  Future<int> getContentsCount(String noteId) {
-    return super.getContentsCountValue(noteId, _database);
+  Future<bool> switchPosition(String noteId, int oldIndex, int newIndex) async {
+    try {
+      await _database.transaction((txn) async {
+        final Map<String, Object?> oldIndexRes = (await txn.query(
+          'content',
+          where: 'position = ?',
+          whereArgs: [oldIndex],
+        )).first;
+        final String oldIndexId = oldIndexRes['id'] as String;
+
+        final Map<String, Object?> newIndexRes = (await txn.query(
+          'content',
+          where: 'position = ?',
+          whereArgs: [newIndex],
+        )).first; 
+        final String newIndexId = newIndexRes['id'] as String;
+
+        // altera os valores de ordem
+
+        int effected = 0;
+
+        // altera o valor da nova posição, colocando o valor velho
+        effected = await txn.update(
+          'content',
+          {
+            'position': oldIndex
+          },
+          where: 'id = ?',
+          whereArgs: [newIndexId]
+        );
+        if (effected == 0) throw Exception('Error');
+
+        // altera o valor na posição velha, colocando o valor da nova
+        effected = await txn.update(
+          'content',
+          {
+            'position': newIndex
+          },
+          where: 'id = ?',
+          whereArgs: [oldIndexId]
+        );
+        if (effected == 0) throw Exception('Error');
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
   
 }

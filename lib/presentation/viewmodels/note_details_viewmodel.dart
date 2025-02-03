@@ -164,6 +164,18 @@ class NoteDetailsViewmodel {
     return resContent;
   }
 
+  Future<void> switchPositions(int oldIndex, newIndex) async {
+    if (_contents.value == null || _note.value == null) return;
+    final backup = [..._contents.value!];
+    final contents = [...backup];
+    if (newIndex > oldIndex) newIndex--; 
+    final item = contents.removeAt(oldIndex);
+    contents.insert(newIndex, item);
+    _contents.value = contents;
+    bool success = await _maintainNotes.switchPositions(_note.value!.id, oldIndex, newIndex);
+    if (!success) _contents.value = backup;
+  }
+
   void _updateFields() {
     _fields.value = NoteDetailsFields(
       note: _note.value, 

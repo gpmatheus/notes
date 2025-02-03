@@ -1,5 +1,4 @@
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -69,8 +68,7 @@ class SqliteConfig implements AppConfig {
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         created_at TEXT NOT NULL,
-        last_edited TEXT,
-        content_positions TEXT NOT NULL
+        last_edited TEXT
       );
     """;
     await database.execute(createNote);
@@ -82,6 +80,7 @@ class SqliteConfig implements AppConfig {
         created_at TEXT NOT NULL,
         last_edited TEXT,
         note_id TEXT NOT NULL,
+        position INTEGER NOT NULL,
         FOREIGN KEY(note_id) REFERENCES note(id)
       );
     """;
@@ -136,34 +135,34 @@ class SqliteConfig implements AppConfig {
       print('Nenhum arquivo foi selecionado.');
     }
 
-    Map<String, dynamic> data = jsonDecode("""
-      {
-          "lines": [
-              {
-                  "points": [
-                      {
-                          "x": -0.5,
-                          "y": -0.5
-                      },
-                      {
-                          "x": -0.5,
-                          "y": 0.5
-                      },
-                      {
-                          "x": 0.5,
-                          "y": -0.5
-                      },
-                      {
-                          "x": 0.5,
-                          "y": 0.6
-                      }
-                  ],
-                  "color": 0,
-                  "strokeWidth": 0.4
-              }
-          ]
-      }""");
-    DrawingContent? content3 = (await manageContents.createContent(note.id, DrawingContent(data))) as DrawingContent?;
+    // Map<String, dynamic> data = jsonDecode("""
+    //   {
+    //       "lines": [
+    //           {
+    //               "points": [
+    //                   {
+    //                       "x": -0.5,
+    //                       "y": -0.5
+    //                   },
+    //                   {
+    //                       "x": -0.5,
+    //                       "y": 0.5
+    //                   },
+    //                   {
+    //                       "x": 0.5,
+    //                       "y": -0.5
+    //                   },
+    //                   {
+    //                       "x": 0.5,
+    //                       "y": 0.6
+    //                   }
+    //               ],
+    //               "color": 0,
+    //               "strokeWidth": 0.4
+    //           }
+    //       ]
+    //   }""");
+    // DrawingContent? content3 = (await manageContents.createContent(note.id, DrawingContent(data))) as DrawingContent?;
   }
 
 }

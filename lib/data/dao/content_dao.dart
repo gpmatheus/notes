@@ -12,7 +12,7 @@ class ContentDao {
 
   final Map<String, Content> _contents = {};
 
-  Future<Content?> insertContent(String noteId, Content content, int index) async {
+  Future<Content?> insertContent(String noteId, Content content) async {
     final dataSource = content.contentsType().localDataResource;
     Content? insertContent = await dataSource.createContent(noteId, content);
     if (insertContent != null) _contents[content.id] = content;

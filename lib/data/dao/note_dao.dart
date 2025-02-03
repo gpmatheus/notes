@@ -56,11 +56,12 @@ class NoteDao {
     return notes;
   }
 
-  Future<List<int>?> changeContentsOrder(String noteId, List<int> positions) async {
-    return _dataSource.changeContentsOrder(noteId, positions);
+  Future<bool> switchPositions(String noteId, int oldIndex, int newIndex) {
+    return _dataSource.switchPosition(noteId, oldIndex, newIndex);
   }
 
-  Future<int> getContentsCount(String noteId) {
-    return _dataSource.getContentsCount(noteId);
+  Future<int> contentsCount(String noteId) async {
+    return await _dataSource.getContentsCount(noteId);
   }
+
 }

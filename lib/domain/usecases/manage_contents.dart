@@ -12,12 +12,12 @@ class ManageContents {
   static get instance => _instance;
 
   final ContentDao _contentDao = ContentDao.instance;
-
   final NoteDao _noteDao = NoteDao.instance;
 
   Future<Content?> createContent(String noteId, Content content) async {
-    final int count = await _noteDao.getContentsCount(noteId);
-    return await _contentDao.insertContent(noteId, content, count);
+    final int count = await _noteDao.contentsCount(noteId);
+    content.position = count;
+    return await _contentDao.insertContent(noteId, content);
   }
 
   Future<bool> deleteContent(Content content) async {

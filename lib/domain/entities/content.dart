@@ -10,6 +10,7 @@ abstract class Content {
   final String id;
   final DateTime createdAt;
   DateTime? lastEdited;
+  int? position;
 
   Content({
     String? id,
@@ -24,6 +25,7 @@ abstract class Content {
       'id': id,
       'created_at': createdAt.toIso8601String(),
       'last_edited': lastEdited?.toIso8601String(),
+      'position': position
     };
   }
 

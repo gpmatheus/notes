@@ -55,13 +55,16 @@ class _NoteScreenState extends State<NoteScreen> {
                 Expanded (
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListView.builder(
-                      controller: widget.noteDetailsViewmodel.scrollController,
+                    child: ReorderableListView(
+                      onReorder: (int oldIndex, int newIndex) {
+                        widget.noteDetailsViewmodel.switchPositions(oldIndex, newIndex);
+                      },
+                      scrollController: widget.noteDetailsViewmodel.scrollController,
                       shrinkWrap: true,
-                      itemCount: widget.noteDetailsViewmodel.contents.value!.length,
-                      itemBuilder: (context, index) {
+                      children: List.generate(widget.noteDetailsViewmodel.contents.value!.length, (index) {
                         final content = widget.noteDetailsViewmodel.contents.value![index];
                         return ContentContainer(
+                          key: ValueKey(content.id),
                           actions: [
                             ActionsContent(
                               icon: const Icon(Icons.delete_rounded), 
@@ -84,7 +87,7 @@ class _NoteScreenState extends State<NoteScreen> {
                             ? 'Criado em ${_dateFormat.format(content.createdAt)}'
                             : 'Editado em ${_dateFormat.format(content.lastEdited!)}'
                         );
-                      }
+                      })
                     ),
                   ),
                 ),
