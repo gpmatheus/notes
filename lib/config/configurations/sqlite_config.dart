@@ -116,24 +116,24 @@ class SqliteConfig implements AppConfig {
 
   Future<void> _populate(Database database) async {
 
-    MaintainNotes maintainNotes = MaintainNotes.instance;
-    Note note = (await maintainNotes.createNote('primeira anotação'))!;
+    // MaintainNotes maintainNotes = MaintainNotes.instance;
+    // Note note = (await maintainNotes.createNote('primeira anotação'))!;
 
-    ManageContents manageContents = ManageContents.instance;
-    Content content1 = (await manageContents.createContent(note.id, TextContent(text: 'boramano')))!;
+    // ManageContents manageContents = ManageContents.instance;
+    // Content content1 = (await manageContents.createContent(note.id, TextContent(text: 'boramano')))!;
 
-    XFile? xfile = (await ImagePicker().pickImage(source: ImageSource.gallery));
-    File? file;
-    if (xfile != null) file = File(xfile.path);
-    if (file != null) {
-      print('Caminho do arquivo: $file');
-      ImageContent? content2 = (await manageContents.createContent(note.id, ImageContent(file: file))) as ImageContent?;
-      if (content2 != null) {
-        print('Caminho da image é ${content2.imageFileName}');
-      }
-    } else {
-      print('Nenhum arquivo foi selecionado.');
-    }
+    // XFile? xfile = (await ImagePicker().pickImage(source: ImageSource.gallery));
+    // File? file;
+    // if (xfile != null) file = File(xfile.path);
+    // if (file != null) {
+    //   print('Caminho do arquivo: $file');
+    //   ImageContent? content2 = (await manageContents.createContent(note.id, ImageContent(file: file))) as ImageContent?;
+    //   if (content2 != null) {
+    //     print('Caminho da image é ${content2.imageFileName}');
+    //   }
+    // } else {
+    //   print('Nenhum arquivo foi selecionado.');
+    // }
 
     // Map<String, dynamic> data = jsonDecode("""
     //   {
