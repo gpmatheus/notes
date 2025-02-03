@@ -63,6 +63,20 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  fonts:
+    - family: LeagueSpartan
+      fonts:
+        - asset: assets/fonts/LeagueSpartan-Thin.ttf # mais fina
+          weight: 100
+        - asset: assets/fonts/LeagueSpartan-Regular.ttf # regular
+          weight: 400
+        - asset: assets/fonts/LeagueSpartan-Bold.ttf # negrito
+          weight: 700
+        - asset: assets/fonts/LeagueSpartan-ExtraBold.ttf # extra negrito
+          weight: 800
+        - asset: assets/fonts/LeagueSpartan-Black.ttf # preto
+          weight: 900
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

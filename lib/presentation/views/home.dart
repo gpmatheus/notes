@@ -17,6 +17,15 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          'nts .',
+          style: TextStyle(
+            fontFamily: 'LeagueSpartan',
+            fontSize: 40,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -2.0
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () { 
