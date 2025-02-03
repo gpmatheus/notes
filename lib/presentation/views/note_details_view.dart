@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:notes/domain/contents/content_types.dart';
 import 'package:notes/domain/entities/content.dart';
 import 'package:notes/domain/entities/note.dart';
@@ -25,8 +24,6 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-
-  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy - HH:mm');
 
   @override
   void initState() {
@@ -83,9 +80,6 @@ class _NoteScreenState extends State<NoteScreen> {
                           ],
                           content: content,
                           contentWidget: content.contentsType().displayer(widget.key, content),
-                          header: content.lastEdited == null 
-                            ? 'Criado em ${_dateFormat.format(content.createdAt)}'
-                            : 'Editado em ${_dateFormat.format(content.lastEdited!)}'
                         );
                       })
                     ),

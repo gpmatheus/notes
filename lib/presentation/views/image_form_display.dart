@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:notes/domain/entities/content.dart';
 import 'package:notes/presentation/widgets/content_container.dart';
 import 'package:notes/presentation/widgets/content_display/image_content_display.dart';
@@ -35,8 +34,6 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
 
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
-
-  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy - HH:mm');
 
   @override
   void initState() {
@@ -102,9 +99,6 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
                     return ContentContainer(
                       content: content,
                       contentWidget: content.contentsType().displayer(widget.key, content),
-                      header: content.lastEdited == null 
-                        ? 'Criado em ${_dateFormat.format(content.createdAt)}'
-                        : 'Editado em ${_dateFormat.format(content.lastEdited!)}'
                     );
                   }
                 )

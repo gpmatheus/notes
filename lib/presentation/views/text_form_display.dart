@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:notes/domain/entities/content.dart';
 import 'package:notes/presentation/widgets/content_container.dart';
 
@@ -25,7 +24,6 @@ class TextFormDisplay extends StatefulWidget {
 class _TextFormDisplayState extends State<TextFormDisplay> {
 
   final textController = TextEditingController();
-  final DateFormat _dateFormat = DateFormat('dd/MM/yyyy - HH:mm');
 
   @override
   void initState() {
@@ -54,9 +52,6 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
                       return ContentContainer(
                         content: content,
                         contentWidget: content.contentsType().displayer(widget.key, content),
-                        header: content.lastEdited == null 
-                          ? 'Criado em ${_dateFormat.format(content.createdAt)}'
-                          : 'Editado em ${_dateFormat.format(content.lastEdited!)}'
                       );
                     }
                   ),
