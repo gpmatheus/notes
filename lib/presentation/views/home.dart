@@ -43,9 +43,28 @@ class Home extends StatelessWidget {
           return LoadingScreen(
             loading: loading,
             screen: (notes == null || notes.isEmpty)
-              ? const Center(
-                  child: Text('No content'),
-                )
+              ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'No content',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _homeViewModel.navigateToNoteCreation(context);
+                      }, 
+                      child: const Text('Create a note')
+                    )
+                  ],
+                ),
+              )
               : GridView.count(
                   crossAxisCount: 2,
                   padding: const EdgeInsets.all(8.0),
