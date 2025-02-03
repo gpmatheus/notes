@@ -14,9 +14,10 @@ class ManageContents {
   final ContentDao _contentDao = ContentDao.instance;
   final NoteDao _noteDao = NoteDao.instance;
 
-  Future<Content?> createContent(String noteId, Content content) async {
+  Future<Content?> createContent(String noteId, Content content, {int? index}) async {
     final int count = await _noteDao.contentsCount(noteId);
     content.position = count;
+    if (index != null && index <= count) content.position = index;
     return await _contentDao.insertContent(noteId, content);
   }
 
