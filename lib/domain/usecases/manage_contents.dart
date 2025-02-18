@@ -1,31 +1,38 @@
 
-import 'package:notes/data/dao/content_dao.dart';
-import 'package:notes/data/dao/note_dao.dart';
-import 'package:notes/domain/entities/content.dart';
+import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/content_type_repository_interface.dart';
+import 'package:notes/domain/model/content/content.dart';
 
 class ManageContents {
+  
+  ManageContents({
+    required ContentRepositoryInterface contentRepository,
+    required  List<ContentTypeRepositoryInterface> contentTypeRepositories,
+  }) : 
+    _contentRepository = contentRepository,
+    _contentTypeRepositories = contentTypeRepositories;
 
-  ManageContents._init();
+  final ContentRepositoryInterface _contentRepository;
+  final List<ContentTypeRepositoryInterface> _contentTypeRepositories;
 
-  static final ManageContents _instance = ManageContents._init();
-
-  static get instance => _instance;
-
-  final ContentDao _contentDao = ContentDao.instance;
-  final NoteDao _noteDao = NoteDao.instance;
-
-  Future<Content?> createContent(String noteId, Content content, {int? index}) async {
-    final int count = await _noteDao.contentsCount(noteId);
-    content.position = count;
-    if (index != null && index <= count) content.position = index;
-    return await _contentDao.insertContent(noteId, content);
+  Future<bool> deleteContent(String contentId) async {
+    for (var rep in _contentTypeRepositories) {
+      if (await rep.deleteTypedContent(contentId)) return true;
+    }
+    return false;
   }
 
-  Future<bool> deleteContent(Content content) async {
-    return await _contentDao.deleteContent(content);
+  Future<List<Content>> getContents(String noteId) async {
+    final List<Content> contents = [];
+    for (var rep in _contentTypeRepositories) {
+      contents.addAll(await rep.getContents(noteId));
+    }
+    contents.sort((first, second) => first.position.compareTo(second.position));
+    return contents;
   }
 
-  Future<Content?> editContent(String contentId, Content content) async {
-    return await _contentDao.updateContent(contentId, content);
+  Future<List<Content>?> switchPositions(String noteId, Content first, Content second) async {
+    final bool success = await _contentRepository.switchPositions(noteId, first, second);
+    return success ? getContents(noteId) : null;
   }
 }

@@ -1,10 +1,17 @@
+
 import 'package:flutter/material.dart';
-import 'package:notes/config/init.dart';
-import 'package:notes/presentation/views/home.dart';
+import 'package:notes/config/dependencies.dart';
+import 'package:notes/ui/home/home_viewmodel.dart';
+import 'package:notes/ui/home/widgets/home.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
-  await Init().configure();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: providers,
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,12 +22,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'notes.',
+      title: 'notes .',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange.shade100),
         useMaterial3: true,
       ),
-      home: Home()
+      home: Home(
+        homeViewModel: HomeViewmodel(
+          maintainNotes: context.read(),
+        ),
+      )
     );
   }
 }
