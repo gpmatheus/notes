@@ -26,7 +26,7 @@ class TextFormDisplay extends StatefulWidget {
 class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProviderStateMixin {
 
   final textController = TextEditingController();
-  late final ScrollController _scrollController;
+  final ScrollController _scrollController = ScrollController();
   late AnimationController _animationController;
   late Animation<double> _animation;
   final List<GlobalKey> _keys = [];
@@ -35,11 +35,6 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
   void initState() {
     super.initState();
 
-    _scrollController = ScrollController(
-      initialScrollOffset: widget.initialScrollPosition != null 
-      ? widget.initialScrollPosition! 
-      : 0.0,
-    );
     textController.text = widget.viewModel.content != null 
       ? widget.viewModel.content!.text 
       : '';
@@ -171,6 +166,10 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
     _animation.addListener(() {
       _scrollController.jumpTo(_animation.value);
     });
+    _scrollController.animateTo(offset, 
+      duration: const Duration(seconds: 3), 
+      curve: Curves.easeInOut,
+    );
   }
 
   double _calculateOffset(int index, double itemHeight, double viewportHeight) {
@@ -179,7 +178,8 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
       final RenderBox renderBox = _keys[i].currentContext!.findRenderObject() as RenderBox;
       offset += renderBox.size.height;
     }
-    return offset - (viewportHeight / 2) + itemHeight;
+    offset = offset - (viewportHeight / 2) + itemHeight;
+    return offset < 0 ? 0.0 : offset;
   }
   
 }
