@@ -23,11 +23,13 @@ class TextFormDisplay extends StatefulWidget {
   
 }
 
-class _TextFormDisplayState extends State<TextFormDisplay> {
+class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProviderStateMixin {
 
   final textController = TextEditingController();
   late final ScrollController _scrollController;
-  // final focusNode = FocusNode();
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  final List<GlobalKey> _keys = [];
 
   @override
   void initState() {
@@ -38,7 +40,35 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
       ? widget.initialScrollPosition! 
       : 0.0,
     );
-    textController.text = widget.viewModel.content != null ? widget.viewModel.content!.text : '';
+    textController.text = widget.viewModel.content != null 
+      ? widget.viewModel.content!.text 
+      : '';
+    
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1300),
+    );
+
+    _animation = Tween<double>(begin: 0, end: 0).animate(
+      CurvedAnimation(
+        parent: _animationController, 
+        curve: Curves.easeInOut,
+      )
+    );
+
+    final int numKeys = widget.viewModel.contents.length +
+    (widget.viewModel.content == null ? 1 : 0);
+    for (int i = 0; i < numKeys; i++) {
+      _keys.add(GlobalKey());
+    }
+
+    final int index = widget.viewModel.content != null
+    ? widget.viewModel.contents.indexOf(widget.viewModel.content! as Content)
+    : widget.viewModel.contents.length;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _centerWidget(index);
+    });
   }
 
   @override
@@ -70,11 +100,12 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
         if (index < widget.viewModel.contents.length) {
           final content = widget.viewModel.contents[index];
           return ContentContainer(
+            key: _keys[index],
             content: content,
             contentWidget: content.type.display(content),
           );
         }
-        return _getField(context);
+        return _getField(context, _keys[index]);
       }
     );
   }
@@ -90,17 +121,19 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
         if (index != editingIndex) {
           final content = widget.viewModel.contents[index];
           return ContentContainer(
+            key: _keys[index],
             content: content,
             contentWidget: content.type.display(content),
           );
         }
-        return _getField(context);
+        return _getField(context, _keys[index]);
       }
     );
   }
 
-  Widget _getField(BuildContext context) {
+  Widget _getField(BuildContext context, Key key) {
     return EditingContentFrame(
+      key: key,
       content: TextField(
         controller: textController,
         keyboardType: TextInputType.multiline,
@@ -108,7 +141,6 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
         maxLines: 9,
         minLines: 1,
         autofocus: true,
-        // focusNode: focusNode,
         decoration: const InputDecoration(
           border: InputBorder.none,
         ),
@@ -120,6 +152,34 @@ class _TextFormDisplayState extends State<TextFormDisplay> {
         if (mounted) Navigator.pop(context, content);
       },
     );  
+  }
+
+  void _centerWidget(int index) {
+    final RenderBox renderBox = _keys[index].currentContext!.findRenderObject() as RenderBox;
+    final double itemHeight = renderBox.size.height;
+    final double viewportHeight = MediaQuery.of(context).size.height;
+    final double offset = _calculateOffset(index, itemHeight, viewportHeight);
+
+    _animation = Tween<double>(begin: _scrollController.offset, end: offset).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _animationController.forward(from: 0);
+    _animation.addListener(() {
+      _scrollController.jumpTo(_animation.value);
+    });
+  }
+
+  double _calculateOffset(int index, double itemHeight, double viewportHeight) {
+    double offset = 0;
+    for (int i = 0; i < index; i++) {
+      final RenderBox renderBox = _keys[i].currentContext!.findRenderObject() as RenderBox;
+      offset += renderBox.size.height;
+    }
+    return offset - (viewportHeight / 2) + itemHeight;
   }
   
 }
