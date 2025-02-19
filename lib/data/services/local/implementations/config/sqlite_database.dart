@@ -2,8 +2,9 @@
 import 'dart:io';
 
 import 'package:drift/drift.dart';
-import 'package:path/path.dart' as p;
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:path/path.dart' as p;
+// import 'package:drift/native.dart';
 import 'package:notes/data/services/local/implementations/models/note_local_model.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -26,8 +27,21 @@ class SqliteDatabase extends _$SqliteDatabase {
 
   SqliteDatabase(): super(_openConnection());
 
+  SqliteDatabase.forTesting(super.e);
+
   @override
   int get schemaVersion => 1;
+
+  // static LazyDatabase _openConnection() {
+  //   return LazyDatabase(() async {
+  //     final appDocumentsDir = await getApplicationDocumentsDirectory();
+  //     final dbDirectory = Directory(p.join(appDocumentsDir.parent.path, 'databases'));
+  //     if (!await dbDirectory.exists()) {
+  //       await dbDirectory.create(recursive: true);
+  //     }
+  //     return NativeDatabase.createInBackground(File(p.join(dbDirectory.path, 'app_database.sqlite')));
+  //   });
+  // }
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
