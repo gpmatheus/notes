@@ -17,7 +17,9 @@ class ImageFormViewmodel extends ChangeNotifier {
     _noteId = noteId,
     _imageRepository = imageRepository,
     _content = content,
-    _contents = contents;
+    _contents = contents {
+      _loadImage();
+    }
 
   final String _noteId;
   final ImageContentRepositoryInterface _imageRepository;
@@ -58,6 +60,14 @@ class ImageFormViewmodel extends ChangeNotifier {
       file: _image!, 
       position: _content.position,
     );
+  }
+
+  void _loadImage() async {
+    if (_content == null) return;
+    if (_content.file != null) {
+      _image = _content.file;
+      notifyListeners();
+    }
   }
 
 }
