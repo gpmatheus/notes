@@ -136,7 +136,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
         },
       )
     );
-    _loadNote(_note!.id);
+    await _loadNote(_note!.id);
     return resContent;
   }
 
@@ -149,7 +149,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
     if (succcess) _loadNote(_note!.id);
   }
 
-  void _loadNote(String noteId) async {
+  Future<void> _loadNote(String noteId) async {
     _turnLoadingOn();
     Note? note = await _maintainNotes.getNote(noteId);
     _note = note;

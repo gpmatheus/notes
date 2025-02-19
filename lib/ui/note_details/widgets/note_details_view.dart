@@ -144,7 +144,7 @@ class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateM
             form: tp.form(
               context, 
               null, 
-              _scrollController.offset, 
+              _scrollController.hasClients ? _scrollController.offset : null, 
               widget.viewModel.note != null && widget.viewModel.note!.contents != null
               ? widget.viewModel.note!.contents!
               : [], 
@@ -209,7 +209,8 @@ class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateM
   }
 
   void _animateCreatedContent() {
-    final double offset = _scrollController.position.maxScrollExtent +
+    final double offset = 
+    (_scrollController.hasClients ? _scrollController.position.maxScrollExtent : 0.0) +
     (MediaQuery.of(context).size.height / 4);
 
     _centerWidget(offset);
@@ -217,7 +218,10 @@ class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateM
 
   void _centerWidget(double offset) {
 
-    _animation = Tween<double>(begin: _scrollController.offset, end: offset).animate(
+    _animation = Tween<double>(
+      begin:  (_scrollController.hasClients ? _scrollController.position.maxScrollExtent : 0.0), 
+      end: offset,
+    ).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOut,
@@ -228,10 +232,12 @@ class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateM
     _animation.addListener(() {
       _scrollController.jumpTo(_animation.value);
     });
-    _scrollController.animateTo(offset, 
-      duration: const Duration(seconds: 3), 
-      curve: Curves.easeInOut,
-    );
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(offset, 
+        duration: const Duration(seconds: 3), 
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   double _calculateOffset(int index, double itemHeight, double viewportHeight) {
