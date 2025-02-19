@@ -44,18 +44,6 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
     textController.text = widget.viewModel.content != null 
       ? widget.viewModel.content!.text 
       : '';
-    
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-
-    _animation = Tween<double>(begin: 0, end: 0).animate(
-      CurvedAnimation(
-        parent: _animationController, 
-        curve: Curves.easeInOut,
-      )
-    );
 
     final int numKeys = widget.viewModel.contents.length +
     (widget.viewModel.content == null ? 1 : 0);
