@@ -158,7 +158,7 @@ class _ImageFormDisplayState extends State<ImageFormDisplay> with SingleTickerPr
       send: () async { 
         Content? content = await widget.viewModel.send();
         // ignore: use_build_context_synchronously
-        if (content != null) Navigator.pop(context, content);
+        if (mounted) Navigator.pop(context, content);
       },
     );  
   }
