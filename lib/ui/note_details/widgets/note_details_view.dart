@@ -23,6 +23,8 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +55,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       onReorder: (int oldIndex, int newIndex) {
                         widget.viewModel.switchPositions(oldIndex, newIndex);
                       },
+                      scrollController: _scrollController,
                       shrinkWrap: true,
                       children: List.generate(note.contents!.length, (index) {
                         final content = note.contents![index];
@@ -73,7 +76,13 @@ class _NoteScreenState extends State<NoteScreen> {
                                 widget.viewModel.navigateToContentForm(
                                   content: con, 
                                   context: context, 
-                                  form: content.type.form(context, content, null, note.contents!, widget.viewModel.note!.id),
+                                  form: content.type.form(
+                                    context, 
+                                    content, 
+                                    _scrollController.offset, 
+                                    note.contents!, 
+                                    widget.viewModel.note!.id
+                                  ),
                                 );
                               }
                             ),
@@ -99,10 +108,15 @@ class _NoteScreenState extends State<NoteScreen> {
         onTypeSelected: (Types tp) { 
           widget.viewModel.navigateToContentForm(
             context: context,
-            form: tp.form(context, null, null, 
+            form: tp.form(
+              context, 
+              null, 
+              _scrollController.offset, 
               widget.viewModel.note != null && widget.viewModel.note!.contents != null
               ? widget.viewModel.note!.contents!
-              : [], widget.viewModel.note!.id)
+              : [], 
+              widget.viewModel.note!.id
+            ),
           );
         }
       )

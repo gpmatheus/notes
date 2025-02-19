@@ -26,7 +26,7 @@ class TextFormDisplay extends StatefulWidget {
 class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProviderStateMixin {
 
   final textController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
   final List<GlobalKey> _keys = [];
@@ -35,13 +35,19 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
   void initState() {
     super.initState();
 
+    _scrollController = ScrollController(
+      initialScrollOffset: widget.initialScrollPosition != null
+      ? widget.initialScrollPosition!
+      : 0.0
+    );
+
     textController.text = widget.viewModel.content != null 
       ? widget.viewModel.content!.text 
       : '';
     
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1300),
+      duration: const Duration(milliseconds: 500),
     );
 
     _animation = Tween<double>(begin: 0, end: 0).animate(
@@ -61,9 +67,7 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
     ? widget.viewModel.contents.indexOf(widget.viewModel.content! as Content)
     : widget.viewModel.contents.length;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _centerWidget(index);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _centerWidget(index));
   }
 
   @override
@@ -87,42 +91,48 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
   }
 
   Widget _getCreateContentWidget() {
-    return ListView.builder(
+    return SingleChildScrollView(
       controller: _scrollController,
-      shrinkWrap: true,
-      itemCount: widget.viewModel.contents.length + 1,
-      itemBuilder: (context, index) {
-        if (index < widget.viewModel.contents.length) {
-          final content = widget.viewModel.contents[index];
-          return ContentContainer(
-            key: _keys[index],
-            content: content,
-            contentWidget: content.type.display(content),
-          );
-        }
-        return _getField(context, _keys[index]);
-      }
+      child: Column(
+        children: List.generate(
+          widget.viewModel.contents.length + 1, 
+          (index) {
+            if (index < widget.viewModel.contents.length) {
+              final content = widget.viewModel.contents[index];
+              return ContentContainer(
+                key: _keys[index],
+                content: content,
+                contentWidget: content.type.display(content),
+              );
+            }
+            return _getField(context, _keys[index]);
+          }
+        ),
+      )
     );
   }
 
   Widget _getEditContentWidget() {
     final int editingIndex = widget.viewModel.contents
       .indexOf((widget.viewModel.content!) as Content);
-    return ListView.builder(
+    return SingleChildScrollView(
       controller: _scrollController,
-      shrinkWrap: true,
-      itemCount: widget.viewModel.contents.length,
-      itemBuilder: (context, index) {
-        if (index != editingIndex) {
-          final content = widget.viewModel.contents[index];
-          return ContentContainer(
-            key: _keys[index],
-            content: content,
-            contentWidget: content.type.display(content),
-          );
-        }
-        return _getField(context, _keys[index]);
-      }
+      child: Column(
+        children: List.generate(
+          widget.viewModel.contents.length, 
+          (index) {
+            if (index != editingIndex) {
+              final content = widget.viewModel.contents[index];
+              return ContentContainer(
+                key: _keys[index],
+                content: content,
+                contentWidget: content.type.display(content),
+              );
+            }
+            return _getField(context, _keys[index]);
+          }
+        ),
+      ),
     );
   }
 
@@ -179,7 +189,10 @@ class _TextFormDisplayState extends State<TextFormDisplay> with SingleTickerProv
       offset += renderBox.size.height;
     }
     offset = offset - (viewportHeight / 2) + itemHeight;
-    return offset < 0 ? 0.0 : offset;
+    if (offset < 0.0) {
+      offset = 0.0;
+    } 
+    return offset;
   }
   
 }
