@@ -21,9 +21,41 @@ class NoteScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _NoteScreenState();
 }
 
-class _NoteScreenState extends State<NoteScreen> {
+class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateMixin {
 
   final ScrollController _scrollController = ScrollController();
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  List<GlobalKey>? _keys;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+    _animation = Tween<double>(begin: 0, end: 0).animate(
+      CurvedAnimation(
+        parent: _animationController, 
+        curve: Curves.easeInOut,
+      )
+    );
+
+    widget.viewModel.addListener(() {
+      if (widget.viewModel.note != null) {
+        if (_keys == null) {
+          _keys = [
+            for (int i = 0; i < widget.viewModel.note!.contents!.length; i++)
+              GlobalKey()
+          ];
+        } else if (_keys!.length != widget.viewModel.note!.contents!.length) {
+          _keys!.add(GlobalKey());
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +92,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       children: List.generate(note.contents!.length, (index) {
                         final content = note.contents![index];
                         return ContentContainer(
-                          key: ValueKey(content.id),
+                          key: _keys![index],
                           actions: [
                             ActionsContent(
                               icon: const Icon(Icons.delete_rounded), 
@@ -73,7 +105,7 @@ class _NoteScreenState extends State<NoteScreen> {
                               icon: const Icon(Icons.edit_rounded), 
                               name: 'Edit', 
                               onTap: (Content con) async {
-                                widget.viewModel.navigateToContentForm(
+                                Content? editedContent = await widget.viewModel.navigateToContentForm(
                                   content: con, 
                                   context: context, 
                                   form: content.type.form(
@@ -84,6 +116,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                     widget.viewModel.note!.id
                                   ),
                                 );
+                                if (editedContent != null) _animateEditedContent(index);
                               }
                             ),
                           ],
@@ -105,8 +138,8 @@ class _NoteScreenState extends State<NoteScreen> {
         }
       ),
       floatingActionButton: AddButton(
-        onTypeSelected: (Types tp) { 
-          widget.viewModel.navigateToContentForm(
+        onTypeSelected: (Types tp) async { 
+          Content? con = await widget.viewModel.navigateToContentForm(
             context: context,
             form: tp.form(
               context, 
@@ -118,6 +151,7 @@ class _NoteScreenState extends State<NoteScreen> {
               widget.viewModel.note!.id
             ),
           );
+          if (con != null) _animateCreatedContent();
         }
       )
     );
@@ -163,6 +197,54 @@ class _NoteScreenState extends State<NoteScreen> {
       // esconde o modal
       widget.viewModel.hideContentDeletionResult();
     });
+  }
+
+  void _animateEditedContent(int index) {
+    final RenderBox renderBox = _keys![index].currentContext!.findRenderObject() as RenderBox;
+    final double itemHeight = renderBox.size.height;
+    final double viewportHeight = MediaQuery.of(context).size.height;
+    final double offset = _calculateOffset(index, itemHeight, viewportHeight);
+
+    _centerWidget(offset);
+  }
+
+  void _animateCreatedContent() {
+    final double offset = _scrollController.position.maxScrollExtent +
+    (MediaQuery.of(context).size.height / 4);
+
+    _centerWidget(offset);
+  }
+
+  void _centerWidget(double offset) {
+
+    _animation = Tween<double>(begin: _scrollController.offset, end: offset).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _animationController.forward(from: 0);
+    _animation.addListener(() {
+      _scrollController.jumpTo(_animation.value);
+    });
+    _scrollController.animateTo(offset, 
+      duration: const Duration(seconds: 3), 
+      curve: Curves.easeInOut,
+    );
+  }
+
+  double _calculateOffset(int index, double itemHeight, double viewportHeight) {
+    double offset = 0;
+    for (int i = 0; i < index; i++) {
+      final RenderBox renderBox = _keys![i].currentContext!.findRenderObject() as RenderBox;
+      offset += renderBox.size.height;
+    }
+    offset = offset - (viewportHeight / 2) + itemHeight;
+    if (offset < 0.0) {
+      offset = 0.0;
+    } 
+    return offset;
   }
 
 }
