@@ -43,6 +43,7 @@ class LocalImagecontentDatabaseSqliteService extends
   
   @override
   Future<ImagecontentDto?> createImageContent(ImagecontentDto content) {
+    if (_emptyImageFileName(content)) return Future.value(null);
     return super.createTypedContent(content);
   }
   
@@ -53,6 +54,11 @@ class LocalImagecontentDatabaseSqliteService extends
   
   @override
   Future<ImagecontentDto?> updateImageContent(String contentId, ImagecontentDto content) {
+    if (_emptyImageFileName(content)) return Future.value(null);
     return super.updateTypedContent(contentId, content);
+  }
+
+  bool _emptyImageFileName(ImagecontentDto content) {
+    return content.imageFileName.trim().isEmpty;
   }
 }

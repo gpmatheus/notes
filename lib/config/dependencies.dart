@@ -4,7 +4,7 @@ import 'package:notes/data/repository/implementations/image_content_repository.d
 import 'package:notes/data/repository/implementations/note_repository.dart';
 import 'package:notes/data/repository/implementations/text_content_repository.dart';
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
-import 'package:notes/data/repository/interfaces/content_type_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/utils/content_type_repository_interface.dart';
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
 import 'package:notes/data/services/file/implementations/image_file_service.dart';
 import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart';
@@ -43,14 +43,12 @@ List<SingleChildWidget> get _contentsRepositoriesProviders {
   return [
     Provider<TextContentRepository>(
       create: (context) => TextContentRepository(
-        localContentsService: context.read<LocalContentService>(), 
         localTextContentService: context.read<LocalTextcontentDatabaseSqliteService>(),
       )
     ),
     Provider<ImageContentRepository>(
       create: (context) => ImageContentRepository(
         imageContentService: context.read<LocalImagecontentDatabaseSqliteService>(), 
-        localContentService: context.read<LocalContentService>(), 
         fileService: context.read<ImageFileServiceInterface>(),
       )
     ),

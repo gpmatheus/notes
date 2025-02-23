@@ -1,6 +1,5 @@
 
 import 'package:notes/data/repository/interfaces/text_content_repository_interface.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
 import 'package:notes/data/services/local/interfaces/local_text_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/local/interfaces/model/content/types/text/textcontent_dto.dart';
@@ -11,14 +10,11 @@ import 'package:uuid/uuid.dart';
 class TextContentRepository implements TextContentRepositoryInterface {
 
   TextContentRepository({
-    required LocalContentService localContentsService,
     required LocalTextContentService localTextContentService,
   }): 
-    _localTextContentService = localTextContentService,
-    _localContentsService = localContentsService;
+    _localTextContentService = localTextContentService;
 
   final LocalTextContentService _localTextContentService;
-  final LocalContentService _localContentsService;
 
   @override
   Future<Content?> createContent({
@@ -41,7 +37,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
 
   @override
   Future<bool> deleteContent(String contentId) async {
-    return await _localContentsService.deleteContent(contentId);
+    return await _localTextContentService.deleteTypedContent(contentId);
   }
 
   @override

@@ -36,7 +36,7 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
 
   @protected
   Future<ContentDto?> createContent(ContentDto contentDto) async {
-    ContentLocalModelCompanion? model = _convertToCompanion(contentDto);
+    ContentLocalModelCompanion? model = _convertToCompanion(contentDto, null);
     if (model == null) return null;
     var result = await database.into(database.contentLocalModel).insertReturningOrNull(model);
     return _convertToDto(result);
@@ -45,7 +45,11 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
   @override
   @protected
   Future<ContentDto?> updateContent(String id, ContentDto contentDto) async {
-    ContentLocalModelCompanion? model = _convertToCompanion(contentDto);
+    final bool noteExists = await (database.select(database.noteLocalModel)
+        ..where((table) => table.id.equals(contentDto.noteId)))
+        .getSingleOrNull() != null;
+    if (!noteExists) return null;
+    ContentLocalModelCompanion? model = _convertToCompanion(contentDto, id);
     if (model == null) return null;
     List<ContentDrift> result = await (database.update(database.contentLocalModel)
         ..where((table) => table.id.equals(id)))
@@ -54,16 +58,15 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     return _convertToDto(updated);
   }
 
-  @override
   @protected
   Future<bool> deleteContent(String contentId) async {
     return (await (database.delete(database.contentLocalModel)
         ..where((table) => table.id.equals(contentId))).go()) > 0;
   }
 
-  ContentLocalModelCompanion? _convertToCompanion(ContentDto content) {
+  ContentLocalModelCompanion? _convertToCompanion(ContentDto content, String? id) {
     return ContentLocalModelCompanion(
-      id: Value(content.id),
+      id: id != null ? Value(id) : Value(content.id),
       createdAt: Value(content.createdAt),
       lastEdited: Value(content.lastEdited),
       position: Value(content.position),

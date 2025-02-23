@@ -41,6 +41,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
 
   @protected
   Future<C?> createTypedContent(C contentDto) async {
+    if (!(await _noteExists(contentDto.noteId))) return null;
     C? result = await database.transaction(() async {
       ContentDto? createdContent = await super.createContent(contentDto as ContentDto);
 
@@ -48,13 +49,14 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
       if (model == null) return null;
       R? createdTextContent = await database
         .into(resImpl).insertReturningOrNull(model as Insertable<R>) as R;
-      return convertToDto(createdContent, createdTextContent as R);
+      return convertToDto(createdContent, createdTextContent);
     });
     return result;
   }
 
   @protected
   Future<C?> updateTypedContent(String contentId, C contentDto) async {
+    if (!(await _noteExists(contentDto.noteId))) return null;
     C? result = await database.transaction(() async {
       ContentDto? updatedContent = await super.updateContent(
         contentId, 
@@ -68,7 +70,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
         ..where((table) => (table as ContentsModel).contentId.equals(contentId)))
         .writeReturning(model as Insertable<R>);
       R? updated = updatedResult.isNotEmpty ? updatedResult.first : null;
-      return convertToDto(updatedContent, updated as R);
+      return convertToDto(updatedContent, updated);
     });
     return result;
   }
@@ -89,4 +91,11 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
 
   @protected
   String getId(R content);
+
+  Future<bool> _noteExists(String noteId) async {
+    return await (database.select(database.noteLocalModel)
+      ..where((table) => table.id.equals(noteId)))
+      .get()
+      .then((value) => value.isNotEmpty);
+  }
 }

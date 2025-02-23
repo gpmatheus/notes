@@ -33,6 +33,11 @@ class LocalDatabaseSqliteService implements LocalNoteService {
 
   @override
   Future<NoteDto?> createNote(NoteDto noteDto) async {
+    if (noteDto.id.isEmpty) return null;
+    var unique = await (database.select(database.noteLocalModel)
+        ..where((table) => table.id.equals(noteDto.id)))
+        .getSingleOrNull() == null;
+    if (!unique) return null;
     NoteLocalModelCompanion? model = _convertToCompanion(noteDto);
     if (model == null) return null;
     var result = await database.into(database.noteLocalModel).insertReturning(model);

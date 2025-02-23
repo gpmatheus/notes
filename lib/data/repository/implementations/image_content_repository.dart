@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
 import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart';
 import 'package:notes/data/services/file/interfaces/models/imagefile_dto.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
 import 'package:notes/data/services/local/interfaces/local_image_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/types/image/imagecontent_dto.dart';
 import 'package:notes/domain/model/content/content.dart';
@@ -15,16 +14,13 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
 
   ImageContentRepository({
     required LocalImageContentService imageContentService,
-    required LocalContentService localContentService,
     required ImageFileServiceInterface fileService,
   }) : 
     _imageContentService = imageContentService,
-    _localContentService = localContentService,
     _fileService = fileService;
 
 
   final LocalImageContentService _imageContentService;
-  final LocalContentService _localContentService;
   final ImageFileServiceInterface _fileService;
 
   @override
@@ -52,7 +48,7 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
 
   @override
   Future<bool> deleteContent(String contentId) async {
-    final bool deleted = await _localContentService.deleteContent(contentId);
+    final bool deleted = await _imageContentService.deleteTypedContent(contentId);
     if (deleted) {
       ImagecontentDto? result = await
         _imageContentService.getContnetById(contentId) as ImagecontentDto?;

@@ -1,6 +1,6 @@
 
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
-import 'package:notes/data/repository/interfaces/content_type_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/utils/content_type_repository_interface.dart';
 import 'package:notes/domain/model/content/content.dart';
 
 class ManageContents {

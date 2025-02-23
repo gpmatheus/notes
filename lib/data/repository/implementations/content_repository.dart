@@ -13,10 +13,10 @@ class ContentRepository implements ContentRepositoryInterface {
 
   final LocalContentService _contentService;
 
-  @override
-  Future<bool> deleteContent(String contentId) async {
-    return await _contentService.deleteContent(contentId);
-  }
+  // @override
+  // Future<bool> deleteContent(String contentId) async {
+  //   return await _contentService.deleteContent(contentId);
+  // }
 
   @override
   Future<bool> switchPositions(String noteId, Content first, Content second) async {
