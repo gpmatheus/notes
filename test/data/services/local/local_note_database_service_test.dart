@@ -45,6 +45,9 @@ void main() {
       test('should return a NoteDto when proper information is provided', () async {
         final note = await service.getNoteById('12345');
         expect(note, isNotNull);
+        expect(note!.id, '12345');
+        expect(note.createdAt, isNotNull);
+        expect(note.lastEdited, isNotNull);
       });
 
       test('should return a null when invalid id is provided', () async {
@@ -100,13 +103,18 @@ void main() {
       });
 
       test('should return a NoteDto when proper information is provided', () async {
+
+        final DateTime createdAt = DateTime.now();
         final note = await service.createNote(NoteDto(
           id: '12345',
           name: 'name',
-          createdAt: DateTime.now(),
+          createdAt: createdAt,
           lastEdited: null,
         ));
         expect(note, isNotNull);
+        expect(note!.id, '12345');
+        expect(note.createdAt, isNotNull);
+        expect(note.lastEdited, null);
       });
 
       test('should return a null when invalid id is provided', () async {
@@ -188,6 +196,9 @@ void main() {
           lastEdited: DateTime.now(),
         )); 
         expect(note!.id, '12345');
+        expect(note.name, 'name');
+        expect(note.createdAt, isNotNull);
+        expect(note.lastEdited, isNotNull);
       });
 
       test('should return null when invalid id is provided', () async {
