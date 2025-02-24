@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notes/data/services/local/implementations/config/sqlite_database.dart';
@@ -105,6 +105,7 @@ void main() {
 
       test('should return a ContentDto then valid id is provided', () async {
         final content = await service.getContentById('12345'); 
+        expect(content, isNotNull);
         expect(content!.id, '12345');
       });
 
@@ -163,6 +164,7 @@ void main() {
           createdAt: DateTime.now(),
           lastEdited: DateTime.now(),
         )); 
+        expect(content, isNotNull);
         expect(content!.id, '12345');
       });
 
@@ -190,56 +192,6 @@ void main() {
 
     });
 
-    // group('test the deleteContnet method', () {
-      
-    //   setUp(() async {
-    //     database = SqliteDatabase.forTesting(NativeDatabase.memory());
-    //     service = LocalContentDatabaseSqliteService(database: database);
-
-    //     await database.into(database.noteLocalModel).insert(
-    //       NoteLocalModelCompanion.insert(
-    //         id: const Value('noteId'),
-    //         name: 'note 1',
-    //         createdAt: Value(DateTime.now()),
-    //         lastEdited: const Value(null),
-    //       ),
-    //     );
-
-    //     await database.into(database.contentLocalModel).insert(
-    //       ContentLocalModelCompanion.insert(
-    //         id: const Value('12345'),
-    //         createdAt: Value(DateTime.now()),
-    //         lastEdited: const Value(null),
-    //         noteId: 'noteId',
-    //         position: 0,
-    //       ),
-    //     );
-
-    //     await database.into(database.contentLocalModel).insert(
-    //       ContentLocalModelCompanion.insert(
-    //         id: const Value('67890'),
-    //         createdAt: Value(DateTime.now()),
-    //         lastEdited: const Value(null),
-    //         noteId: 'noteId',
-    //         position: 1,
-    //       ),
-    //     );
-    //   });
-
-    //   tearDown(() async {
-    //     await database.close();
-    //   });
-
-    //   test('should return true when valid id is provided', () async {
-    //     final result = await service.deleteContent('12345'); 
-    //     expect(result, true);
-    //   });
-
-    //   test('should return false when invalid id is provided', () async {
-    //     final result = await service.deleteContent(''); 
-    //     expect(result, false);
-    //   });
-    // });
   });
   
 }
