@@ -60,10 +60,14 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
 
   @protected
   Future<bool> deleteContent(String contentId) async {
+    final ContentDrift? content = await (database.select(database.contentLocalModel)
+        ..where((table) => table.id.equals(contentId)))
+        .getSingleOrNull();
+    if (content == null) return false;
+    final String noteId = content.noteId;
     final bool success = (await (database.delete(database.contentLocalModel)
         ..where((table) => table.id.equals(contentId))).go()) > 0;
     if (success) {
-      final String noteId = (await getContentById(contentId))!.noteId;
       await _restorePositions(noteId);
     }
     return success;

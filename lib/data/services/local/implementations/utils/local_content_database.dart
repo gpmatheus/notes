@@ -22,7 +22,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
         ..where((table) => (table as ContentsModel).contentId.equals(id)))
         .getSingleOrNull();
     
-    return convertToDto(contentResult, result as R);
+    return convertToDto(contentResult, result);
   }
 
   @override
