@@ -2,7 +2,7 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:notes/data/services/local/implementations/local_content_database_sqlite_service.dart';
-import 'package:notes/data/services/local/implementations/models/utils/contents_model.dart';
+import 'package:notes/data/services/local/implementations/model/utils/contents_model.dart';
 import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
 
 abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalContentDatabaseSqliteService {

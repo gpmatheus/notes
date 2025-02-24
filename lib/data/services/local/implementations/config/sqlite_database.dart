@@ -5,13 +5,13 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path/path.dart' as p;
 // import 'package:drift/native.dart';
-import 'package:notes/data/services/local/implementations/models/note_local_model.dart';
+import 'package:notes/data/services/local/implementations/model/note_local_model.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:notes/data/services/local/implementations/models/content_local_model.dart';
-import 'package:notes/data/services/local/implementations/models/drawing_content_local_model.dart';
-import 'package:notes/data/services/local/implementations/models/image_content_local_model.dart';
-import 'package:notes/data/services/local/implementations/models/text_content_local_model.dart';
+import 'package:notes/data/services/local/implementations/model/content_local_model.dart';
+import 'package:notes/data/services/local/implementations/model/drawing_content_local_model.dart';
+import 'package:notes/data/services/local/implementations/model/image_content_local_model.dart';
+import 'package:notes/data/services/local/implementations/model/text_content_local_model.dart';
 import 'package:uuid/uuid.dart';
 
 part 'sqlite_database.g.dart';

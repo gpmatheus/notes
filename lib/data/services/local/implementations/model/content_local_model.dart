@@ -1,6 +1,6 @@
 
 import 'package:drift/drift.dart';
-import 'package:notes/data/services/local/implementations/models/note_local_model.dart';
+import 'package:notes/data/services/local/implementations/model/note_local_model.dart';
 import 'package:uuid/uuid.dart';
 
 @DataClassName('ContentDrift')

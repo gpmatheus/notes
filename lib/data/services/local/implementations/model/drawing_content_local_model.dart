@@ -1,6 +1,6 @@
 
 import 'package:drift/drift.dart';
-import 'package:notes/data/services/local/implementations/models/utils/contents_model.dart';
+import 'package:notes/data/services/local/implementations/model/utils/contents_model.dart';
 
 @DataClassName('DrawingContentDrift')
 class DrawingContentLocalModel extends ContentsModel {
