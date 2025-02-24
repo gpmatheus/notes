@@ -13,4 +13,27 @@ class ContentDto {
   final DateTime? lastEdited;
   final int position;
   final String noteId;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ContentDto &&
+      other.id == id &&
+      other.createdAt.compareTo(createdAt) == 0 &&
+      ((other.lastEdited == lastEdited) || 
+        ((other.lastEdited != null && lastEdited != null) && 
+        (other.lastEdited!.compareTo(lastEdited!) == 0))) &&
+      other.position == position &&
+      other.noteId == noteId;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      createdAt.hashCode ^
+      lastEdited.hashCode ^
+      position.hashCode ^
+      noteId.hashCode;
+  }
 }

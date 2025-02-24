@@ -32,14 +32,14 @@ void main() {
       final ContentDto firstDto = ContentDto(id: first.id, createdAt: first.createdAt, lastEdited: first.lastEdited, position: second.position, noteId: noteId);
       final ContentDto secondDto = ContentDto(id: second.id, createdAt: second.createdAt, lastEdited: second.lastEdited, position: first.position, noteId: noteId);
 
-      when(contentService.updateContent('first', any)).thenAnswer((_) async => firstDto);
-      when(contentService.updateContent('second', any)).thenAnswer((_) async => secondDto);
+      when(contentService.updateContent(first.id, firstDto)).thenAnswer((_) async => firstDto);
+      when(contentService.updateContent(second.id, secondDto)).thenAnswer((_) async => secondDto);
 
       final bool result = await repository.switchPositions(noteId, first, second);
 
       expect(result, true);
-      verify(contentService.updateContent('first', any));
-      verify(contentService.updateContent('second', any));
+      verify(contentService.updateContent('first', firstDto)).called(1);
+      verify(contentService.updateContent('second', secondDto)).called(1);
     });
   });
 }
