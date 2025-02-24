@@ -21,6 +21,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
     required String noteId, 
     required String text,
     required int position}) async {
+    if (position < 0) return null;
     final TextcontentDto? result = await _localTextContentService.createTextContent(
       TextcontentDto(
         id: const Uuid().v4(), 
