@@ -60,8 +60,29 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
 
   @protected
   Future<bool> deleteContent(String contentId) async {
-    return (await (database.delete(database.contentLocalModel)
+    final bool success = (await (database.delete(database.contentLocalModel)
         ..where((table) => table.id.equals(contentId))).go()) > 0;
+    if (success) {
+      final String noteId = (await getContentById(contentId))!.noteId;
+      await _restorePositions(noteId);
+    }
+    return success;
+  }
+
+  Future<void> _restorePositions(String noteId) async {
+    List<ContentDto> contents = await getContents(noteId);
+    contents.sort((a, b) => a.position.compareTo(b.position));
+    database.transaction(() async {
+      for (int i = 0; i < contents.length; i++) {
+        await updateContent(contents[i].id, ContentDto(
+          id: contents[i].id,
+          createdAt: contents[i].createdAt,
+          lastEdited: contents[i].lastEdited,
+          position: i,
+          noteId: contents[i].noteId,
+        ));
+      }
+    });
   }
 
   ContentLocalModelCompanion? _convertToCompanion(ContentDto content, String? id) {
@@ -85,4 +106,5 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
       noteId: content.noteId,
     );
   }
+
 }
