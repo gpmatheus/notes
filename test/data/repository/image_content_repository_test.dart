@@ -114,7 +114,7 @@ void main() {
         );
       });
 
-      test('should return true when valid information is provided', () {
+      test('should return true when valid information is provided', () async {
         // arrange
         const contentId = 'contentId';
         const imageFileName = 'imageFileName.png';
@@ -130,11 +130,24 @@ void main() {
         when(service.getContnetById(contentId)).thenAnswer((_) async => contentDto);
         when(fileService.deleteImage(any)).thenAnswer((_) async => true);
         // act
-        repository.deleteContent(contentId);
+        final result = await repository.deleteContent(contentId);
         // assert
+        expect(result, true);
         verify(service.deleteTypedContent(contentId));
         verify(service.getContnetById(contentId));
         verify(fileService.deleteImage(any));
+      });
+
+      test('should return false when invalid contentId is provided', () async {
+        // arrange
+        const contentId = 'contentId';
+        when(service.deleteTypedContent(any)).thenAnswer((_) async => false);
+        when(service.getContnetById(any)).thenAnswer((_) async => null);
+        // act
+        final result = await repository.deleteContent(contentId);
+        // assert
+        expect(result, false);
+        verifyNever(service.deleteTypedContent(contentId));
       });
 
     });
