@@ -229,10 +229,10 @@ class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateM
     );
 
     _animationController.forward(from: 0);
-    _animation.addListener(() {
-      _scrollController.jumpTo(_animation.value);
-    });
     if (_scrollController.hasClients) {
+      _animation.addListener(() {
+        _scrollController.jumpTo(_animation.value);
+      });
       _scrollController.animateTo(offset, 
         duration: const Duration(seconds: 3), 
         curve: Curves.easeInOut,
