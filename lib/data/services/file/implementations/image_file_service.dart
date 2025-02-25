@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 class ImageFileService implements ImageFileServiceInterface {
 
   @override
-  Future<ImagefileDto> saveImage(File image) async {
+  Future<ImagefileDto?> saveImage(File image) async {
     final String directory = (await getApplicationDocumentsDirectory()).path;
     final String fileName = '${DateTime.now().millisecondsSinceEpoch}.png';
     final String imagePath = '$directory/$fileName';

@@ -29,7 +29,11 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
     required File file,
     required int position}) async {
 
-    ImagefileDto imageFile = await _fileService.saveImage(file);
+    if (position < 0) return null;
+
+    ImagefileDto? imageFile = await _fileService.saveImage(file);
+
+    if (imageFile == null) return null;
     
     final ImagecontentDto? result = await _imageContentService.createImageContent(
       ImagecontentDto(
