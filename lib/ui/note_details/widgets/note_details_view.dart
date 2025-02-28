@@ -34,7 +34,7 @@ class _NoteScreenState extends State<NoteScreen> with SingleTickerProviderStateM
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 600),
     );
     _animation = Tween<double>(begin: 0, end: 0).animate(
       CurvedAnimation(
