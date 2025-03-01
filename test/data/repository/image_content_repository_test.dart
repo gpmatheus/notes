@@ -151,5 +151,92 @@ void main() {
       });
 
     });
+
+    group('test the updateContent method', () {
+      
+      setUp(() {
+        service = MockLocalImageContentService();
+        fileService = MockImageFileServiceInterface();
+        repository = ImageContentRepository(
+          imageContentService: service,
+          fileService: fileService,
+        );
+      });
+
+      test('should return a ImageContent when valid information is provided', () async {
+        // arrange
+        const contentId = 'contentId';
+        const noteId = 'noteId';
+        const position = 0;
+        final validFile = File('file');
+        final imageFile = ImagefileDto(
+          imageFileName: 'imageFileName.png',
+          file: validFile,
+        );
+        final contentDto = ImagecontentDto(
+          id: contentId,
+          createdAt: DateTime.now(),
+          lastEdited: null,
+          position: position,
+          imageFileName: imageFile.imageFileName,
+          noteId: noteId,
+        );
+        when(service.getContnetById(contentId)).thenAnswer((_) async => contentDto);
+        when(fileService.saveImage(validFile)).thenAnswer((_) async => imageFile);
+        when(fileService.substituteImage('imageFileName.png', 'file')).thenAnswer((_) async => imageFile);
+        when(service.updateImageContent(any, any)).thenAnswer((_) async => contentDto);
+        // act
+        Content? result = await repository.updateContent(
+          contentId: contentId,
+          noteId: noteId,
+          file: validFile,
+          position: position,
+        );
+        // assert
+        expect(result, isNotNull);
+        expect(result!.id, contentId);
+        verify(fileService.saveImage(any));
+        verify(service.updateImageContent(any, any));
+      });
+
+      test('should return null when invalid file is provided', () async {
+        // arrange
+        const contentId = 'contentId';
+        const noteId = 'noteId';
+        const position = 0;
+        final invalidFile = File('invalidFile');
+        when(fileService.saveImage(invalidFile)).thenAnswer((_) async => null);
+        // act
+        Content? result = await repository.updateContent(
+          contentId: contentId,
+          noteId: noteId,
+          file: invalidFile,
+          position: position,
+        );
+        // assert
+        expect(result, isNull);
+        verify(fileService.saveImage(invalidFile));
+        verifyNever(service.updateImageContent(any, any));
+      });
+
+      test('should return null when negative file is provided', () async {
+        // arrange
+        const contentId = 'contentId';
+        const noteId = 'noteId';
+        final invalidFile = File('invalidFile');
+        // act
+        Content? result = await repository.updateContent(
+          contentId: contentId,
+          noteId: noteId,
+          file: invalidFile,
+          position: -1,
+        );
+        // assert
+        expect(result, isNull);
+        verifyNever(fileService.saveImage(invalidFile));
+        verifyNever(service.updateImageContent(any, any));
+      });
+    });
+    
   });
 }
