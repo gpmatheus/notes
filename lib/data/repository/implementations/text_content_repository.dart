@@ -37,11 +37,6 @@ class TextContentRepository implements TextContentRepositoryInterface {
   }
 
   @override
-  Future<bool> deleteContent(String contentId) async {
-    return await _localTextContentService.deleteTypedContent(contentId);
-  }
-
-  @override
   Future<Content?> getContent(String contentId) async {
     final TextcontentDto? result = await 
       _localTextContentService.getContentById(contentId) as TextcontentDto?;
@@ -95,8 +90,8 @@ class TextContentRepository implements TextContentRepositoryInterface {
   }
   
   @override
-  Future<bool> deleteTypedContent(String contentId) async {
-    return await _localTextContentService.deleteTypedContent(contentId);
+  Future<void> deleteTypedContent(String contentId) {
+    return _localTextContentService.deleteTypedContent(contentId);
   }
 
 }

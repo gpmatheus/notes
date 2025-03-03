@@ -7,5 +7,5 @@ abstract class LocalNoteService {
   Future<List<NoteDto>> getNotes();
   Future<NoteDto?> createNote(NoteDto noteDto);
   Future<NoteDto?> updateNote(String id, NoteDto noteDto);
-  Future<bool> deleteNote(String noteId);
+  Future<void> deleteNote(String noteId);
 }

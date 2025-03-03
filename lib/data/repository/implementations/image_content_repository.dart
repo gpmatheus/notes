@@ -51,19 +51,6 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   }
 
   @override
-  Future<bool> deleteContent(String contentId) async {
-    ImagecontentDto? result = await
-        _imageContentService.getContentById(contentId) as ImagecontentDto?;
-    if (result == null) return false;
-    final bool fileDeleted = await _fileService.deleteImage(result.imageFileName);
-    if (fileDeleted) {
-      final bool deleted = await _imageContentService.deleteTypedContent(contentId);
-      return deleted;
-    }
-    return fileDeleted;
-  }
-
-  @override
   Future<Content?> getContent(String contentId) async {
     final ImagecontentDto? result = await 
       _imageContentService.getContentById(contentId) as ImagecontentDto?;
@@ -136,7 +123,14 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   
   @override
   Future<bool> deleteTypedContent(String contentId) async {
-    return await _imageContentService.deleteTypedContent(contentId);
+    ImagecontentDto? result = await
+        _imageContentService.getContentById(contentId) as ImagecontentDto?;
+    if (result == null) return false;
+    final bool fileDeleted = await _fileService.deleteImage(result.imageFileName);
+    if (fileDeleted) {
+      await _imageContentService.deleteTypedContent(contentId);
+    }
+    return fileDeleted;
   }
 
 }

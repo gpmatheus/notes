@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:notes/data/services/local/implementations/local_content_database_sqlite_service.dart';
 import 'package:notes/data/services/local/implementations/model/utils/contents_model.dart';
 import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
+import 'package:notes/data/services/local/interfaces/model/exceptions/not_found_exception.dart';
 
 abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalContentDatabaseSqliteService {
 
@@ -21,6 +22,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
     var result = await (database.select(resImpl)
         ..where((table) => (table as ContentsModel).contentId.equals(id)))
         .getSingleOrNull();
+    if (result == null) throw NotFoundException('Content not found');
     
     return convertToDto(contentResult, result);
   }
@@ -46,9 +48,10 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
       ContentDto? createdContent = await super.createContent(contentDto as ContentDto);
 
       T? model = convertToCompanion(contentDto);
-      if (model == null) return null;
+      if (model == null) throw Exception('Something went wrong');
       R? createdTextContent = await database
         .into(resImpl).insertReturningOrNull(model as Insertable<R>) as R;
+      if (createdTextContent == null) throw Exception('Something went wrong');
       return convertToDto(createdContent, createdTextContent);
     });
     return result;
@@ -56,7 +59,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
 
   @protected
   Future<C?> updateTypedContent(String contentId, C contentDto) async {
-    if (!(await _noteExists(contentDto.noteId))) return null;
+    if (!(await _noteExists(contentDto.noteId))) throw NotFoundException('Note not found');
     C? result = await database.transaction(() async {
       ContentDto? updatedContent = await super.updateContent(
         contentId, 
@@ -64,23 +67,27 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
       );
 
       T? model = convertToCompanion(contentDto);
-      if (model == null) return null;
+      if (model == null) throw Exception('Something went wrong');
       List<R> updatedResult = await (database
         .update(resImpl)
         ..where((table) => (table as ContentsModel).contentId.equals(contentId)))
         .writeReturning(model as Insertable<R>);
       R? updated = updatedResult.isNotEmpty ? updatedResult.first : null;
+      if (updated == null) throw Exception('Something went wrong');
       return convertToDto(updatedContent, updated);
     });
     return result;
   }
 
   @protected
-  Future<bool> deleteTypedContent(String contentId) async {
-    bool deleted = (await (database.delete(resImpl)
-        ..where((table) => (table as ContentsModel).contentId.equals(contentId))).go()) > 0;
-    if (deleted) deleted = await super.deleteContent(contentId);
-    return deleted;
+  Future<void> deleteTypedContent(String contentId) async {
+    await database.transaction(() async {
+      final bool success = await (database.delete(resImpl)
+        ..where((table) => (table as ContentsModel).contentId.equals(contentId)))
+        .go() > 0;
+      if (!success) throw Exception('Something went wrong');
+      await super.deleteContent(contentId);
+    });
   }
 
   @protected

@@ -17,7 +17,7 @@ class ManageContents {
 
   Future<bool> deleteContent(String contentId) async {
     for (var rep in _contentTypeRepositories) {
-      if (await rep.deleteTypedContent(contentId)) return true;
+      await rep.deleteTypedContent(contentId);
     }
     return false;
   }

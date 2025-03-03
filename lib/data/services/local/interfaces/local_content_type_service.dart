@@ -5,5 +5,5 @@ abstract class LocalContentTypeService {
 
   Future<ContentDto?> getContentById(String id);
   Future<List<ContentDto>> getContents(String noteId);
-  Future<bool> deleteTypedContent(String contentId);
+  Future<void> deleteTypedContent(String contentId);
 }

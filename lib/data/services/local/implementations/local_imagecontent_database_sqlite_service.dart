@@ -5,6 +5,7 @@ import 'package:notes/data/services/local/implementations/config/sqlite_database
 import 'package:notes/data/services/local/interfaces/local_image_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/local/interfaces/model/content/types/image/imagecontent_dto.dart';
+import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_file_exception.dart';
 
 class LocalImagecontentDatabaseSqliteService extends
     LocalContentDatabase<ImageContentLocalModelCompanion, ImageContentDrift, ImagecontentDto> implements
@@ -43,13 +44,13 @@ class LocalImagecontentDatabaseSqliteService extends
   
   @override
   Future<ImagecontentDto?> createImageContent(ImagecontentDto content) {
-    if (_emptyImageFileName(content)) return Future.value(null);
+    if (_emptyImageFileName(content)) throw InvalidFileException('Image file name cannot be empty');
     return super.createTypedContent(content);
   }
   
   @override
   Future<ImagecontentDto?> updateImageContent(String contentId, ImagecontentDto content) {
-    if (_emptyImageFileName(content)) return Future.value(null);
+    if (_emptyImageFileName(content)) InvalidFileException('Image file name cannot be empty');
     return super.updateTypedContent(contentId, content);
   }
 

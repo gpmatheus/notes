@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:notes/data/services/local/implementations/config/sqlite_database.dart';
 import 'package:notes/data/services/local/interfaces/local_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
+import 'package:notes/data/services/local/interfaces/model/exceptions/not_found_exception.dart';
 
 class LocalContentDatabaseSqliteService implements LocalContentService {
   LocalContentDatabaseSqliteService({
@@ -19,6 +20,7 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     var result = await (database.select(database.contentLocalModel)
         ..where((table) => table.id.equals(id)))
         .getSingleOrNull();
+    if (result == null) throw NotFoundException('Content not found');
     return _convertToDto(result);
   }
 
@@ -30,15 +32,15 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
         .get();
     return [
       for (var res in result)
-        _convertToDto(res)!
+        _convertToDto(res)
     ];
   }
 
   @protected
   Future<ContentDto?> createContent(ContentDto contentDto) async {
-    ContentLocalModelCompanion? model = _convertToCompanion(contentDto, null);
-    if (model == null) return null;
+    ContentLocalModelCompanion model = _convertToCompanion(contentDto, null);
     var result = await database.into(database.contentLocalModel).insertReturningOrNull(model);
+    if (result == null) throw Exception('Something went wrong');
     return _convertToDto(result);
   }
   
@@ -48,29 +50,27 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     final bool noteExists = await (database.select(database.noteLocalModel)
         ..where((table) => table.id.equals(contentDto.noteId)))
         .getSingleOrNull() != null;
-    if (!noteExists) return null;
-    ContentLocalModelCompanion? model = _convertToCompanion(contentDto, id);
-    if (model == null) return null;
+    if (!noteExists) throw NotFoundException('Note not found');
+    ContentLocalModelCompanion model = _convertToCompanion(contentDto, id);
     List<ContentDrift> result = await (database.update(database.contentLocalModel)
         ..where((table) => table.id.equals(id)))
         .writeReturning(model);
-    ContentDrift? updated = result.isNotEmpty ? result.first : null;
+    if (result.isEmpty) throw NotFoundException('Content not found');
+    final ContentDrift updated = result.first;
     return _convertToDto(updated);
   }
 
   @protected
-  Future<bool> deleteContent(String contentId) async {
+  Future<void> deleteContent(String contentId) async {
     final ContentDrift? content = await (database.select(database.contentLocalModel)
         ..where((table) => table.id.equals(contentId)))
         .getSingleOrNull();
-    if (content == null) return false;
+    if (content == null) throw NotFoundException('Content not found');
     final String noteId = content.noteId;
     final bool success = (await (database.delete(database.contentLocalModel)
         ..where((table) => table.id.equals(contentId))).go()) > 0;
-    if (success) {
-      await _restorePositions(noteId);
-    }
-    return success;
+    if (!success) throw Exception('Something went wrong');
+    await _restorePositions(noteId);
   }
 
   Future<void> _restorePositions(String noteId) async {
@@ -89,7 +89,7 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     });
   }
 
-  ContentLocalModelCompanion? _convertToCompanion(ContentDto content, String? id) {
+  ContentLocalModelCompanion _convertToCompanion(ContentDto content, String? id) {
     return ContentLocalModelCompanion(
       id: id != null ? Value(id) : Value(content.id),
       createdAt: Value(content.createdAt),
@@ -99,10 +99,8 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     );
   }
 
-  ContentDto? _convertToDto(ContentDrift? content) {
-    return content == null 
-    ? null 
-    : ContentDto(
+  ContentDto _convertToDto(ContentDrift content) {
+    return ContentDto(
       id: content.id,
       createdAt: content.createdAt,
       lastEdited: content.lastEdited,
