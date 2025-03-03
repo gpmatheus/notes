@@ -32,17 +32,6 @@ class SqliteDatabase extends _$SqliteDatabase {
   @override
   int get schemaVersion => 1;
 
-  // static LazyDatabase _openConnection() {
-  //   return LazyDatabase(() async {
-  //     final appDocumentsDir = await getApplicationDocumentsDirectory();
-  //     final dbDirectory = Directory(p.join(appDocumentsDir.parent.path, 'databases'));
-  //     if (!await dbDirectory.exists()) {
-  //       await dbDirectory.create(recursive: true);
-  //     }
-  //     return NativeDatabase.createInBackground(File(p.join(dbDirectory.path, 'app_database.sqlite')));
-  //   });
-  // }
-
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',
@@ -55,7 +44,6 @@ class SqliteDatabase extends _$SqliteDatabase {
           }
           return dbDirectory;
         },
-        
       ),
     );
   }
