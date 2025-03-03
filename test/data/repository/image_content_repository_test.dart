@@ -127,14 +127,14 @@ void main() {
           noteId: 'noteId',
         );
         when(service.deleteTypedContent(contentId)).thenAnswer((_) async => true);
-        when(service.getContnetById(contentId)).thenAnswer((_) async => contentDto);
+        when(service.getContentById(contentId)).thenAnswer((_) async => contentDto);
         when(fileService.deleteImage(any)).thenAnswer((_) async => true);
         // act
         final result = await repository.deleteContent(contentId);
         // assert
         expect(result, true);
         verify(service.deleteTypedContent(contentId));
-        verify(service.getContnetById(contentId));
+        verify(service.getContentById(contentId));
         verify(fileService.deleteImage(any));
       });
 
@@ -142,7 +142,7 @@ void main() {
         // arrange
         const contentId = 'contentId';
         when(service.deleteTypedContent(any)).thenAnswer((_) async => false);
-        when(service.getContnetById(any)).thenAnswer((_) async => null);
+        when(service.getContentById(any)).thenAnswer((_) async => null);
         // act
         final result = await repository.deleteContent(contentId);
         // assert
@@ -181,7 +181,7 @@ void main() {
           imageFileName: imageFile.imageFileName,
           noteId: noteId,
         );
-        when(service.getContnetById(contentId)).thenAnswer((_) async => contentDto);
+        when(service.getContentById(contentId)).thenAnswer((_) async => contentDto);
         when(fileService.saveImage(validFile)).thenAnswer((_) async => imageFile);
         when(fileService.substituteImage('imageFileName.png', 'file')).thenAnswer((_) async => imageFile);
         when(service.updateImageContent(any, any)).thenAnswer((_) async => contentDto);

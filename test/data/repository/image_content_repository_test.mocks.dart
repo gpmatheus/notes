@@ -68,9 +68,9 @@ class MockLocalImageContentService extends _i1.Mock
       ) as _i3.Future<_i4.ImagecontentDto?>);
 
   @override
-  _i3.Future<_i5.ContentDto?> getContnetById(String? id) => (super.noSuchMethod(
+  _i3.Future<_i5.ContentDto?> getContentById(String? id) => (super.noSuchMethod(
         Invocation.method(
-          #getContnetById,
+          #getContentById,
           [id],
         ),
         returnValue: _i3.Future<_i5.ContentDto?>.value(),
