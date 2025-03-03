@@ -44,7 +44,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
   @override
   Future<Content?> getContent(String contentId) async {
     final TextcontentDto? result = await 
-      _localTextContentService.getContnetById(contentId) as TextcontentDto?;
+      _localTextContentService.getContentById(contentId) as TextcontentDto?;
     if (result == null) return null;
     return _fromDto(result);
   }
@@ -66,7 +66,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
     required int position}) async {
 
     final TextcontentDto? contentDto = await 
-      _localTextContentService.getContnetById(contentId) as TextcontentDto?;
+      _localTextContentService.getContentById(contentId) as TextcontentDto?;
     if (contentDto == null) return null;
     
     final TextcontentDto? updatedContent = await _localTextContentService.updateTextContent(

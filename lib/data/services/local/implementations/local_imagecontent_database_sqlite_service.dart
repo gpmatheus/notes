@@ -48,11 +48,6 @@ class LocalImagecontentDatabaseSqliteService extends
   }
   
   @override
-  Future<ContentDto?> getContnetById(String id) {
-    return super.getContentById(id);
-  }
-  
-  @override
   Future<ImagecontentDto?> updateImageContent(String contentId, ImagecontentDto content) {
     if (_emptyImageFileName(content)) return Future.value(null);
     return super.updateTypedContent(contentId, content);

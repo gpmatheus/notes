@@ -3,7 +3,7 @@ import 'package:notes/data/services/local/interfaces/model/content/content_dto.d
 
 abstract class LocalContentTypeService {
 
-  Future<ContentDto?> getContnetById(String id);
+  Future<ContentDto?> getContentById(String id);
   Future<List<ContentDto>> getContents(String noteId);
   Future<bool> deleteTypedContent(String contentId);
 }

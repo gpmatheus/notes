@@ -42,11 +42,6 @@ class LocalTextcontentDatabaseSqliteService extends
   }
   
   @override
-  Future<ContentDto?> getContnetById(String id) {
-    return super.getContentById(id);
-  }
-  
-  @override
   Future<TextcontentDto?> createTextContent(TextcontentDto content) {
     return super.createTypedContent(content);
   }
