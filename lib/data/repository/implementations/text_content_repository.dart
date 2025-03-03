@@ -87,7 +87,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
 
     final TextcontentDto? contentDto = await 
       _localTextContentService.getContentById(contentId) as TextcontentDto?;
-    if (contentDto == null) throw InvalidInputException('Content not found');
+    if (contentDto == null) return null;
     
     try {
       final TextcontentDto? updatedContent = await _localTextContentService.updateTextContent(
