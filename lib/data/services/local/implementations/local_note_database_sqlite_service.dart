@@ -5,9 +5,9 @@ import 'package:notes/data/services/local/implementations/config/sqlite_database
 import 'package:notes/data/services/local/interfaces/local_note_service.dart';
 import 'package:notes/data/services/local/interfaces/model/note/note_dto.dart';
 
-class LocalDatabaseSqliteService implements LocalNoteService {
+class LocalNoteDatabaseSqliteService implements LocalNoteService {
 
-  LocalDatabaseSqliteService({
+  LocalNoteDatabaseSqliteService({
     required this.database,
   });
 

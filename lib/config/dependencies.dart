@@ -61,7 +61,7 @@ List<SingleChildWidget> get providers {
       create: (_) => SqliteDatabase(),
     ),
     Provider<LocalNoteService>(
-      create: (context) => LocalDatabaseSqliteService(
+      create: (context) => LocalNoteDatabaseSqliteService(
         database: context.read<SqliteDatabase>(),
       )
     ),

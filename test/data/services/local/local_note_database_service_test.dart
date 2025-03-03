@@ -17,7 +17,7 @@ void main() {
       
       setUp(() async {
         database = SqliteDatabase.forTesting(NativeDatabase.memory());
-        service = LocalDatabaseSqliteService(database: database);
+        service = LocalNoteDatabaseSqliteService(database: database);
 
         await database.into(database.noteLocalModel).insert(
           NoteLocalModelCompanion.insert(
@@ -60,7 +60,7 @@ void main() {
       
       setUp(() async {
         database = SqliteDatabase.forTesting(NativeDatabase.memory());
-        service = LocalDatabaseSqliteService(database: database);
+        service = LocalNoteDatabaseSqliteService(database: database);
 
         await database.into(database.noteLocalModel).insert(
           NoteLocalModelCompanion.insert(
@@ -95,7 +95,7 @@ void main() {
       
       setUp(() async {
         database = SqliteDatabase.forTesting(NativeDatabase.memory());
-        service = LocalDatabaseSqliteService(database: database);
+        service = LocalNoteDatabaseSqliteService(database: database);
       });
 
       tearDown(() async {
@@ -163,7 +163,7 @@ void main() {
       
       setUp(() async {
         database = SqliteDatabase.forTesting(NativeDatabase.memory());
-        service = LocalDatabaseSqliteService(database: database);
+        service = LocalNoteDatabaseSqliteService(database: database);
 
         await database.into(database.noteLocalModel).insert(
           NoteLocalModelCompanion.insert(
@@ -216,7 +216,7 @@ void main() {
       
       setUp(() async {
         database = SqliteDatabase.forTesting(NativeDatabase.memory());
-        service = LocalDatabaseSqliteService(database: database);
+        service = LocalNoteDatabaseSqliteService(database: database);
 
         await database.into(database.noteLocalModel).insert(
           NoteLocalModelCompanion.insert(
