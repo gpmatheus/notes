@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
 import 'package:notes/data/services/local/interfaces/local_content_type_service.dart';
 import 'package:notes/data/services/local/interfaces/local_note_service.dart';
+import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/data/services/local/interfaces/model/note/note_dto.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/note/note.dart';
@@ -33,6 +34,8 @@ class NoteRepository implements NoteRepositoryInterface {
       );
       if (insertedNote == null) return null;
       return _fromDto(insertedNote, []);
+    } on InvalidInputException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error inserting note: $e');
       return null;
@@ -53,6 +56,8 @@ class NoteRepository implements NoteRepositoryInterface {
       );
       if (updatedNote == null) return null;
       return _fromDto(updatedNote, note.contents);
+    } on InvalidInputException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error updating note: $e');
       return null;
@@ -64,6 +69,8 @@ class NoteRepository implements NoteRepositoryInterface {
     try {
       await _localNoteService.deleteNote(noteId);
       return true;
+    } on InvalidInputException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error deleting note: $e');
       return false;
@@ -76,6 +83,8 @@ class NoteRepository implements NoteRepositoryInterface {
       NoteDto? noteDto = await _localNoteService.getNoteById(noteId);
       if (noteDto == null) return null;
       return _fromDto(noteDto, []);
+    } on InvalidInputException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error getting note: $e');
       return null;
@@ -90,6 +99,8 @@ class NoteRepository implements NoteRepositoryInterface {
         for (var res in result)
           _fromDto(res, null)
       ];
+    } on InvalidInputException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error getting notes: $e');
       return [];

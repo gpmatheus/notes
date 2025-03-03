@@ -1,13 +1,16 @@
 
 import 'dart:io';
 
+import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
 import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart';
 import 'package:notes/data/services/file/interfaces/models/imagefile_dto.dart';
 import 'package:notes/data/services/local/interfaces/local_image_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/types/image/imagecontent_dto.dart';
+import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/content/image_content/image_content.dart';
+import 'package:notes/utils/formatted_logger.dart';
 import 'package:uuid/uuid.dart';
 
 class ImageContentRepository implements ImageContentRepositoryInterface {
@@ -22,6 +25,7 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
 
   final LocalImageContentService _imageContentService;
   final ImageFileServiceInterface _fileService;
+  final Logger _logger = FormattedLogger.instance;
 
   @override
   Future<Content?> createContent({
@@ -90,24 +94,31 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
     
     final ImagecontentDto? contentDto = await 
       _imageContentService.getContentById(contentId) as ImagecontentDto?;
-    if (contentDto == null) return null;
+    if (contentDto == null) throw InvalidInputException('Content not found');
 
-    final ImagefileDto? imageFile = await _fileService.substituteImage(contentDto.imageFileName, file.path);
-    if (imageFile == null) return null;
+    try {
+      final ImagefileDto? imageFile = await _fileService.substituteImage(contentDto.imageFileName, file.path);
+      if (imageFile == null) return null;
 
-    final ImagecontentDto? updatedContent = await _imageContentService.updateImageContent(
-      contentId, 
-      ImagecontentDto(
-        id: contentDto.id, 
-        createdAt: contentDto.createdAt, 
-        lastEdited: DateTime.now(), 
-        position: position, 
-        imageFileName: imageFile.imageFileName, 
-        noteId: noteId
-      )
-    );
-    if (updatedContent == null) return null;
-    return _fromDto(updatedContent, imageFile.file);
+      final ImagecontentDto? updatedContent = await _imageContentService.updateImageContent(
+        contentId, 
+        ImagecontentDto(
+          id: contentDto.id, 
+          createdAt: contentDto.createdAt, 
+          lastEdited: DateTime.now(), 
+          position: position, 
+          imageFileName: imageFile.imageFileName, 
+          noteId: noteId
+        )
+      );
+      if (updatedContent == null) return null;
+      return _fromDto(updatedContent, imageFile.file);
+    } on InvalidInputException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error updating content: $e');
+      return null;
+    }
   }
 
   ImageContent? _fromDto(ImagecontentDto content, File file) {
@@ -123,14 +134,19 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   
   @override
   Future<bool> deleteTypedContent(String contentId) async {
-    ImagecontentDto? result = await
-        _imageContentService.getContentById(contentId) as ImagecontentDto?;
-    if (result == null) return false;
-    final bool fileDeleted = await _fileService.deleteImage(result.imageFileName);
-    if (fileDeleted) {
-      await _imageContentService.deleteTypedContent(contentId);
+    try {
+      ImagecontentDto? result = await
+          _imageContentService.getContentById(contentId) as ImagecontentDto?;
+      if (result == null) return false;
+      final bool fileDeleted = await _fileService.deleteImage(result.imageFileName);
+      if (fileDeleted) {
+        await _imageContentService.deleteTypedContent(contentId);
+      }
+      return fileDeleted;
+    } on Exception catch (e) {
+      _logger.e('Error deleting content: $e');
+      return false;
     }
-    return fileDeleted;
   }
 
 }
