@@ -1,6 +1,7 @@
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/text_content_repository_interface.dart';
+import 'package:notes/data/services/local/interfaces/local_content_service.dart';
 import 'package:notes/data/services/local/interfaces/local_text_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/local/interfaces/model/content/types/text/textcontent_dto.dart';
@@ -14,18 +15,22 @@ class TextContentRepository implements TextContentRepositoryInterface {
 
   TextContentRepository({
     required LocalTextContentService localTextContentService,
+    required LocalContentService localContentService,
   }): 
-    _localTextContentService = localTextContentService;
+    _localTextContentService = localTextContentService,
+    _localContentService = localContentService;
 
   final LocalTextContentService _localTextContentService;
+  final LocalContentService _localContentService;
   final Logger _logger = FormattedLogger.instance;
 
   @override
   Future<Content?> createContent({
     required String noteId, 
     required String text,
-    required int position}) async {
-    if (position < 0) throw InvalidInputException('Position must be greater than 0');
+    required int? position}) async {
+    
+    position = await _localContentService.getContentsCount(noteId);
     try {
       final TextcontentDto? result = await _localTextContentService.createTextContent(
         TextcontentDto(
@@ -82,8 +87,8 @@ class TextContentRepository implements TextContentRepositoryInterface {
   Future<Content?> updateContent({
     required String contentId,
     required String noteId, 
-    required String text,
-    required int position}) async {
+    required String text
+    }) async {
 
     final TextcontentDto? contentDto = await 
       _localTextContentService.getContentById(contentId) as TextcontentDto?;
@@ -96,7 +101,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
           id: contentDto.id, 
           createdAt: contentDto.createdAt, 
           lastEdited: DateTime.now(), 
-          position: position, 
+          position: contentDto.position, 
           text: text, 
           noteId: noteId
         ),

@@ -23,8 +23,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'notes .',
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData.dark(),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange.shade100),
+        colorScheme: ColorScheme
+            .fromSeed(seedColor: Colors.orange.shade900)
+            .copyWith(secondary: Colors.green.shade50),
         useMaterial3: true,
       ),
       home: Home(

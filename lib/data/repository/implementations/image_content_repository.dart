@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
 import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart';
 import 'package:notes/data/services/file/interfaces/models/imagefile_dto.dart';
+import 'package:notes/data/services/local/interfaces/local_content_service.dart';
 import 'package:notes/data/services/local/interfaces/local_image_content_service.dart';
 import 'package:notes/data/services/local/interfaces/model/content/types/image/imagecontent_dto.dart';
 import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_input_exception.dart';
@@ -18,12 +19,15 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   ImageContentRepository({
     required LocalImageContentService imageContentService,
     required ImageFileServiceInterface fileService,
+    required LocalContentService localContentService,
   }) : 
     _imageContentService = imageContentService,
+    _localContentService = localContentService,
     _fileService = fileService;
 
 
   final LocalImageContentService _imageContentService;
+  final LocalContentService _localContentService;
   final ImageFileServiceInterface _fileService;
   final Logger _logger = FormattedLogger.instance;
 
@@ -31,9 +35,9 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   Future<Content?> createContent({
     required String noteId, 
     required File file,
-    required int position}) async {
+    required int? position}) async {
 
-    if (position < 0) return null;
+    position = await _localContentService.getContentsCount(noteId);
 
     ImagefileDto? imageFile = await _fileService.saveImage(file);
 
@@ -90,7 +94,7 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
     required String contentId, 
     required String noteId,
     required File file,
-    required int position}) async {
+    }) async {
     
     final ImagecontentDto? contentDto = await 
       _imageContentService.getContentById(contentId) as ImagecontentDto?;
@@ -106,7 +110,7 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
           id: contentDto.id, 
           createdAt: contentDto.createdAt, 
           lastEdited: DateTime.now(), 
-          position: position, 
+          position: contentDto.position, 
           imageFileName: imageFile.imageFileName, 
           noteId: noteId
         )

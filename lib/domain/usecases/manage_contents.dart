@@ -16,10 +16,17 @@ class ManageContents {
   final List<ContentTypeRepositoryInterface> _contentTypeRepositories;
 
   Future<bool> deleteContent(String contentId) async {
-    for (var rep in _contentTypeRepositories) {
-      await rep.deleteTypedContent(contentId);
+    return _contentTypeRepositories.isEmpty ? false : _delete(0, contentId);
+  }
+
+  Future<bool> _delete(int index, String contentId) async {
+    if (index >= _contentTypeRepositories.length) return false;
+    try {
+      await _contentTypeRepositories[index].deleteTypedContent(contentId);
+      return true;
+    } on Exception catch (_) {
+      return await _delete(index + 1, contentId);
     }
-    return false;
   }
 
   Future<List<Content>> getContents(String noteId) async {

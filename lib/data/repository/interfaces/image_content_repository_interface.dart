@@ -9,12 +9,11 @@ abstract class ImageContentRepositoryInterface extends ContentTypeRepositoryInte
   Future<Content?> createContent({
     required String noteId, 
     required File file,
-    required int position,
+    required int? position,
   });
   Future<Content?> updateContent({
     required String contentId, 
     required String noteId,
     required File file,
-    required int position,
   });
 }

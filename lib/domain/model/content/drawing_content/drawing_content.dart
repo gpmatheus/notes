@@ -27,7 +27,7 @@ class DrawingContent extends Content {
   Content copyWith({
     String? id,
     DateTime? createdAt,
-    required DateTime? lastEdited,
+    DateTime? lastEdited,
     int? position,
     String? imageFileName,
     Drawing? drawing,
@@ -82,5 +82,10 @@ class DrawingContent extends Content {
 
   @override
   Types get type => Types.image;
+  
+  @override
+  Content changePosition(int position) {
+    return copyWith(position: position);
+  }
 
 }

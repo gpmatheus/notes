@@ -89,6 +89,38 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     });
   }
 
+  @override
+  Future<int> getContentsCount(String noteId) async {
+    return (await getContents(noteId)).length;
+  }
+  
+  @override
+  Future<void> switchPositions(String firstContentId, String secondContentId) async {
+    ContentDto firstContent = (await getContentById(firstContentId))!;
+    ContentDto secondContent = (await getContentById(secondContentId))!;
+
+    await database.transaction(() async {
+      ContentDto updatedFirstContent = ContentDto(
+        id: firstContent.id, 
+        createdAt: firstContent.createdAt, 
+        lastEdited: firstContent.lastEdited, 
+        position: secondContent.position, 
+        noteId: firstContent.noteId,
+      );
+
+      ContentDto updatedSecondContent = ContentDto(
+        id: secondContent.id, 
+        createdAt: secondContent.createdAt, 
+        lastEdited: secondContent.lastEdited, 
+        position: firstContent.position, 
+        noteId: secondContent.noteId,
+      );
+
+      await updateContent(firstContentId, updatedFirstContent);
+      await updateContent(secondContentId, updatedSecondContent);
+    });
+  }
+
   ContentLocalModelCompanion _convertToCompanion(ContentDto content, String? id) {
     return ContentLocalModelCompanion(
       id: id != null ? Value(id) : Value(content.id),

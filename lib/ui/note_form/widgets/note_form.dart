@@ -43,9 +43,12 @@ class NoteForm extends StatelessWidget {
                     )
                   : (
                       loading
-                      ? const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        )
+                      ? const Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(),
+                        ],
+                      )
                       : Form(
                           key: _viewModel.formKey,
                           child: TextFormField(

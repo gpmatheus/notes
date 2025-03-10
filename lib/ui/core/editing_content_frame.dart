@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:notes/ui/core/content_frame.dart';
 
 class EditingContentFrame extends StatelessWidget {
   const EditingContentFrame({
@@ -8,22 +7,24 @@ class EditingContentFrame extends StatelessWidget {
     required this.content,
     required this.cancel,
     required this.send,
+    required this.loading,
   });
 
   final Widget content;
   final VoidCallback cancel;
   final VoidCallback send;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ContentFrame(
-          content: content,
-        ),
+        content,
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+          children: loading
+          ? [const CircularProgressIndicator()]
+          : [
             IconButton(
               onPressed: cancel, 
               icon: const Icon(Icons.cancel_rounded)

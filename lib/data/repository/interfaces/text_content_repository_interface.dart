@@ -7,12 +7,11 @@ abstract class TextContentRepositoryInterface extends ContentTypeRepositoryInter
   Future<Content?> createContent({
     required String noteId, 
     required String text,
-    required int position,
+    required int? position,
   });
   Future<Content?> updateContent({
     required String contentId, 
     required String noteId,
     required String text,
-    required int position,
   });
 }

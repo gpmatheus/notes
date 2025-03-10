@@ -28,7 +28,7 @@ class TextContent extends Content {
   Content copyWith({
     String? id,
     DateTime? createdAt,
-    required DateTime? lastEdited,
+    DateTime? lastEdited,
     int? position,
     String? text,
   }) {
@@ -83,5 +83,10 @@ class TextContent extends Content {
 
   @override
   Types get type => Types.text;
+  
+  @override
+  Content changePosition(int position) {
+    return copyWith(position: position);
+  }
 
 }

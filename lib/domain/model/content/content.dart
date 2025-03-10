@@ -26,6 +26,8 @@ abstract class Content {
     };
   }
 
+  Content changePosition(int position);
+
   Types get type;
 
 }

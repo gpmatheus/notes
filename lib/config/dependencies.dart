@@ -43,13 +43,15 @@ List<SingleChildWidget> get _contentsRepositoriesProviders {
   return [
     Provider<TextContentRepository>(
       create: (context) => TextContentRepository(
-        localTextContentService: context.read<LocalTextcontentDatabaseSqliteService>(),
+        localTextContentService: context.read<LocalTextcontentDatabaseSqliteService>(), 
+        localContentService: context.read<LocalContentService>(),
       )
     ),
     Provider<ImageContentRepository>(
       create: (context) => ImageContentRepository(
         imageContentService: context.read<LocalImagecontentDatabaseSqliteService>(), 
         fileService: context.read<ImageFileServiceInterface>(),
+        localContentService: context.read<LocalContentService>(),
       )
     ),
   ];
