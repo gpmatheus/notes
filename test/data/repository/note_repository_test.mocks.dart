@@ -78,11 +78,12 @@ class MockLocalNoteService extends _i1.Mock implements _i2.LocalNoteService {
       ) as _i3.Future<_i4.NoteDto?>);
 
   @override
-  _i3.Future<bool> deleteNote(String? noteId) => (super.noSuchMethod(
+  _i3.Future<void> deleteNote(String? noteId) => (super.noSuchMethod(
         Invocation.method(
           #deleteNote,
           [noteId],
         ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

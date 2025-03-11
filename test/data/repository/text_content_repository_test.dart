@@ -8,6 +8,7 @@ import 'package:notes/data/services/local/interfaces/local_text_content_service.
 import 'package:notes/data/services/local/interfaces/model/content/types/text/textcontent_dto.dart';
 import 'package:notes/domain/model/content/text_content/text_content.dart';
 
+import 'content_repository_test.mocks.dart';
 import 'text_content_repository_test.mocks.dart';
 
 @GenerateMocks([LocalTextContentService])
@@ -15,6 +16,7 @@ void main() {
 
   late TextContentRepositoryInterface repository;
   late MockLocalTextContentService service;
+  late MockLocalContentService contentService;
   
   group('Test TextContentRepository implements TextContentRepositoryInterface', () {
 
@@ -22,8 +24,10 @@ void main() {
 
       setUp(() {
         service = MockLocalTextContentService();
+        contentService = MockLocalContentService();
         repository = TextContentRepository(
-          localTextContentService: service,
+          localTextContentService: service, 
+          localContentService: contentService,
         );
       });
 

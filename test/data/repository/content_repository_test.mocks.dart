@@ -68,4 +68,30 @@ class MockLocalContentService extends _i1.Mock
         ),
         returnValue: _i3.Future<_i4.ContentDto?>.value(),
       ) as _i3.Future<_i4.ContentDto?>);
+
+  @override
+  _i3.Future<int> getContentsCount(String? noteId) => (super.noSuchMethod(
+        Invocation.method(
+          #getContentsCount,
+          [noteId],
+        ),
+        returnValue: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
+
+  @override
+  _i3.Future<void> switchPositions(
+    String? firstContentId,
+    String? secondContentId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #switchPositions,
+          [
+            firstContentId,
+            secondContentId,
+          ],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

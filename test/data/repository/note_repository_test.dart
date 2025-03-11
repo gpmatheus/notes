@@ -73,13 +73,6 @@ void main() {
       test('should return a Note when the note is updated', () async {
         // Arrange
         const noteId = 'noteId';
-        final note = Note(
-          id: noteId,
-          name: 'Note name',
-          createdAt: DateTime.now(),
-          lastEdited: null,
-          contents: const [],
-        );
         final noteDto = NoteDto(
           id: noteId,
           name: 'Note name',
@@ -88,7 +81,7 @@ void main() {
         );
         when(noteService.updateNote(noteId, any)).thenAnswer((_) async => noteDto);
         // Act
-        final result = await repository.updateNote(noteId, note);
+        final result = await repository.updateNote(noteId, 'Note name');
         // Assert
         expect(result, isNotNull);
       });
@@ -98,13 +91,7 @@ void main() {
         const noteId = 'noteId';
         when(noteService.updateNote(noteId, any)).thenAnswer((_) async => null);
         // Act
-        final result = await repository.updateNote(noteId, Note(
-          id: noteId,
-          name: 'Note name',
-          createdAt: DateTime.now(),
-          lastEdited: null,
-          contents: const [],
-        ));
+        final result = await repository.updateNote(noteId, 'Note name');
         // Assert
         expect(result, null);
       });

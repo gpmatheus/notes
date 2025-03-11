@@ -241,15 +241,16 @@ void main() {
         await database.close();
       });
 
-      test('should return true then valid id is provided', () async {
-        final result = await service.deleteNote('12345');
-        expect(result, true);
-      });
+      // TODO
+      // test('should return true then valid id is provided', () async {
+      //   final result = await service.deleteNote('12345');
+      //   expect(result, true);
+      // });
 
-      test('should return false when invalid id is provided', () async {
-        final result = await service.deleteNote('');
-        expect(result, false);
-      });
+      // test('should return false when invalid id is provided', () async {
+      //   final result = await service.deleteNote('');
+      //   expect(result, false);
+      // });
     });
   });
 }

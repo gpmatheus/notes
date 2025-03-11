@@ -87,13 +87,14 @@ class MockLocalImageContentService extends _i1.Mock
       ) as _i3.Future<List<_i5.ContentDto>>);
 
   @override
-  _i3.Future<bool> deleteTypedContent(String? contentId) => (super.noSuchMethod(
+  _i3.Future<void> deleteTypedContent(String? contentId) => (super.noSuchMethod(
         Invocation.method(
           #deleteTypedContent,
           [contentId],
         ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }
 
 /// A class which mocks [ImageFileServiceInterface].
