@@ -34,12 +34,12 @@ class NoteForm extends StatelessWidget {
                   ),
                 ),
                 AlertDialog(
-                  title: const Text('Create note'),
+                  title: Text(_viewModel.isCreating ? 'Create note' : 'Update note'),
                   content: displayResult
                   ? (
                       _viewModel.createdNote.value != null
-                      ? const Text('Note created!')
-                      : const Text('Note could not be created.')
+                      ? Text(_viewModel.isCreating ? 'Note created!' : 'Note updated!')
+                      : Text(_viewModel.isCreating ? 'Note could not be created.' : 'Note could not be updated')
                     )
                   : (
                       loading
@@ -57,7 +57,7 @@ class NoteForm extends StatelessWidget {
                             validator: _viewModel.validateName,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'Digite o nome aqui...',
+                              hintText: 'Type the note name here...',
                             ),
                           ),
                         )
@@ -80,9 +80,9 @@ class NoteForm extends StatelessWidget {
                     if (!displayResult && !loading) ... {
                       TextButton(
                         onPressed: () { 
-                          _viewModel.createNote();
+                          _viewModel.send();
                         }, 
-                        child: const Text('Create')
+                        child: Text(_viewModel.isCreating ? 'Create' : 'Update')
                       )
                     },
                     if (!displayResult && loading) ... {
@@ -91,18 +91,18 @@ class NoteForm extends StatelessWidget {
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.black26
                         ),
-                        child: const Text('Created'),
+                        child: Text(_viewModel.isCreating ? 'Created' : 'Updated'),
                       )
                     },
                     if (displayResult && _viewModel.createdNote.value != null) ... {
                       TextButton(
-                        onPressed: () { 
+                        onPressed: () {
                           _viewModel.navigateToNoteDetails(context).then((_) {
                             // ignore: use_build_context_synchronously
-                            Navigator.of(context).pop(_viewModel.createdNote.value);
+                            Navigator.pop(context, _viewModel.createdNote.value);
                           });
                         },
-                        child: const Text('See note'),
+                        child: Text(_viewModel.isCreating ? 'See note' : 'Ok'),
                       )
                     },
                   ],

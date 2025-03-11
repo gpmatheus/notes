@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/ui/core/content_frame.dart';
 import 'package:notes/ui/note_details/note_details_viewmodel.dart';
 import 'package:notes/ui/core/add_button.dart';
@@ -26,11 +25,6 @@ class _NoteScreenState extends State<NoteScreen> {
     super.initState();
 
     widget.viewModel.addListener(() {
-      if (widget.viewModel.note != null) {
-        print(widget.viewModel.note!.contents!.map<int>((Content con) {
-          return con.position;
-        }));
-      }
       setState(() { });
       if (widget.viewModel.showModal) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -69,7 +63,34 @@ class _NoteScreenState extends State<NoteScreen> {
               icon: const Icon(Icons.edit_rounded),
               onPressed: () => widget.viewModel.editContent(widget.viewModel.selectedContentIndex),
             ),
-          ]
+          ] else ... [
+            PopupMenuButton(
+              onSelected: (value) { 
+                switch (value) {
+                  case 'edit':
+                    widget.viewModel.navigateToNoteForm(context);
+                    break;
+                  case 'delete':
+                    widget.viewModel.deleteNote().then((bool result) {
+                      // ignore: use_build_context_synchronously
+                      if (mounted && result) Navigator.of(context).pop(true);
+                    });
+                    break;
+                }
+              }, 
+              icon: const Icon(Icons.more_vert_rounded),
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem(
+                  value: 'edit',
+                  child: Text('Edit'),
+                ),
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: Text('Delete'),
+                )
+              ],
+            )
+          ],
         ],
       ),
       body: GestureDetector(

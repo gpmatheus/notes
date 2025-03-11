@@ -10,12 +10,17 @@ class NoteFormViewmodel {
 
   NoteFormViewmodel({
     required MaintainNotes maintainNotes,
+    Note? note,
   }) :
-    _maintainNotes = maintainNotes;
+    _maintainNotes = maintainNotes,
+    _note = note {
+      _textController = TextEditingController(text: note?.name);
+    }
 
   final MaintainNotes _maintainNotes;
+  final Note? _note;
 
-  final TextEditingController _textController = TextEditingController();
+  late final TextEditingController _textController;
   final GlobalKey<FormState> _formKey = GlobalKey();
   final ValueNotifier<bool> _loading = ValueNotifier(false);
   final ValueNotifier<Note?> _createdNote = ValueNotifier(null);
@@ -31,6 +36,8 @@ class NoteFormViewmodel {
 
   ValueNotifier<bool> get displayResult => _displayResult;
 
+  bool get isCreating => _note == null;
+
   String? validateName(String? name) {
     return _valid(name) 
       ? null 
@@ -41,7 +48,15 @@ class NoteFormViewmodel {
     return name != null && name.trim().isNotEmpty;
   }
 
-  void createNote() async {
+  void send() async {
+    if (_note == null) {
+      await _createNote();
+    } else {
+      await _updateNote();
+    }
+  }
+
+  Future<void> _createNote() async {
     if (formKey.currentState != null) {
       bool valid = formKey.currentState!.validate();
       if (!valid) return;
@@ -49,6 +64,18 @@ class NoteFormViewmodel {
       Note? createdNote = await _maintainNotes.createNote(_textController.text);
       _loading.value = false;
       _createdNote.value = createdNote;
+      _displayResult.value = true;
+    }
+  }
+
+  Future<void> _updateNote() async {
+    if (formKey.currentState != null) {
+      bool valid = formKey.currentState!.validate();
+      if (!valid) return;
+      _loading.value = true;
+      Note? updatedNote = await _maintainNotes.updateNote(_note!.id, _textController.text);
+      _loading.value = false;
+      _createdNote.value = updatedNote;
       _displayResult.value = true;
     }
   }

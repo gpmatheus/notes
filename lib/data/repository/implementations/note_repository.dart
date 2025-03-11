@@ -4,6 +4,7 @@ import 'package:notes/data/repository/interfaces/note_repository_interface.dart'
 import 'package:notes/data/services/local/interfaces/local_content_type_service.dart';
 import 'package:notes/data/services/local/interfaces/local_note_service.dart';
 import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_input_exception.dart';
+import 'package:notes/data/services/local/interfaces/model/exceptions/not_found_exception.dart';
 import 'package:notes/data/services/local/interfaces/model/note/note_dto.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/note/note.dart';
@@ -43,19 +44,24 @@ class NoteRepository implements NoteRepositoryInterface {
   }
 
   @override
-  Future<Note?> updateNote(String noteId, Note note) async {
+  Future<Note?> updateNote(String noteId, String noteName) async {
     try {
+      NoteDto? note = await _localNoteService.getNoteById(noteId);
+      if (note == null) {
+        _logger.e('Note could not be found');
+        throw NotFoundException('Note could not be found');
+      }
       NoteDto? updatedNote = await _localNoteService.updateNote(
         noteId, 
         NoteDto(
           id: note.id, 
-          name: note.name, 
+          name: noteName, 
           createdAt: note.createdAt, 
           lastEdited: DateTime.now(),
         ),
       );
       if (updatedNote == null) return null;
-      return _fromDto(updatedNote, note.contents);
+      return _fromDto(updatedNote, null);
     } on InvalidInputException {
       rethrow;
     } on Exception catch (e) {

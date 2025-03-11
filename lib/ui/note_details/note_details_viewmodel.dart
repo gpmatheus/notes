@@ -7,7 +7,10 @@ import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/note/note.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/domain/usecases/manage_contents.dart';
+import 'package:notes/ui/note_form/note_form_viewmodel.dart';
+import 'package:notes/ui/note_form/widgets/note_form.dart';
 import 'package:notes/utils/formatted_logger.dart';
+import 'package:provider/provider.dart';
 
 class NoteDetailsViewmodel extends ChangeNotifier {
 
@@ -125,6 +128,33 @@ class NoteDetailsViewmodel extends ChangeNotifier {
     if (!success) {
       await _loadNoteUnderHood(_note!.id);
       notifyListeners();
+    }
+  }
+
+  Future<bool> deleteNote() async {
+    if (_note != null) return _maintainNotes.deleteNote(_note!.id);
+    return false;
+  }
+
+  void navigateToNoteForm(BuildContext context) async {
+    Note? updatedNote = await Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: NoteForm(
+              viewModel: NoteFormViewmodel(
+                maintainNotes: context.read(),
+                note: _note!,
+              ),
+            ),
+          );
+        }
+      )
+    );
+    if (updatedNote != null) {
+      _loadNote(updatedNote.id);
     }
   }
 

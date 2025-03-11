@@ -32,4 +32,12 @@ class MaintainNotes {
     return _noteRepository.insertNote(name);
   }
 
+  Future<Note?> updateNote(String noteId, String name) async {
+    return _noteRepository.updateNote(noteId, name);
+  }
+
+  Future<bool> deleteNote(String noteId) async {
+    return _noteRepository.deleteNote(noteId);
+  }
+
 }

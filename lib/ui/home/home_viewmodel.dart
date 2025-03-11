@@ -25,7 +25,7 @@ class HomeViewmodel extends ChangeNotifier {
   List<Note>? get notes => _notes;
   bool get loading => _loading;
 
-  void loadNotes() async {
+  Future<void> loadNotes() async {
     _loading = true;
     notifyListeners();
     _notes = await _maintainNotes.getAllNotes();
@@ -57,8 +57,8 @@ class HomeViewmodel extends ChangeNotifier {
     }
   }
 
-  void navigateToNoteDetails(BuildContext context, String noteId) {
-    Navigator.of(context).push(
+  void navigateToNoteDetails(BuildContext context, String noteId) async {
+    final bool? hasChanges = await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
         return NoteScreen(
           viewModel: NoteDetailsViewmodel(
@@ -70,6 +70,9 @@ class HomeViewmodel extends ChangeNotifier {
         );
       })
     );
+    if (hasChanges != null && hasChanges) {
+      await loadNotes();
+    }
   }
 
 }
