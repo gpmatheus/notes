@@ -18,6 +18,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   Note? _note;
   bool _loading = false;
   int _selectedContentIndex = -1;
+  bool _hasChanged = false;
 
   // modal
   bool _showModal = false;
@@ -56,6 +57,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   bool get modalSuccess => _modalSuccess;
   int get formIndex => _formIndex;
   Types? get formType => _type;
+  bool get hasChanged => _hasChanged;
 
 
   void deleteContent(int index) async {
@@ -154,6 +156,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
       )
     );
     if (updatedNote != null) {
+      _hasChanged = true;
       _loadNote(updatedNote.id);
     }
   }

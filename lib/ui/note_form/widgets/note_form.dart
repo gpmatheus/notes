@@ -94,7 +94,7 @@ class NoteForm extends StatelessWidget {
                         child: Text(_viewModel.isCreating ? 'Created' : 'Updated'),
                       )
                     },
-                    if (displayResult && _viewModel.createdNote.value != null) ... {
+                    if (displayResult && _viewModel.isCreating && _viewModel.createdNote.value != null) ... {
                       TextButton(
                         onPressed: () {
                           _viewModel.navigateToNoteDetails(context).then((_) {
@@ -102,7 +102,7 @@ class NoteForm extends StatelessWidget {
                             Navigator.pop(context, _viewModel.createdNote.value);
                           });
                         },
-                        child: Text(_viewModel.isCreating ? 'See note' : 'Ok'),
+                        child: const Text('See note'),
                       )
                     },
                   ],

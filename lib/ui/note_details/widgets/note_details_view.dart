@@ -48,6 +48,10 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: _navigateBack, 
+          icon: const Icon(Icons.arrow_back_rounded)
+        ),
         title: Text(widget.viewModel.note != null ? widget.viewModel.note!.name : ''),
         actions: [
           if (widget.viewModel.selectedContentIndex >= 0) ... [
@@ -73,7 +77,7 @@ class _NoteScreenState extends State<NoteScreen> {
                   case 'delete':
                     widget.viewModel.deleteNote().then((bool result) {
                       // ignore: use_build_context_synchronously
-                      if (mounted && result) Navigator.of(context).pop(true);
+                      if (mounted && result) _navigateBack();
                     });
                     break;
                 }
@@ -162,6 +166,10 @@ class _NoteScreenState extends State<NoteScreen> {
         onTypeSelected: widget.viewModel.newContentForm,
       )
     );
+  }
+
+  void _navigateBack() {
+    Navigator.pop(context, widget.viewModel.hasChanged);
   }
 
 }
