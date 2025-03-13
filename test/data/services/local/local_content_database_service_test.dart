@@ -109,9 +109,9 @@ void main() {
         expect(content!.id, '12345');
       });
 
-      test('should return null when invalid id is provided', () async {
-        final content = await service.getContentById(''); 
-        expect(content, null);
+      test('should throw an exception when invalid id is provided', () async {
+        callMethod() async => await service.getContentById(''); 
+        expect(callMethod, throwsA(isA<Exception>()));
       });
 
     });
@@ -168,26 +168,26 @@ void main() {
         expect(content!.id, '12345');
       });
 
-      test('should return null when trying to change noteId', () async {
-        final content = await service.updateContent('12345', ContentDto(
+      test('should throw an exception when trying to change noteId', () async {
+        callMethod() async => await service.updateContent('12345', ContentDto(
           id: '12345',
           noteId: 'noteId2',
           position: 0,
           createdAt: DateTime.now(),
           lastEdited: DateTime.now(),
         )); 
-        expect(content, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
 
-      test('should return null when an invalid id is provided', () async {
-        final content = await service.updateContent('', ContentDto(
+      test('should throw an exception when an invalid id is provided', () async {
+        callMethod() async => await service.updateContent('', ContentDto(
           id: '12345',
           noteId: 'noteId',
           position: 0,
           createdAt: DateTime.now(),
           lastEdited: null,
         )); 
-        expect(content, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
 
     });
