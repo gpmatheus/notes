@@ -79,6 +79,7 @@ void main() {
           createdAt: DateTime.now(),
           lastEdited: null,
         );
+        when(noteService.getNoteById(noteId)).thenAnswer((_) async => noteDto);
         when(noteService.updateNote(noteId, any)).thenAnswer((_) async => noteDto);
         // Act
         final result = await repository.updateNote(noteId, 'Note name');
@@ -86,14 +87,15 @@ void main() {
         expect(result, isNotNull);
       });
 
-      test('should return null when the note is not updated', () async {
+      test('should throw an exception when the note is not updated', () async {
         // Arrange
         const noteId = 'noteId';
+
+        when(noteService.getNoteById(noteId)).thenAnswer((_) async => null);
         when(noteService.updateNote(noteId, any)).thenAnswer((_) async => null);
-        // Act
-        final result = await repository.updateNote(noteId, 'Note name');
-        // Assert
-        expect(result, null);
+        // Act and Assert
+        callMethod() async => await repository.updateNote(noteId, 'Note name');
+        expect(callMethod, throwsA(isA<Exception>()));
       });
     });
 
@@ -118,13 +120,12 @@ void main() {
         expect(result, true);
       });
 
-      test('should return false when the note is not deleted', () async {
+      test('should return null when the note is not deleted', () async {
         // Arrange
         const noteId = 'noteId';
-        when(noteService.deleteNote(noteId)).thenAnswer((_) async => false);
-        // Act
+        when(noteService.deleteNote(noteId)).thenThrow(Exception(''));
+        // Act and Assert
         final result = await repository.deleteNote(noteId);
-        // Assert
         expect(result, false);
       });
     });

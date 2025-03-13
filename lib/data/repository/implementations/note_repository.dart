@@ -64,6 +64,8 @@ class NoteRepository implements NoteRepositoryInterface {
       return _fromDto(updatedNote, null);
     } on InvalidInputException {
       rethrow;
+    } on NotFoundException catch (_) {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error updating note: $e');
       return null;
