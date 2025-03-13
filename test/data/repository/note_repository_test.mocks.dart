@@ -6,9 +6,9 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/local/interfaces/local_note_service.dart'
+import 'package:notes/data/services/interfaces/local_note_service.dart'
     as _i2;
-import 'package:notes/data/services/local/interfaces/model/note/note_dto.dart'
+import 'package:notes/data/services/interfaces/model/note/note_dto.dart'
     as _i4;
 
 // ignore_for_file: type=lint

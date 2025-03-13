@@ -5,8 +5,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notes/data/repository/implementations/image_content_repository.dart';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
-import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart';
-import 'package:notes/data/services/local/interfaces/local_image_content_service.dart';
+import 'package:notes/data/services/interfaces/image_file_service_interface.dart';
+import 'package:notes/data/services/interfaces/local_image_content_service.dart';
 
 import 'content_repository_test.mocks.dart';
 import 'image_content_repository_test.mocks.dart';

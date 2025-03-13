@@ -2,10 +2,10 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notes/data/services/local/implementations/config/sqlite_database.dart';
-import 'package:notes/data/services/local/implementations/local_textcontent_database_sqlite_service.dart';
-import 'package:notes/data/services/local/interfaces/local_text_content_service.dart';
-import 'package:notes/data/services/local/interfaces/model/content/types/text/textcontent_dto.dart';
+import 'package:notes/data/services/local/config/sqlite_database.dart';
+import 'package:notes/data/services/local/local_textcontent_database_sqlite_service.dart';
+import 'package:notes/data/services/interfaces/local_text_content_service.dart';
+import 'package:notes/data/services/interfaces/model/content/types/text/textcontent_dto.dart';
 
 void main() {
 

@@ -1,7 +1,7 @@
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/local_content_service.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/utils/formatted_logger.dart';
 

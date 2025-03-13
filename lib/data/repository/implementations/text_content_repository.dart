@@ -1,11 +1,11 @@
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/text_content_repository_interface.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
-import 'package:notes/data/services/local/interfaces/local_text_content_service.dart';
-import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
-import 'package:notes/data/services/local/interfaces/model/content/types/text/textcontent_dto.dart';
-import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_input_exception.dart';
+import 'package:notes/data/services/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/local_text_content_service.dart';
+import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
+import 'package:notes/data/services/interfaces/model/content/types/text/textcontent_dto.dart';
+import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/content/text_content/text_content.dart';
 import 'package:notes/utils/formatted_logger.dart';

@@ -6,11 +6,11 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/local/interfaces/local_text_content_service.dart'
+import 'package:notes/data/services/interfaces/local_text_content_service.dart'
     as _i2;
-import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart'
+import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
     as _i5;
-import 'package:notes/data/services/local/interfaces/model/content/types/text/textcontent_dto.dart'
+import 'package:notes/data/services/interfaces/model/content/types/text/textcontent_dto.dart'
     as _i4;
 
 // ignore_for_file: type=lint

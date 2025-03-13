@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
-import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart';
-import 'package:notes/data/services/file/interfaces/models/imagefile_dto.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
-import 'package:notes/data/services/local/interfaces/local_image_content_service.dart';
-import 'package:notes/data/services/local/interfaces/model/content/types/image/imagecontent_dto.dart';
-import 'package:notes/data/services/local/interfaces/model/exceptions/invalid_input_exception.dart';
+import 'package:notes/data/services/interfaces/image_file_service_interface.dart';
+import 'package:notes/data/services/interfaces/model/file/imagefile_dto.dart';
+import 'package:notes/data/services/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/local_image_content_service.dart';
+import 'package:notes/data/services/interfaces/model/content/types/image/imagecontent_dto.dart';
+import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/content/image_content/image_content.dart';
 import 'package:notes/utils/formatted_logger.dart';

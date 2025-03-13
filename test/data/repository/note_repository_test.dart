@@ -4,9 +4,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notes/data/repository/implementations/note_repository.dart';
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
-import 'package:notes/data/services/local/interfaces/local_content_type_service.dart';
-import 'package:notes/data/services/local/interfaces/local_note_service.dart';
-import 'package:notes/data/services/local/interfaces/model/note/note_dto.dart';
+import 'package:notes/data/services/interfaces/local_content_type_service.dart';
+import 'package:notes/data/services/interfaces/local_note_service.dart';
+import 'package:notes/data/services/interfaces/model/note/note_dto.dart';
 import 'package:notes/domain/model/note/note.dart';
 
 import 'note_repository_test.mocks.dart';

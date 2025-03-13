@@ -5,7 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notes/data/repository/implementations/content_repository.dart';
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/local_content_service.dart';
 
 import 'content_repository_test.mocks.dart';
 

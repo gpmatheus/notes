@@ -1,10 +1,10 @@
 import 'package:drift/drift.dart' hide isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notes/data/services/local/implementations/config/sqlite_database.dart';
-import 'package:notes/data/services/local/implementations/local_content_database_sqlite_service.dart';
-import 'package:notes/data/services/local/interfaces/local_content_service.dart';
-import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart';
+import 'package:notes/data/services/local/config/sqlite_database.dart';
+import 'package:notes/data/services/local/local_content_database_sqlite_service.dart';
+import 'package:notes/data/services/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
 
 void main() {
   late LocalContentService service;

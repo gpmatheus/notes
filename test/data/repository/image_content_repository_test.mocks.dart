@@ -7,15 +7,15 @@ import 'dart:async' as _i3;
 import 'dart:io' as _i8;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/file/interfaces/image_file_service_interface.dart'
+import 'package:notes/data/services/interfaces/image_file_service_interface.dart'
     as _i6;
-import 'package:notes/data/services/file/interfaces/models/imagefile_dto.dart'
+import 'package:notes/data/services/interfaces/model/file/imagefile_dto.dart'
     as _i7;
-import 'package:notes/data/services/local/interfaces/local_image_content_service.dart'
+import 'package:notes/data/services/interfaces/local_image_content_service.dart'
     as _i2;
-import 'package:notes/data/services/local/interfaces/model/content/content_dto.dart'
+import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
     as _i5;
-import 'package:notes/data/services/local/interfaces/model/content/types/image/imagecontent_dto.dart'
+import 'package:notes/data/services/interfaces/model/content/types/image/imagecontent_dto.dart'
     as _i4;
 
 // ignore_for_file: type=lint
