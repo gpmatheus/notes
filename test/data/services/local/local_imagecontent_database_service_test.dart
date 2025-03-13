@@ -61,8 +61,8 @@ void main() {
         expect(imageContent, null);
       });
 
-      test('should return a null when providing an empty imageFileName', () async {
-        final imageContent = await service.createImageContent(
+      test('should throw an exception when providing an empty imageFileName', () async {
+        callMethod() async => await service.createImageContent(
           ImagecontentDto(
             id: '56789', 
             createdAt: DateTime.now(), 
@@ -72,11 +72,11 @@ void main() {
             noteId: 'noteId',
           )
         );
-        expect(imageContent, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
     });
 
-    group('teste the updateImageContent method', () {
+    group('test the updateImageContent method', () {
       
       setUp(() async {
         database = SqliteDatabase.forTesting(NativeDatabase.memory());
@@ -129,8 +129,8 @@ void main() {
         expect(imageContent, isNotNull);
       });
 
-      test('should return a null when providing invalid noteId', () async {
-        final imageContent = await service.updateImageContent(
+      test('should throw an exception when providing invalid noteId', () async {
+        callMethod() async => await service.updateImageContent(
           '12345',
           ImagecontentDto(
             id: 'imageId', 
@@ -141,11 +141,11 @@ void main() {
             noteId: '',
           )
         );
-        expect(imageContent, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
 
-      test('should return a null when providing empty imageFileName', () async {
-        final imageContent = await service.updateImageContent(
+      test('should throw an exception when providing empty imageFileName', () async {
+        callMethod() async => await service.updateImageContent(
           '12345',
           ImagecontentDto(
             id: 'imageId', 
@@ -156,11 +156,11 @@ void main() {
             noteId: 'noteId',
           )
         );
-        expect(imageContent, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
 
       test('should return a null when providing invalid id', () async {
-        final imageContent = await service.updateImageContent(
+        callMethod() async => await service.updateImageContent(
           '1234567',
           ImagecontentDto(
             id: 'imageId', 
@@ -171,7 +171,7 @@ void main() {
             noteId: 'noteId',
           )
         );
-        expect(imageContent, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
     });
   });

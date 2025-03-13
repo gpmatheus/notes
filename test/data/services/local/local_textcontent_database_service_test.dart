@@ -129,8 +129,8 @@ void main() {
         expect(textContent, isNotNull);
       });
 
-      test('should return a null when trying to change noteId', () async {
-        final textContent = await service.updateTextContent(
+      test('should throw an exception when trying to change noteId', () async {
+        callMethod() async => await service.updateTextContent(
           '12345',
           TextcontentDto(
             id: '56789', 
@@ -141,7 +141,7 @@ void main() {
             noteId: '',
           )
         );
-        expect(textContent, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
     });
   });
