@@ -51,8 +51,8 @@ void main() {
       });
 
       test('should return a null when invalid id is provided', () async {
-        final note = await service.getNoteById('');
-        expect(note, null);
+        callMethod() async => await service.getNoteById('');
+        expect(callMethod, throwsA(isA<Exception>()));
       });
     });
 
@@ -117,14 +117,14 @@ void main() {
         expect(note.lastEdited, null);
       });
 
-      test('should return a null when invalid id is provided', () async {
-        final note = await service.createNote(NoteDto(
+      test('should throw exception when invalid id is provided', () async {
+        callMethod() async => await service.createNote(NoteDto(
           id: '',
           name: 'name',
           createdAt: DateTime.now(),
           lastEdited: null,
         ));
-        expect(note, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
 
       group('test the createNote method 2', () {
@@ -144,14 +144,14 @@ void main() {
           await database.close();
         });
 
-        test('equal ids should return null when providing non unique id', () async {
-          final note = await service.createNote(NoteDto(
+        test('equal ids should throw an exception when providing non unique id', () async {
+          methodCall() async => await service.createNote(NoteDto(
             id: '00000',
             name: 'name',
             createdAt: DateTime.now(),
             lastEdited: DateTime.now(),
           ));
-          expect(note, null);
+          expect(methodCall, throwsA(isA<Exception>()));
         });
 
       });
@@ -201,14 +201,14 @@ void main() {
         expect(note.lastEdited, isNotNull);
       });
 
-      test('should return null when invalid id is provided', () async {
-        final note = await service.updateNote('', NoteDto(
+      test('should throw an exception when invalid id is provided', () async {
+        callMethod() async => await service.updateNote('', NoteDto(
           id: '12345',
           name: 'name',
           createdAt: DateTime.now(),
           lastEdited: null,
         )); 
-        expect(note, null);
+        expect(callMethod, throwsA(isA<Exception>()));
       });
     });
 
