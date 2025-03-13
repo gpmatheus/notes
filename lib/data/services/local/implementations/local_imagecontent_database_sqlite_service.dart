@@ -50,7 +50,7 @@ class LocalImagecontentDatabaseSqliteService extends
   
   @override
   Future<ImagecontentDto?> updateImageContent(String contentId, ImagecontentDto content) {
-    if (_emptyImageFileName(content)) InvalidFileException('Image file name cannot be empty');
+    if (_emptyImageFileName(content)) throw InvalidFileException('Image file name cannot be empty');
     return super.updateTypedContent(contentId, content);
   }
 
