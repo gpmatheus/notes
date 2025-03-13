@@ -1,17 +1,7 @@
 # notes
 
-A new Flutter project.
+A mobile app for annotations.
 
-## Getting Started
+The following figure displays the MVVM architecture structure for the current implementation through a UML Class Diagram.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# notes
+![image](./application_class_diagram.png)
