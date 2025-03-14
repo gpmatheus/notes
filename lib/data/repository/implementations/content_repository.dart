@@ -18,7 +18,7 @@ class ContentRepository implements ContentRepositoryInterface {
   @override
   Future<bool> switchPositions(String noteId, Content first, Content second) async {
     try {
-      await _contentService.switchPositions(first.id, second.id);
+      await _contentService.switchPositions(noteId, first.id, second.id);
       return true;
     } on Exception catch (e) {
       _logger.e(e.toString());

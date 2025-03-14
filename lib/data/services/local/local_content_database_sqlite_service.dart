@@ -16,7 +16,7 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
 
   @override
   @protected
-  Future<ContentDto?> getContentById(String id) async {
+  Future<ContentDto?> getContentById(String noteId, String id) async {
     var result = await (database.select(database.contentLocalModel)
         ..where((table) => table.id.equals(id)))
         .getSingleOrNull();
@@ -46,7 +46,7 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
   
   @override
   @protected
-  Future<ContentDto?> updateContent(String id, ContentDto contentDto) async {
+  Future<ContentDto?> updateContent(String noteId, String id, ContentDto contentDto) async {
     final bool noteExists = await (database.select(database.noteLocalModel)
         ..where((table) => table.id.equals(contentDto.noteId)))
         .getSingleOrNull() != null;
@@ -78,7 +78,7 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
     contents.sort((a, b) => a.position.compareTo(b.position));
     database.transaction(() async {
       for (int i = 0; i < contents.length; i++) {
-        await updateContent(contents[i].id, ContentDto(
+        await updateContent(noteId, contents[i].id, ContentDto(
           id: contents[i].id,
           createdAt: contents[i].createdAt,
           lastEdited: contents[i].lastEdited,
@@ -95,9 +95,9 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
   }
   
   @override
-  Future<void> switchPositions(String firstContentId, String secondContentId) async {
-    ContentDto firstContent = (await getContentById(firstContentId))!;
-    ContentDto secondContent = (await getContentById(secondContentId))!;
+  Future<void> switchPositions(String noteId, String firstContentId, String secondContentId) async {
+    ContentDto firstContent = (await getContentById(noteId, firstContentId))!;
+    ContentDto secondContent = (await getContentById(noteId, secondContentId))!;
 
     await database.transaction(() async {
       ContentDto updatedFirstContent = ContentDto(
@@ -116,8 +116,8 @@ class LocalContentDatabaseSqliteService implements LocalContentService {
         noteId: secondContent.noteId,
       );
 
-      await updateContent(firstContentId, updatedFirstContent);
-      await updateContent(secondContentId, updatedSecondContent);
+      await updateContent(noteId, firstContentId, updatedFirstContent);
+      await updateContent(noteId, secondContentId, updatedSecondContent);
     });
   }
 

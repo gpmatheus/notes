@@ -16,8 +16,8 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
   final TableInfo<Table, R> resImpl;
 
   @override
-  Future<ContentDto?> getContentById(String id) async {
-    var contentResult = await super.getContentById(id);
+  Future<ContentDto?> getContentById(String noteId, String id) async {
+    var contentResult = await super.getContentById(noteId, id);
 
     var result = await (database.select(resImpl)
         ..where((table) => (table as ContentsModel).contentId.equals(id)))
@@ -58,10 +58,11 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
   }
 
   @protected
-  Future<C?> updateTypedContent(String contentId, C contentDto) async {
+  Future<C?> updateTypedContent(String noteId, String contentId, C contentDto) async {
     if (!(await _noteExists(contentDto.noteId))) throw NotFoundException('Note not found');
     C? result = await database.transaction(() async {
       ContentDto? updatedContent = await super.updateContent(
+        noteId,
         contentId, 
         contentDto as ContentDto,
       );
@@ -80,7 +81,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
   }
 
   @protected
-  Future<void> deleteTypedContent(String contentId) async {
+  Future<void> deleteTypedContent(String noteId, String contentId) async {
     await database.transaction(() async {
       final bool success = await (database.delete(resImpl)
         ..where((table) => (table as ContentsModel).contentId.equals(contentId)))

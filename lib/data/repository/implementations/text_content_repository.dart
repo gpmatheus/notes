@@ -53,10 +53,10 @@ class TextContentRepository implements TextContentRepositoryInterface {
   }
 
   @override
-  Future<Content?> getContent(String contentId) async {
+  Future<Content?> getContent(String noteId, String contentId) async {
     try {
       final TextcontentDto? result = await 
-        _localTextContentService.getContentById(contentId) as TextcontentDto?;
+        _localTextContentService.getContentById(noteId, contentId) as TextcontentDto?;
       if (result == null) return null;
       return _fromDto(result);
     } on InvalidInputException {
@@ -91,7 +91,7 @@ class TextContentRepository implements TextContentRepositoryInterface {
     }) async {
 
     final TextcontentDto? contentDto = await 
-      _localTextContentService.getContentById(contentId) as TextcontentDto?;
+      _localTextContentService.getContentById(noteId, contentId) as TextcontentDto?;
     if (contentDto == null) return null;
     
     try {
@@ -117,8 +117,8 @@ class TextContentRepository implements TextContentRepositoryInterface {
   }
 
   @override
-  Future<void> deleteTypedContent(String contentId) {
-    return _localTextContentService.deleteTypedContent(contentId);
+  Future<void> deleteTypedContent(String noteId, String contentId) {
+    return _localTextContentService.deleteTypedContent(noteId, contentId);
   }
 
   TextContent? _fromDto(TextcontentDto content) {

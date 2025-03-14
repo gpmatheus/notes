@@ -15,17 +15,17 @@ class ManageContents {
   final ContentRepositoryInterface _contentRepository;
   final List<ContentTypeRepositoryInterface> _contentTypeRepositories;
 
-  Future<bool> deleteContent(String contentId) async {
-    return _contentTypeRepositories.isEmpty ? false : _delete(0, contentId);
+  Future<bool> deleteContent(String noteId, String contentId) async {
+    return _contentTypeRepositories.isEmpty ? false : _delete(0, noteId, contentId);
   }
 
-  Future<bool> _delete(int index, String contentId) async {
+  Future<bool> _delete(int index, String noteId, String contentId) async {
     if (index >= _contentTypeRepositories.length) return false;
     try {
-      await _contentTypeRepositories[index].deleteTypedContent(contentId);
+      await _contentTypeRepositories[index].deleteTypedContent(noteId, contentId);
       return true;
     } on Exception catch (_) {
-      return await _delete(index + 1, contentId);
+      return await _delete(index + 1, noteId, contentId);
     }
   }
 

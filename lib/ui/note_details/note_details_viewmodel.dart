@@ -64,7 +64,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
     if (index < 0 || index >= note!.contents!.length) return;
     final Content content = note!.contents![index];
     _turnLoadingOn();
-    final bool deleted = await _contentUseCase.deleteContent(content.id);
+    final bool deleted = await _contentUseCase.deleteContent(note!.id, content.id);
     _turnLoadingOff();
 
     _modalMessage = deleted ? 'Content deleted.' : 'Content could not be deleted';

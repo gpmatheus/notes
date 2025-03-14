@@ -48,7 +48,7 @@ class LocalTextcontentDatabaseSqliteService extends
   
   @override
   Future<TextcontentDto?> updateTextContent(String contentId, TextcontentDto content) {
-    return super.updateTypedContent(contentId, content);
+    return super.updateTypedContent(content.noteId, contentId, content);
   }
 
 }

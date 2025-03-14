@@ -59,9 +59,9 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   }
 
   @override
-  Future<Content?> getContent(String contentId) async {
+  Future<Content?> getContent(String noteId, String contentId) async {
     final ImagecontentDto? result = await 
-      _imageContentService.getContentById(contentId) as ImagecontentDto?;
+      _imageContentService.getContentById(noteId, contentId) as ImagecontentDto?;
     if (result == null) return null;
     
     final File? imageFile = await 
@@ -97,7 +97,7 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
     }) async {
     
     final ImagecontentDto? contentDto = await 
-      _imageContentService.getContentById(contentId) as ImagecontentDto?;
+      _imageContentService.getContentById(noteId, contentId) as ImagecontentDto?;
     if (contentDto == null) throw InvalidInputException('Content not found');
 
     try {
@@ -137,14 +137,14 @@ class ImageContentRepository implements ImageContentRepositoryInterface {
   }
   
   @override
-  Future<bool> deleteTypedContent(String contentId) async {
+  Future<bool> deleteTypedContent(String noteId, String contentId) async {
     try {
       ImagecontentDto? result = await
-          _imageContentService.getContentById(contentId) as ImagecontentDto?;
+          _imageContentService.getContentById(noteId, contentId) as ImagecontentDto?;
       if (result == null) return false;
       final bool fileDeleted = await _fileService.deleteImage(result.imageFileName);
       if (fileDeleted) {
-        await _imageContentService.deleteTypedContent(contentId);
+        await _imageContentService.deleteTypedContent(noteId, contentId);
       }
       return fileDeleted;
     } on Exception catch (e) {
