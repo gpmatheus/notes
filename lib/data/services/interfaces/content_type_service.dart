@@ -1,7 +1,7 @@
 
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
 
-abstract class LocalContentTypeService {
+abstract class ContentTypeService {
 
   Future<ContentDto?> getContentById(String noteId, String id);
   Future<List<ContentDto>> getContents(String noteId);

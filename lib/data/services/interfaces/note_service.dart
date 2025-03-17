@@ -1,7 +1,7 @@
 
 import 'package:notes/data/services/interfaces/model/note/note_dto.dart';
 
-abstract class LocalNoteService {
+abstract class NoteService {
 
   Future<NoteDto?> getNoteById(String contentId);
   Future<List<NoteDto>> getNotes();
