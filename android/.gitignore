@@ -13,4 +13,4 @@ key.properties
 **/*.jks
 
 # firebase related files
-**/google-services.json
+/app/google-services.json
