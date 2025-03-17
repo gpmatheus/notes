@@ -4,13 +4,13 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notes/data/services/local/config/sqlite_database.dart';
 import 'package:notes/data/services/local/local_imagecontent_database_sqlite_service.dart';
-import 'package:notes/data/services/interfaces/local_image_content_service.dart';
+import 'package:notes/data/services/interfaces/image_content_service.dart';
 import 'package:notes/data/services/interfaces/model/content/types/image/imagecontent_dto.dart';
 
 void main() {
 
   late SqliteDatabase database;
-  late LocalImageContentService service;
+  late ImageContentService service;
 
   group('Test LocalImagecontentDatabaseSqliteService implements LocalImageContentService', () {
     group('test the createImageContent method', () {

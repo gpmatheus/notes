@@ -4,12 +4,12 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notes/data/services/local/config/sqlite_database.dart';
 import 'package:notes/data/services/local/local_note_database_sqlite_service.dart';
-import 'package:notes/data/services/interfaces/local_note_service.dart';
+import 'package:notes/data/services/interfaces/note_service.dart';
 import 'package:notes/data/services/interfaces/model/note/note_dto.dart';
 
 void main() {
 
-  late LocalNoteService service;
+  late NoteService service;
   late SqliteDatabase database;
 
   group('Test LocalDatabaseSqliteService implements LocalNoteService', () {

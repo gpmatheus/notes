@@ -5,8 +5,8 @@ import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
 import 'package:notes/data/services/interfaces/image_file_service_interface.dart';
 import 'package:notes/data/services/interfaces/model/file/imagefile_dto.dart';
-import 'package:notes/data/services/interfaces/local_content_service.dart';
-import 'package:notes/data/services/interfaces/local_image_content_service.dart';
+import 'package:notes/data/services/interfaces/content_service.dart';
+import 'package:notes/data/services/interfaces/image_content_service.dart';
 import 'package:notes/data/services/interfaces/model/content/types/image/imagecontent_dto.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/domain/model/content/content.dart';
@@ -17,17 +17,17 @@ import 'package:uuid/uuid.dart';
 class ImageContentRepository implements ImageContentRepositoryInterface {
 
   ImageContentRepository({
-    required LocalImageContentService imageContentService,
+    required ImageContentService imageContentService,
     required ImageFileServiceInterface fileService,
-    required LocalContentService localContentService,
+    required ContentService localContentService,
   }) : 
     _imageContentService = imageContentService,
     _localContentService = localContentService,
     _fileService = fileService;
 
 
-  final LocalImageContentService _imageContentService;
-  final LocalContentService _localContentService;
+  final ImageContentService _imageContentService;
+  final ContentService _localContentService;
   final ImageFileServiceInterface _fileService;
   final Logger _logger = FormattedLogger.instance;
 

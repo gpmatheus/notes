@@ -1,8 +1,8 @@
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/text_content_repository_interface.dart';
-import 'package:notes/data/services/interfaces/local_content_service.dart';
-import 'package:notes/data/services/interfaces/local_text_content_service.dart';
+import 'package:notes/data/services/interfaces/content_service.dart';
+import 'package:notes/data/services/interfaces/text_content_service.dart';
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/interfaces/model/content/types/text/textcontent_dto.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
@@ -14,14 +14,14 @@ import 'package:uuid/uuid.dart';
 class TextContentRepository implements TextContentRepositoryInterface {
 
   TextContentRepository({
-    required LocalTextContentService localTextContentService,
-    required LocalContentService localContentService,
+    required TextContentService localTextContentService,
+    required ContentService localContentService,
   }): 
     _localTextContentService = localTextContentService,
     _localContentService = localContentService;
 
-  final LocalTextContentService _localTextContentService;
-  final LocalContentService _localContentService;
+  final TextContentService _localTextContentService;
+  final ContentService _localContentService;
   final Logger _logger = FormattedLogger.instance;
 
   @override

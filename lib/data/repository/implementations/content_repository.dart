@@ -1,18 +1,18 @@
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
-import 'package:notes/data/services/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/content_service.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/utils/formatted_logger.dart';
 
 class ContentRepository implements ContentRepositoryInterface {
 
   ContentRepository({
-    required LocalContentService contentService,
+    required ContentService contentService,
   }) : _contentService = contentService;
 
 
-  final LocalContentService _contentService;
+  final ContentService _contentService;
   final Logger _logger = FormattedLogger.instance;
 
   @override

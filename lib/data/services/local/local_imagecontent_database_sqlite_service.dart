@@ -2,14 +2,14 @@
 import 'package:drift/drift.dart';
 import 'package:notes/data/services/local/utils/local_content_database.dart';
 import 'package:notes/data/services/local/config/sqlite_database.dart';
-import 'package:notes/data/services/interfaces/local_image_content_service.dart';
+import 'package:notes/data/services/interfaces/image_content_service.dart';
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/interfaces/model/content/types/image/imagecontent_dto.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/invalid_file_exception.dart';
 
 class LocalImagecontentDatabaseSqliteService extends
     LocalContentDatabase<ImageContentLocalModelCompanion, ImageContentDrift, ImagecontentDto> implements
-    LocalImageContentService {
+    ImageContentService {
   
   LocalImagecontentDatabaseSqliteService({
     required super.database

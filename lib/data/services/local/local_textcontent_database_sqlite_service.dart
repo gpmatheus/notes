@@ -2,13 +2,13 @@
 import 'package:drift/drift.dart';
 import 'package:notes/data/services/local/utils/local_content_database.dart';
 import 'package:notes/data/services/local/config/sqlite_database.dart';
-import 'package:notes/data/services/interfaces/local_text_content_service.dart';
+import 'package:notes/data/services/interfaces/text_content_service.dart';
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/interfaces/model/content/types/text/textcontent_dto.dart';
 
 class LocalTextcontentDatabaseSqliteService extends 
   LocalContentDatabase<TextContentLocalModelCompanion, TextContentDrift, TextcontentDto> implements 
-  LocalTextContentService {
+  TextContentService {
 
   LocalTextcontentDatabaseSqliteService({
     required super.database

@@ -1,8 +1,8 @@
 
 import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
-import 'package:notes/data/services/interfaces/local_content_type_service.dart';
-import 'package:notes/data/services/interfaces/local_note_service.dart';
+import 'package:notes/data/services/interfaces/content_type_service.dart';
+import 'package:notes/data/services/interfaces/note_service.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/not_found_exception.dart';
 import 'package:notes/data/services/interfaces/model/note/note_dto.dart';
@@ -14,12 +14,12 @@ import 'package:uuid/uuid.dart';
 class NoteRepository implements NoteRepositoryInterface {
 
   NoteRepository({
-    required LocalNoteService localNoteService,
-    required List<LocalContentTypeService> localContentServices,
+    required NoteService localNoteService,
+    required List<ContentTypeService> localContentServices,
   }) : 
     _localNoteService = localNoteService;
 
-  final LocalNoteService _localNoteService;
+  final NoteService _localNoteService;
   final Logger _logger = FormattedLogger.instance;
 
   @override

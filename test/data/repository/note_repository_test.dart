@@ -4,19 +4,19 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notes/data/repository/implementations/note_repository.dart';
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
-import 'package:notes/data/services/interfaces/local_content_type_service.dart';
-import 'package:notes/data/services/interfaces/local_note_service.dart';
+import 'package:notes/data/services/interfaces/content_type_service.dart';
+import 'package:notes/data/services/interfaces/note_service.dart';
 import 'package:notes/data/services/interfaces/model/note/note_dto.dart';
 import 'package:notes/domain/model/note/note.dart';
 
 import 'note_repository_test.mocks.dart';
 
-@GenerateMocks([LocalNoteService])
+@GenerateMocks([NoteService])
 void main() {
 
   late NoteRepositoryInterface repository;
   late MockLocalNoteService noteService;
-  late List<LocalContentTypeService> contentServices;
+  late List<ContentTypeService> contentServices;
 
   group('Test NoteRepository implements NoteRepositoryInterface', () {
     group('test the insertNote method', () {

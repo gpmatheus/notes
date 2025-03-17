@@ -2,11 +2,11 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:notes/data/services/local/config/sqlite_database.dart';
-import 'package:notes/data/services/interfaces/local_content_service.dart';
+import 'package:notes/data/services/interfaces/content_service.dart';
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/not_found_exception.dart';
 
-class LocalContentDatabaseSqliteService implements LocalContentService {
+class LocalContentDatabaseSqliteService implements ContentService {
   LocalContentDatabaseSqliteService({
     required this.database,
   });
