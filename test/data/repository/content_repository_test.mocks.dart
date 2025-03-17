@@ -6,7 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/interfaces/local_content_service.dart'
+import 'package:notes/data/services/interfaces/content_service.dart'
     as _i2;
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
     as _i4;
@@ -28,7 +28,7 @@ import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalContentService extends _i1.Mock
-    implements _i2.LocalContentService {
+    implements _i2.ContentService {
   MockLocalContentService() {
     _i1.throwOnMissingStub(this);
   }

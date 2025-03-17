@@ -6,7 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/interfaces/local_note_service.dart'
+import 'package:notes/data/services/interfaces/note_service.dart'
     as _i2;
 import 'package:notes/data/services/interfaces/model/note/note_dto.dart'
     as _i4;
@@ -27,7 +27,7 @@ import 'package:notes/data/services/interfaces/model/note/note_dto.dart'
 /// A class which mocks [LocalNoteService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalNoteService extends _i1.Mock implements _i2.LocalNoteService {
+class MockLocalNoteService extends _i1.Mock implements _i2.NoteService {
   MockLocalNoteService() {
     _i1.throwOnMissingStub(this);
   }

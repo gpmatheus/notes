@@ -11,7 +11,7 @@ import 'package:notes/data/services/interfaces/image_file_service_interface.dart
     as _i6;
 import 'package:notes/data/services/interfaces/model/file/imagefile_dto.dart'
     as _i7;
-import 'package:notes/data/services/interfaces/local_image_content_service.dart'
+import 'package:notes/data/services/interfaces/image_content_service.dart'
     as _i2;
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
     as _i5;
@@ -35,7 +35,7 @@ import 'package:notes/data/services/interfaces/model/content/types/image/imageco
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalImageContentService extends _i1.Mock
-    implements _i2.LocalImageContentService {
+    implements _i2.ImageContentService {
   MockLocalImageContentService() {
     _i1.throwOnMissingStub(this);
   }
