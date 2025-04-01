@@ -34,8 +34,9 @@ class MyApp extends StatelessWidget {
       home: Home(
         homeViewModel: HomeViewmodel(
           maintainNotes: context.read(),
+          userRepository: context.read(),
         ),
-      )
+      ),
     );
   }
 }

@@ -3,7 +3,9 @@ import 'package:notes/data/repository/implementations/content_repository.dart';
 import 'package:notes/data/repository/implementations/image_content_repository.dart';
 import 'package:notes/data/repository/implementations/note_repository.dart';
 import 'package:notes/data/repository/implementations/text_content_repository.dart';
+import 'package:notes/data/repository/implementations/user_repository.dart';
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/data/repository/interfaces/utils/content_type_repository_interface.dart';
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
 import 'package:notes/data/services/file/image_file_service.dart';
@@ -101,6 +103,9 @@ List<SingleChildWidget> get providers {
           imageRepository,
         ];
       }
+    ),
+    Provider<UserRepositoryInterface>(
+      create: (context) => UserRepository(),
     ),
     Provider<ContentRepositoryInterface>(
       create: (context) => ContentRepository(

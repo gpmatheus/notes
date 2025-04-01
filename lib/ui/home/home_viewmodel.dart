@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/domain/model/note/note.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/ui/note_details/note_details_viewmodel.dart';
@@ -12,6 +13,7 @@ class HomeViewmodel extends ChangeNotifier {
 
   HomeViewmodel({
     required MaintainNotes maintainNotes,
+    required UserRepositoryInterface userRepository,
   }) :
     _maintainNotes = maintainNotes {
       loadNotes();

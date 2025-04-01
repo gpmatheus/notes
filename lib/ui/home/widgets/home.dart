@@ -2,8 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/domain/model/note/note.dart';
+import 'package:notes/ui/auth/profile/profile_viewmodel.dart';
+import 'package:notes/ui/core/app_logo.dart';
+import 'package:notes/ui/auth/profile/widgets/drawer.dart';
 import 'package:notes/ui/home/home_viewmodel.dart';
 import 'package:notes/ui/core/loading_screen.dart';
+import 'package:provider/provider.dart';
 
 
 class Home extends StatelessWidget {
@@ -21,15 +25,15 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'nts .',
-          style: TextStyle(
-            fontFamily: 'LeagueSpartan',
-            fontSize: 40,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -2.0
-          ),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(), 
+              icon: const Icon(Icons.menu_rounded),
+            );
+          }
         ),
+        title: const AppLogo(),
         actions: [
           IconButton(
             onPressed: () { 
@@ -38,6 +42,11 @@ class Home extends StatelessWidget {
             icon: const Icon(Icons.add_rounded)
           )
         ],
+      ),
+      drawer: AppDrawer(
+        viewmodel: ProfileViewmodel(
+          userRepository: context.read(),
+        ),
       ),
       body: ListenableBuilder(
         listenable: _homeViewModel,
