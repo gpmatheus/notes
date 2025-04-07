@@ -48,6 +48,8 @@ class LogoutButton extends StatelessWidget {
             );
           }, 
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Text('Logout'),
               if (icon != null && icon!) ... {

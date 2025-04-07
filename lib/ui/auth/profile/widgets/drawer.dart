@@ -31,7 +31,7 @@ class _AppDrawerState extends State<AppDrawer> {
   @override
   void initState() {
     super.initState();
-    _user = widget._viewmodel.user;
+    _user = widget._viewmodel.userStream;
   }
 
   @override

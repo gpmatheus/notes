@@ -10,6 +10,7 @@ import 'package:notes/data/repository/interfaces/utils/content_type_repository_i
 import 'package:notes/data/repository/interfaces/note_repository_interface.dart';
 import 'package:notes/data/services/file/image_file_service.dart';
 import 'package:notes/data/services/interfaces/image_file_service_interface.dart';
+import 'package:notes/data/services/interfaces/user_service.dart';
 import 'package:notes/data/services/local/config/sqlite_database.dart';
 import 'package:notes/data/services/local/local_content_database_sqlite_service.dart';
 import 'package:notes/data/services/local/local_imagecontent_database_sqlite_service.dart';
@@ -18,6 +19,7 @@ import 'package:notes/data/services/local/local_textcontent_database_sqlite_serv
 import 'package:notes/data/services/interfaces/content_service.dart';
 import 'package:notes/data/services/interfaces/content_type_service.dart';
 import 'package:notes/data/services/interfaces/note_service.dart';
+import 'package:notes/data/services/remote/remote_user_firebase_auth_service.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/domain/usecases/manage_contents.dart';
 import 'package:provider/provider.dart';
@@ -74,6 +76,9 @@ List<SingleChildWidget> get providers {
         database: context.read<SqliteDatabase>(),
       )
     ),
+    Provider<UserService>(
+      create: (context) => RemoteUserFirebaseAuthService(),
+    ),
     ..._contentsServiceProviders,
     Provider<List<ContentTypeService>>(
       create: (context) {
@@ -105,7 +110,9 @@ List<SingleChildWidget> get providers {
       }
     ),
     Provider<UserRepositoryInterface>(
-      create: (context) => UserRepository(),
+      create: (context) => UserRepository(
+        userService: context.read<UserService>(),
+      ),
     ),
     Provider<ContentRepositoryInterface>(
       create: (context) => ContentRepository(

@@ -1,6 +1,7 @@
 
+import 'dart:io';
+
 import 'package:notes/domain/model/user/user.dart' as domain;
-import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class UserRepositoryInterface {
 
@@ -16,7 +17,10 @@ abstract class UserRepositoryInterface {
 
   Future<void> sendVerificationEmail();
 
-  Future<void> signInWithCredencial(AuthCredential credential);
+  Future<void> signInWithCredencial({
+    required String? accessToken,
+    required String? idToken,
+  });
 
   Future<void> signIn({
     required String email, 
@@ -25,12 +29,10 @@ abstract class UserRepositoryInterface {
 
   Future<void> signOut();
 
-  Future<void> resetPassword(String email);
-
-  Future<void> changeEmail(String newEmail);
-
   Future<void> changePassword(String password);
 
-  Future<void> reloadUser();
+  Future<void> updateName(String name);
+
+  Future<void> updateProfileImage(File image);
 
 }

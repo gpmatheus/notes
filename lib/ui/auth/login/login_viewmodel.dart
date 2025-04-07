@@ -1,5 +1,4 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
@@ -41,12 +40,10 @@ class LoginViewmodel extends ChangeNotifier {
       if (googleUser == null) return false;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
+      await _userRepository.signInWithCredencial(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      await _userRepository.signInWithCredencial(credential);
     } on Exception catch (e) {
       _logger.e(e);
       return false;
