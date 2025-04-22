@@ -17,7 +17,7 @@ class LocalNoteDatabaseSqliteService implements NoteService {
   final SqliteDatabase database;
 
   @override
-  Future<NoteDto?> getNoteById(String id) async {
+  Future<NoteDto> getNoteById(String id) async {
     var result = await (database.select(database.noteLocalModel)
         ..where((table) => table.id.equals(id)))
         .getSingleOrNull();
@@ -35,7 +35,7 @@ class LocalNoteDatabaseSqliteService implements NoteService {
   }
 
   @override
-  Future<NoteDto?> createNote(NoteDto noteDto) async {
+  Future<NoteDto> createNote(NoteDto noteDto) async {
     if (noteDto.id.isEmpty) throw InvalidInputException('Note id cannot be empty');
     var unique = await (database.select(database.noteLocalModel)
         ..where((table) => table.id.equals(noteDto.id)))
@@ -48,7 +48,7 @@ class LocalNoteDatabaseSqliteService implements NoteService {
   }
 
   @override
-  Future<NoteDto?> updateNote(String id, NoteDto noteDto) async {
+  Future<NoteDto> updateNote(String id, NoteDto noteDto) async {
     NoteLocalModelCompanion model = _convertToCompanion(noteDto);
     List<NoteDrift> result = await (database.update(database.noteLocalModel)
         ..where((table) => table.id.equals(id)))

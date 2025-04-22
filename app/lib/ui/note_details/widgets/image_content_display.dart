@@ -1,10 +1,12 @@
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:notes/data/repository/implementations/image_content_repository.dart';
 import 'package:notes/data/repository/interfaces/image_content_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/content/image_content/image_content.dart';
 import 'package:notes/ui/core/editing_content_frame.dart';
@@ -41,16 +43,19 @@ class _ImageContentDisplayState extends State<ImageContentDisplay> {
   ImageContentRepositoryInterface get _imageContentRepository =>
     Provider.of<ImageContentRepository>(context, listen: false);
   
+  UserRepositoryInterface get _userContentRepository =>
+    Provider.of<UserRepositoryInterface>(context, listen :false);
+
   final ImagePicker _imagePicker = ImagePicker();
-  File? _image;
+  Uint8List? _image;
   bool _loading = false;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.content != null && widget.content!.file != null) {
-      _image = widget.content!.file;
+    if (widget.content != null && widget.content!.bytes != null) {
+      _image = widget.content!.bytes;
     }
   }
   
@@ -79,15 +84,15 @@ class _ImageContentDisplayState extends State<ImageContentDisplay> {
                     ],
                   ),
                   if (_image != null) ... {
-                    Image.file(_image!)
+                    Image.memory(_image!)
                   }
                 ],
               ), 
               cancel: _cancel, 
               send: _send,
             )
-          : widget.content != null && widget.content!.file != null 
-            ? Image.file(widget.content!.file!) 
+          : widget.content != null && widget.content!.bytes != null 
+            ? Image.memory(widget.content!.bytes!) 
             : const Text('No image')
         ),
       ),
@@ -100,24 +105,26 @@ class _ImageContentDisplayState extends State<ImageContentDisplay> {
     }
   }
 
-  void _send() {
+  void _send() async {
     if (_image == null) return;
     setState(() {
       _loading = true;
     });
     if (widget.content != null) {
       _imageContentRepository.updateContent(
-        noteId: widget.noteId, 
-        contentId: widget.content!.id, 
-        file: _image!,
+        widget.content!.id,
+        widget.noteId, 
+        _image!,
+        await _userContentRepository.currentUser,
       ).then(_then)
       .catchError(_catchError)
       .whenComplete(_whenComplete);
     } else {
       _imageContentRepository.createContent(
-        noteId: widget.noteId,
-        file: _image!,
-        position: widget.position,
+        widget.noteId,
+        _image!,
+        widget.position,
+        await _userContentRepository.currentUser,
       ).then(_then)
       .catchError(_catchError)
       .whenComplete(_whenComplete);
@@ -158,7 +165,7 @@ class _ImageContentDisplayState extends State<ImageContentDisplay> {
     );
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _image = File(pickedFile.path).readAsBytesSync();
       });
     }
   }

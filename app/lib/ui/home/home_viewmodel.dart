@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:notes/data/repository/implementations/content_repository.dart';
 import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/domain/model/note/note.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
@@ -66,8 +67,9 @@ class HomeViewmodel extends ChangeNotifier {
           viewModel: NoteDetailsViewmodel(
             noteId: noteId, 
             contentUseCase: context.read(), 
-            contentRepository: context.read(), 
+            contentRepository: context.read<ContentRepository>(), 
             maintainNotes: context.read(), 
+            userRepository: context.read(), 
           )
         );
       })

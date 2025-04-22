@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
-import 'package:notes/utils/formatted_logger.dart';
 
 class LogoutViewmodel extends ChangeNotifier {
 
@@ -12,7 +10,6 @@ class LogoutViewmodel extends ChangeNotifier {
     _userRepository = userRepository;
 
   final UserRepositoryInterface _userRepository;
-  final Logger _logger = FormattedLogger.instance;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -23,9 +20,7 @@ class LogoutViewmodel extends ChangeNotifier {
     
     try {
       await _userRepository.signOut();
-    } on Exception catch (e) {
-      _logger.e(e);
-    }
+    } on Exception catch (_) {}
 
     _loading = false;
     notifyListeners();

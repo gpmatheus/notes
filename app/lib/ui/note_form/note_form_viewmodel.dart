@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:notes/data/repository/implementations/content_repository.dart';
 import 'package:notes/domain/model/note/note.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/ui/note_details/note_details_viewmodel.dart';
@@ -90,8 +91,9 @@ class NoteFormViewmodel {
           viewModel: NoteDetailsViewmodel(
             noteId: noteId, 
             contentUseCase: context.read(), 
-            contentRepository: context.read(), 
+            contentRepository: context.read<ContentRepository>(), 
             maintainNotes: context.read(), 
+            userRepository: context.read(), 
           ),
         );
       })

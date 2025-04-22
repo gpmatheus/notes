@@ -1,15 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:notes/config/types.dart';
 import 'package:notes/data/repository/interfaces/content_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/note/note.dart';
+import 'package:notes/domain/model/user/user.dart';
 import 'package:notes/domain/usecases/maintain_notes.dart';
 import 'package:notes/domain/usecases/manage_contents.dart';
 import 'package:notes/ui/note_form/note_form_viewmodel.dart';
 import 'package:notes/ui/note_form/widgets/note_form.dart';
-import 'package:notes/utils/formatted_logger.dart';
 import 'package:provider/provider.dart';
 
 class NoteDetailsViewmodel extends ChangeNotifier {
@@ -32,21 +32,25 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   final ManageContents _contentUseCase;
   final MaintainNotes _maintainNotes;
   final ContentRepositoryInterface _contentRepository;
+  // ignore: unused_field
+  final UserRepositoryInterface _userRepository;
 
-  // logger
-  final Logger _logger = FormattedLogger.instance;
+  late final Future<User?> _futureUser;
 
   NoteDetailsViewmodel({
     required String noteId,
     required ManageContents contentUseCase,
     required MaintainNotes maintainNotes,
-    required ContentRepositoryInterface contentRepository
+    required ContentRepositoryInterface contentRepository,
+    required UserRepositoryInterface userRepository,
   }) :
     _contentUseCase = contentUseCase,
     _contentRepository = contentRepository,
-    _maintainNotes = maintainNotes {
-    _loadNote(noteId);
-  }
+    _maintainNotes = maintainNotes,
+    _userRepository = userRepository {
+      _futureUser = userRepository.currentUser;
+      _loadNote(noteId);
+    }
 
   // getters
   Note? get note => _note;
@@ -58,6 +62,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   int get formIndex => _formIndex;
   Types? get formType => _type;
   bool get hasChanged => _hasChanged;
+  Future<User?> get futureUser => _futureUser;
 
 
   void deleteContent(int index) async {
@@ -80,20 +85,17 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   }
 
   void closeModal() {
-    _logger.d('closing modal');
     _showModal = false;
     notifyListeners();
   }
 
   void selectContent(int index) async {
-    _logger.d('Selected content of index $index');
     if (note == null || note!.contents == null || index >= note!.contents!.length) return;
     _selectedContentIndex = index;
     notifyListeners();
   }
 
   void editContent(int index) async {
-    _logger.d('Setting content editing in index $index');
     if (_type != null) return;
     _selectedContentIndex = -1;
     _formIndex = index;
@@ -102,7 +104,6 @@ class NoteDetailsViewmodel extends ChangeNotifier {
 
   // this method should not be async because the floating action button gets slowed in animation
   void newContentForm(Types type) {
-    _logger.d('Adding new content form of type ${type.name}');
     if (_note == null) return;
     _type = type;
     _selectedContentIndex = -1;
@@ -111,7 +112,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   }
 
   Future<void> switchPositions(int oldIndex, newIndex) async {
-    _logger.d('Switching position $oldIndex for $newIndex');
+    final user = await _futureUser;
     if (_note == null || _note!.contents == null) return;
 
     Content? oldIndexContent = _note!.contents![oldIndex];
@@ -123,9 +124,7 @@ class NoteDetailsViewmodel extends ChangeNotifier {
     notifyListeners();
 
     final bool success = await _contentRepository
-      .switchPositions(_note!.id, oldIndexContent, newIndexContent);
-
-    _logger.d(success ? 'Positions switched' : 'Positions could not be switched');
+      .switchPositions(_note!.id, oldIndexContent, newIndexContent, user);
     
     if (!success) {
       await _loadNoteUnderHood(_note!.id);
@@ -162,7 +161,6 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   }
 
   void onContentUpdated(Content? content) async {
-    _logger.d('Handling content update action.\n${content.toString()}');
     // check if the "updated content" is an actual update 
     // or the creation of a new content
     final bool success = content != null;
@@ -199,7 +197,6 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   }
 
   void onCancel() async {
-    _logger.d('Handling cancel action');
     _formIndex = -1;
     _selectedContentIndex = -1;
     _type = null;
@@ -207,7 +204,6 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   }
 
   void onError(String? message) async {
-    _logger.d('Showing error message');
     _modalMessage = 'Something went wrong';
     _modalSuccess = false;
     _showModal = true;
@@ -222,19 +218,15 @@ class NoteDetailsViewmodel extends ChangeNotifier {
   }
 
   Future<void> _loadNoteUnderHood(String noteId) async {
-    _logger.d('Loading note');
     _note = await _maintainNotes.getNote(noteId);
-    _logger.d('Loaded note: ${_note != null ? _note.toString() : _note}');
   }
 
   void _turnLoadingOn() {
-    _logger.d('Showing loading signal');
     _loading = true;
     notifyListeners();
   }
 
   void _turnLoadingOff() {
-    _logger.d('Hiding loading signal');
     _loading = false;
     notifyListeners();
   }

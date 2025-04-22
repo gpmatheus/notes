@@ -36,4 +36,14 @@ class ContentDto {
       position.hashCode ^
       noteId.hashCode;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'createdAt': createdAt.toIso8601String(),
+      'lastEdited': lastEdited?.toIso8601String(),
+      'position': position,
+      'noteId': noteId,
+    };
+  }
 }

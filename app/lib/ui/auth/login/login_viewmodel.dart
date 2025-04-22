@@ -1,10 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
-import 'package:notes/utils/formatted_logger.dart';
 
 class LoginViewmodel extends ChangeNotifier {
 
@@ -15,7 +13,6 @@ class LoginViewmodel extends ChangeNotifier {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final UserRepositoryInterface _userRepository;
-  final Logger _logger = FormattedLogger.instance;
 
   final _formKey = GlobalKey<FormState>();
   bool _loginFail = false;
@@ -44,8 +41,7 @@ class LoginViewmodel extends ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-    } on Exception catch (e) {
-      _logger.e(e);
+    } on Exception catch (_) {
       return false;
     }
 
@@ -67,11 +63,9 @@ class LoginViewmodel extends ChangeNotifier {
         password: passwordController.text,
       );
       success = true;
-    } on InvalidInputException catch (e) {
-      _logger.e(e);
+    } on InvalidInputException catch (_) {
       success = false;
-    } on Exception catch (e) {
-      _logger.e(e);
+    } on Exception catch (_) {
       success = false;
     }
 

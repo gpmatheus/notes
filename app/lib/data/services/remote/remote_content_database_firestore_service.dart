@@ -6,21 +6,16 @@ import 'package:notes/data/services/interfaces/model/exceptions/not_found_except
 
 class RemoteContentDatabaseFirestoreService implements ContentService {
 
-  final FirebaseFirestore _firestore;
-
-  RemoteContentDatabaseFirestoreService({
-    required FirebaseFirestore firestore,
-  }) :
-    _firestore = firestore;
+  late final FirebaseFirestore _firestore;
 
   @override
-  Future<ContentDto?> getContentById(String noteId, String contentId) async {
-     ContentDto? note = await _firestore.collection('notes')
-      .doc(noteId)
-      .collection('contents')
-      .doc(contentId)
-      .get()
-      .then((snapshot) => snapshot.data() as ContentDto?);
+  Future<ContentDto> getContentById(String noteId, String contentId) async {
+    ContentDto? note = await _firestore.collection('notes')
+        .doc(noteId)
+        .collection('contents')
+        .doc(contentId)
+        .get()
+        .then((snapshot) => snapshot.data() as ContentDto?);
     
     if (note == null) throw NotFoundException('Content could not be found');
     return note;
@@ -49,15 +44,38 @@ class RemoteContentDatabaseFirestoreService implements ContentService {
   }
 
   @override
-  Future<void> switchPositions(String noteId, String firstContentId, String secondContentId) {
-    // TODO: implement switchPositions
-    throw UnimplementedError();
+  Future<void> switchPositions(String noteId, String firstContentId, String secondContentId) async {
+    ContentDto firstContent = (await getContentById(noteId, firstContentId));
+    ContentDto secondContent = (await getContentById(noteId, secondContentId));
+
+    await _firestore.runTransaction((transaction) async {
+
+      transaction.update(
+        _firestore.collection('notes')
+            .doc(noteId)
+            .collection('contents')
+            .doc(firstContentId), 
+        {'position': secondContent.position}
+      );
+
+      transaction.update(
+        _firestore.collection('notes')
+            .doc(noteId)
+            .collection('contents')
+            .doc(secondContentId), 
+        {'position': firstContent.position}
+      );
+    });
   }
 
   @override
-  Future<ContentDto?> updateContent(String noteId, String contentId, ContentDto contentDto) {
-    // TODO: implement updateContent
-    throw UnimplementedError();
+  Future<ContentDto> updateContent(String noteId, String contentId, ContentDto contentDto) async {
+    await _firestore.collection('notes')
+        .doc(noteId)
+        .collection('contents')
+        .doc(contentId)
+        .set(contentDto.toJson(), SetOptions(merge: true));
+    return contentDto;
   }
 
 }

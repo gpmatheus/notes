@@ -1,17 +1,20 @@
 
 import 'package:notes/data/repository/interfaces/utils/content_type_repository_interface.dart';
 import 'package:notes/domain/model/content/content.dart';
+import 'package:notes/domain/model/user/user.dart';
 
 abstract class TextContentRepositoryInterface extends ContentTypeRepositoryInterface {
 
-  Future<Content?> createContent({
-    required String noteId, 
-    required String text,
-    required int? position,
-  });
-  Future<Content?> updateContent({
-    required String contentId, 
-    required String noteId,
-    required String text,
-  });
+  Future<Content> createContent(
+    String noteId, 
+    String text,
+    int? position,
+    User? user,
+  );
+  Future<Content> updateContent(
+    String contentId, 
+    String noteId,
+    String text,
+    User? user
+  );
 }

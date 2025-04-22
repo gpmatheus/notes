@@ -16,7 +16,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
   final TableInfo<Table, R> resImpl;
 
   @override
-  Future<ContentDto?> getContentById(String noteId, String id) async {
+  Future<ContentDto> getContentById(String noteId, String id) async {
     var contentResult = await super.getContentById(noteId, id);
 
     var result = await (database.select(resImpl)
@@ -35,18 +35,20 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
       var content = await (database.select(resImpl)
         ..where((table) => (table as ContentsModel).contentId.equals(res.id)))
         .getSingleOrNull();
-      C? contentDto = convertToDto(res, content);
-      if (contentDto != null) contents.add(contentDto);
+      if (content != null) {
+        C contentDto = convertToDto(res, content);
+        contents.add(contentDto);
+      }
     }
     return contents;
   }
 
   @protected
-  Future<C?> createTypedContent(C contentDto) async {
-    if (!(await _noteExists(contentDto.noteId))) return null;
-    C? result = await database.transaction(() async {
+  Future<C> createTypedContent(C contentDto) async {
+    if (!(await _noteExists(contentDto.noteId))) throw NotFoundException('Note not found');
+    C result = await database.transaction(() async {
       ContentDto? createdContent = await super.createContent(contentDto as ContentDto);
-
+      if (createdContent == null) throw Exception('Something went wrong');
       T? model = convertToCompanion(contentDto);
       if (model == null) throw Exception('Something went wrong');
       R? createdTextContent = await database
@@ -58,9 +60,9 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
   }
 
   @protected
-  Future<C?> updateTypedContent(String noteId, String contentId, C contentDto) async {
+  Future<C> updateTypedContent(String noteId, String contentId, C contentDto) async {
     if (!(await _noteExists(contentDto.noteId))) throw NotFoundException('Note not found');
-    C? result = await database.transaction(() async {
+    C result = await database.transaction(() async {
       ContentDto? updatedContent = await super.updateContent(
         noteId,
         contentId, 
@@ -95,7 +97,7 @@ abstract class LocalContentDatabase<T, R, C extends ContentDto> extends LocalCon
   T? convertToCompanion(C content);
 
   @protected
-  C? convertToDto(ContentDto? contentDto, R? content);
+  C convertToDto(ContentDto contentDto, R content);
 
   @protected
   String getId(R content);

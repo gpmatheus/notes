@@ -4,6 +4,6 @@ import 'package:notes/data/services/interfaces/model/content/types/image/imageco
 
 abstract class ImageContentService extends ContentTypeService {
 
-  Future<ImagecontentDto?> createImageContent(ImagecontentDto content);
-  Future<ImagecontentDto?> updateImageContent(String contentId, ImagecontentDto content);
+  Future<ImagecontentDto> createImageContent(ImagecontentDto content);
+  Future<ImagecontentDto> updateImageContent(String contentId, ImagecontentDto content);
 }

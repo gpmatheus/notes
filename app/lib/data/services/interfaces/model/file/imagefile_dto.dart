@@ -1,13 +1,13 @@
 
-import 'dart:io';
+import 'dart:typed_data';
 
 class ImagefileDto {
 
   ImagefileDto({
     required this.imageFileName, 
-    required this.file,
+    required this.bytes,
   });
 
   final String imageFileName;
-  final File file;
+  final Uint8List bytes;
 }

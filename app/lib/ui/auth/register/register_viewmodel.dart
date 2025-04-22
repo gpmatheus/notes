@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/data/services/interfaces/model/exceptions/invalid_input_exception.dart';
 import 'package:notes/ui/auth/account_verification/account_verification_viewmodel.dart';
@@ -8,7 +7,6 @@ import 'package:notes/ui/auth/login/login_viewmodel.dart';
 import 'package:notes/ui/auth/login/widgets/login.dart';
 import 'package:notes/ui/auth/account_verification/widgets/account_verification.dart';
 import 'package:provider/provider.dart';
-import 'package:notes/utils/formatted_logger.dart';
 
 class RegisterViewmodel extends ChangeNotifier {
 
@@ -22,7 +20,6 @@ class RegisterViewmodel extends ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final UserRepositoryInterface _userRepository;
-  final Logger _logger = FormattedLogger.instance;
   final _formKey = GlobalKey<FormState>();
 
   bool _loading = false;
@@ -46,11 +43,9 @@ class RegisterViewmodel extends ChangeNotifier {
           password: passwordController.text,
         );
         success = true;
-      } on InvalidInputException catch (e) {
-        _logger.e(e);
+      } on InvalidInputException catch (_) {
         success = false;
-      } on Exception catch (e) {
-        _logger.e(e);
+      } on Exception catch (_) {
         success = false;
       }
 

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/data/repository/implementations/text_content_repository.dart';
 import 'package:notes/data/repository/interfaces/text_content_repository_interface.dart';
+import 'package:notes/data/repository/interfaces/user_repository_interface.dart';
 import 'package:notes/domain/model/content/content.dart';
 import 'package:notes/domain/model/content/text_content/text_content.dart';
 import 'package:notes/ui/core/editing_content_frame.dart';
@@ -37,6 +38,9 @@ class _TextContentDisplayState extends State<TextContentDisplay> {
 
   TextContentRepositoryInterface get _textContentRepository => 
     Provider.of<TextContentRepository>(context, listen: false);
+  
+  UserRepositoryInterface get _userContentRepository =>
+    Provider.of<UserRepositoryInterface>(context, listen :false);
 
   final TextEditingController _textController = TextEditingController();
   bool _loading = false;
@@ -86,23 +90,25 @@ class _TextContentDisplayState extends State<TextContentDisplay> {
     }
   }
 
-  void _send() {
+  void _send() async {
     setState(() {
       _loading = true;
     });
     if (widget.content != null) {
-      _textContentRepository.updateContent(
-        noteId: widget.noteId, 
-        contentId: widget.content!.id, 
-        text: _textController.text,
+      _textContentRepository.updateContent( 
+        widget.content!.id, 
+        widget.noteId,
+        _textController.text,
+        await _userContentRepository.currentUser,
       ).then(_then)
       .catchError(_catchError)
       .whenComplete(_whenComplete);
     } else {
       _textContentRepository.createContent(
-        noteId: widget.noteId,
-        text: _textController.text,
-        position: widget.position,
+        widget.noteId,
+        _textController.text,
+        widget.position,
+        await _userContentRepository.currentUser,
       ).then(_then)
       .catchError(_catchError)
       .whenComplete(_whenComplete);

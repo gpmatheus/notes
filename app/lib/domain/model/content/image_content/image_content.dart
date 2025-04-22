@@ -1,5 +1,5 @@
 
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:notes/config/types.dart';
@@ -13,11 +13,11 @@ class ImageContent extends Content {
     required super.lastEdited, 
     required super.position,
     required this.imageFileName,
-    required this.file,
+    required this.bytes,
   });
 
   final String imageFileName;
-  final File?  file;
+  final Uint8List? bytes;
 
   factory ImageContent.fromJson(Map<String, Object?> json) {
     return ImageContent(
@@ -26,7 +26,7 @@ class ImageContent extends Content {
       lastEdited: DateTime.tryParse(json['last_edited'] as String), 
       position: json['position'] as int, 
       imageFileName: json['image_file_name'] as String,
-      file: null,
+      bytes: null,
     );
   }
 
@@ -36,7 +36,7 @@ class ImageContent extends Content {
     DateTime? lastEdited,
     int? position,
     String? imageFileName,
-    File? file,
+    Uint8List? bytes,
   }) {
     return ImageContent(
       id: id ?? super.id, 
@@ -44,7 +44,7 @@ class ImageContent extends Content {
       lastEdited: lastEdited ?? super.lastEdited, 
       position: position ?? super.position, 
       imageFileName: imageFileName ?? this.imageFileName,
-      file: file ?? this.file,
+      bytes: bytes ?? this.bytes,
     );
   }
 
@@ -64,7 +64,7 @@ class ImageContent extends Content {
       'lastEdited: $lastEdited,'
       'position: $position,'
       'imageFileName: $imageFileName,'
-      'file: $file'
+      'bytes_len: ${bytes?.length}'
     ')';
   }
 
@@ -76,7 +76,7 @@ class ImageContent extends Content {
       other.lastEdited == lastEdited &&
       other.position == position &&
       other.imageFileName == imageFileName &&
-      other.file == file;
+      other.bytes == bytes;
   }
 
   @override

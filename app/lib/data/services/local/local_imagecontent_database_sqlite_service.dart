@@ -24,10 +24,8 @@ class LocalImagecontentDatabaseSqliteService extends
   }
 
   @override
-  ImagecontentDto? convertToDto(ContentDto? contentDto, ImageContentDrift? content) {
-    return content == null || contentDto == null
-    ? null 
-    : ImagecontentDto(
+  ImagecontentDto convertToDto(ContentDto contentDto, ImageContentDrift content) {
+    return ImagecontentDto(
         id: contentDto.id,
         createdAt: contentDto.createdAt,
         lastEdited: contentDto.lastEdited,
@@ -43,13 +41,13 @@ class LocalImagecontentDatabaseSqliteService extends
   }
   
   @override
-  Future<ImagecontentDto?> createImageContent(ImagecontentDto content) {
+  Future<ImagecontentDto> createImageContent(ImagecontentDto content) {
     if (_emptyImageFileName(content)) throw InvalidFileException('Image file name cannot be empty');
     return super.createTypedContent(content);
   }
   
   @override
-  Future<ImagecontentDto?> updateImageContent(String contentId, ImagecontentDto content) {
+  Future<ImagecontentDto> updateImageContent(String contentId, ImagecontentDto content) {
     if (_emptyImageFileName(content)) throw InvalidFileException('Image file name cannot be empty');
     return super.updateTypedContent(content.noteId, contentId, content);
   }

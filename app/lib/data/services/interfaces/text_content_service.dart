@@ -4,6 +4,6 @@ import 'package:notes/data/services/interfaces/model/content/types/text/textcont
 
 abstract class TextContentService extends ContentTypeService {
 
-  Future<TextcontentDto?> createTextContent(TextcontentDto content);
-  Future<TextcontentDto?> updateTextContent(String contentId, TextcontentDto content);
+  Future<TextcontentDto> createTextContent(TextcontentDto content);
+  Future<TextcontentDto> updateTextContent(String contentId, TextcontentDto content);
 }

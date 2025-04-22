@@ -23,10 +23,8 @@ class LocalTextcontentDatabaseSqliteService extends
   }
   
   @override
-  TextcontentDto? convertToDto(ContentDto? contentDto, TextContentDrift? content) {
-    return content == null || contentDto == null
-    ? null 
-    : TextcontentDto(
+  TextcontentDto convertToDto(ContentDto contentDto, TextContentDrift content) {
+    return TextcontentDto(
         id: contentDto.id,
         createdAt: contentDto.createdAt,
         lastEdited: contentDto.lastEdited,
@@ -42,12 +40,12 @@ class LocalTextcontentDatabaseSqliteService extends
   }
   
   @override
-  Future<TextcontentDto?> createTextContent(TextcontentDto content) {
+  Future<TextcontentDto> createTextContent(TextcontentDto content) {
     return super.createTypedContent(content);
   }
   
   @override
-  Future<TextcontentDto?> updateTextContent(String contentId, TextcontentDto content) {
+  Future<TextcontentDto> updateTextContent(String contentId, TextcontentDto content) {
     return super.updateTypedContent(content.noteId, contentId, content);
   }
 

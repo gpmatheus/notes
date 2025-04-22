@@ -16,7 +16,7 @@ class LocalContentDatabaseSqliteService implements ContentService {
 
   @override
   @protected
-  Future<ContentDto?> getContentById(String noteId, String id) async {
+  Future<ContentDto> getContentById(String noteId, String id) async {
     var result = await (database.select(database.contentLocalModel)
         ..where((table) => table.id.equals(id)))
         .getSingleOrNull();
@@ -46,7 +46,7 @@ class LocalContentDatabaseSqliteService implements ContentService {
   
   @override
   @protected
-  Future<ContentDto?> updateContent(String noteId, String id, ContentDto contentDto) async {
+  Future<ContentDto> updateContent(String noteId, String id, ContentDto contentDto) async {
     final bool noteExists = await (database.select(database.noteLocalModel)
         ..where((table) => table.id.equals(contentDto.noteId)))
         .getSingleOrNull() != null;
@@ -96,8 +96,8 @@ class LocalContentDatabaseSqliteService implements ContentService {
   
   @override
   Future<void> switchPositions(String noteId, String firstContentId, String secondContentId) async {
-    ContentDto firstContent = (await getContentById(noteId, firstContentId))!;
-    ContentDto secondContent = (await getContentById(noteId, secondContentId))!;
+    ContentDto firstContent = (await getContentById(noteId, firstContentId));
+    ContentDto secondContent = (await getContentById(noteId, secondContentId));
 
     await database.transaction(() async {
       ContentDto updatedFirstContent = ContentDto(

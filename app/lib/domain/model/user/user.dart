@@ -8,7 +8,9 @@ class User {
     this.photoUrl,
     required this.verified,
     required this.active,
-  });
+    required bool remoteSave,
+  }) :
+    _remoteSave = remoteSave;
 
   final String id;
   final String? name;
@@ -16,4 +18,7 @@ class User {
   final String? photoUrl;
   final bool verified;
   final bool active;
+  final bool _remoteSave;
+
+  bool get remoteSave => _remoteSave;
 }
