@@ -7,7 +7,7 @@ import 'package:notes/data/services/interfaces/model/note/note_dto.dart';
 
 class RemoteNoteDatabaseFirestoreService implements NoteService {
 
-  late final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late final CollectionReference _noteRef;
 
   RemoteNoteDatabaseFirestoreService() {

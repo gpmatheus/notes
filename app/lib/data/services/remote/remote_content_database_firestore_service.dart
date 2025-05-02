@@ -6,7 +6,7 @@ import 'package:notes/data/services/interfaces/model/exceptions/not_found_except
 
 class RemoteContentDatabaseFirestoreService implements ContentService {
 
-  late final FirebaseFirestore _firestore;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Future<ContentDto> getContentById(String noteId, String contentId) async {

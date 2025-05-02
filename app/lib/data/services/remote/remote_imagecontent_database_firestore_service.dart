@@ -8,7 +8,7 @@ import 'package:notes/data/services/interfaces/model/exceptions/not_found_except
 
 class RemoteImagecontentDatabaseFirestoreService implements ImageContentService {
 
-  late final FirebaseFirestore _firestore;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Future<ImagecontentDto> createImageContent(ImagecontentDto content) async {

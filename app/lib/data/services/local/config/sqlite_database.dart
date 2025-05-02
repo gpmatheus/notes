@@ -18,6 +18,7 @@ part 'sqlite_database.g.dart';
 
 @DriftDatabase(tables: [
   NoteLocalModel,
+  ContentLocalModel,
   ContentLocalModel, 
   TextContentLocalModel, 
   ImageContentLocalModel, 

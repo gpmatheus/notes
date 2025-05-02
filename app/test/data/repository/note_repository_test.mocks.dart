@@ -3,13 +3,11 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/interfaces/note_service.dart'
-    as _i2;
-import 'package:notes/data/services/interfaces/model/note/note_dto.dart'
-    as _i4;
+import 'package:notes/data/services/interfaces/model/note/note_dto.dart' as _i2;
+import 'package:notes/data/services/interfaces/note_service.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -24,47 +22,68 @@ import 'package:notes/data/services/interfaces/model/note/note_dto.dart'
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [LocalNoteService].
+class _FakeNoteDto_0 extends _i1.SmartFake implements _i2.NoteDto {
+  _FakeNoteDto_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+/// A class which mocks [NoteService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalNoteService extends _i1.Mock implements _i2.NoteService {
-  MockLocalNoteService() {
+class MockNoteService extends _i1.Mock implements _i3.NoteService {
+  MockNoteService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i4.NoteDto?> getNoteById(String? contentId) =>
-      (super.noSuchMethod(
+  _i4.Future<_i2.NoteDto> getNoteById(String? contentId) => (super.noSuchMethod(
         Invocation.method(
           #getNoteById,
           [contentId],
         ),
-        returnValue: _i3.Future<_i4.NoteDto?>.value(),
-      ) as _i3.Future<_i4.NoteDto?>);
+        returnValue: _i4.Future<_i2.NoteDto>.value(_FakeNoteDto_0(
+          this,
+          Invocation.method(
+            #getNoteById,
+            [contentId],
+          ),
+        )),
+      ) as _i4.Future<_i2.NoteDto>);
 
   @override
-  _i3.Future<List<_i4.NoteDto>> getNotes() => (super.noSuchMethod(
+  _i4.Future<List<_i2.NoteDto>> getNotes() => (super.noSuchMethod(
         Invocation.method(
           #getNotes,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.NoteDto>>.value(<_i4.NoteDto>[]),
-      ) as _i3.Future<List<_i4.NoteDto>>);
+        returnValue: _i4.Future<List<_i2.NoteDto>>.value(<_i2.NoteDto>[]),
+      ) as _i4.Future<List<_i2.NoteDto>>);
 
   @override
-  _i3.Future<_i4.NoteDto?> createNote(_i4.NoteDto? noteDto) =>
+  _i4.Future<_i2.NoteDto> createNote(_i2.NoteDto? noteDto) =>
       (super.noSuchMethod(
         Invocation.method(
           #createNote,
           [noteDto],
         ),
-        returnValue: _i3.Future<_i4.NoteDto?>.value(),
-      ) as _i3.Future<_i4.NoteDto?>);
+        returnValue: _i4.Future<_i2.NoteDto>.value(_FakeNoteDto_0(
+          this,
+          Invocation.method(
+            #createNote,
+            [noteDto],
+          ),
+        )),
+      ) as _i4.Future<_i2.NoteDto>);
 
   @override
-  _i3.Future<_i4.NoteDto?> updateNote(
+  _i4.Future<_i2.NoteDto> updateNote(
     String? id,
-    _i4.NoteDto? noteDto,
+    _i2.NoteDto? noteDto,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -74,16 +93,25 @@ class MockLocalNoteService extends _i1.Mock implements _i2.NoteService {
             noteDto,
           ],
         ),
-        returnValue: _i3.Future<_i4.NoteDto?>.value(),
-      ) as _i3.Future<_i4.NoteDto?>);
+        returnValue: _i4.Future<_i2.NoteDto>.value(_FakeNoteDto_0(
+          this,
+          Invocation.method(
+            #updateNote,
+            [
+              id,
+              noteDto,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.NoteDto>);
 
   @override
-  _i3.Future<void> deleteNote(String? noteId) => (super.noSuchMethod(
+  _i4.Future<void> deleteNote(String? noteId) => (super.noSuchMethod(
         Invocation.method(
           #deleteNote,
           [noteId],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

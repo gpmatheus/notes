@@ -16,7 +16,9 @@ class MaintainNotes {
     _userRepository = userRepository,
     _noteRepository = noteRepository,
     _manageContents = manageContents {
-      _futureUser = userRepository.currentUser;
+      _userRepository.authStateChanges.listen((user) {
+        _user = user;
+      });
     }
 
   // ignore: unused_field
@@ -24,18 +26,16 @@ class MaintainNotes {
   final NoteRepositoryInterface _noteRepository;
   final ManageContents _manageContents;
 
-  late final Future<User?> _futureUser;
+  User? _user;
 
   Future<List<Note>> getAllNotes() async {
-    final user = await _futureUser;
-    return await _noteRepository.getNotes(user);
+    return await _noteRepository.getNotes(_user);
   }
 
   Future<Note?> getNote(String noteId) async {
-    final user = await _futureUser;
     Note note;
     try {
-      note = await _noteRepository.getNote(noteId, user);
+      note = await _noteRepository.getNote(noteId, _user);
     } on Exception {
       return null;
     }
@@ -45,18 +45,15 @@ class MaintainNotes {
   }
 
   Future<Note?> createNote(String name) async {
-    final user = await _futureUser;
-    return _noteRepository.insertNote(name, user);
+    return _noteRepository.insertNote(name, _user);
   }
 
   Future<Note?> updateNote(String noteId, String name) async {
-    final user = await _futureUser;
-    return _noteRepository.updateNote(noteId, name, user);
+    return _noteRepository.updateNote(noteId, name, _user);
   }
 
   Future<bool> deleteNote(String noteId) async {
-    final user = await _futureUser;
-    return _noteRepository.deleteNote(noteId, user);
+    return _noteRepository.deleteNote(noteId, _user);
   }
 
 }

@@ -8,7 +8,7 @@ import 'package:notes/data/services/interfaces/model/content/types/text/textcont
 
 class RemoteTextcontentDatabaseFirestoreService implements TextContentService {
 
-  late final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Future<TextcontentDto> createTextContent(TextcontentDto content) async {

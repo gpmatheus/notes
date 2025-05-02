@@ -3,13 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/interfaces/content_service.dart'
-    as _i2;
+import 'package:notes/data/services/interfaces/content_service.dart' as _i3;
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
-    as _i4;
+    as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -24,62 +23,99 @@ import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [LocalContentService].
+class _FakeContentDto_0 extends _i1.SmartFake implements _i2.ContentDto {
+  _FakeContentDto_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+/// A class which mocks [ContentService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalContentService extends _i1.Mock
-    implements _i2.ContentService {
-  MockLocalContentService() {
+class MockContentService extends _i1.Mock implements _i3.ContentService {
+  MockContentService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.ContentDto>> getContents(String? noteId) =>
+  _i4.Future<List<_i2.ContentDto>> getContents(String? noteId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getContents,
           [noteId],
         ),
-        returnValue: _i3.Future<List<_i4.ContentDto>>.value(<_i4.ContentDto>[]),
-      ) as _i3.Future<List<_i4.ContentDto>>);
+        returnValue: _i4.Future<List<_i2.ContentDto>>.value(<_i2.ContentDto>[]),
+      ) as _i4.Future<List<_i2.ContentDto>>);
 
   @override
-  _i3.Future<_i4.ContentDto?> getContentById(String? contentId) =>
+  _i4.Future<_i2.ContentDto> getContentById(
+    String? noteId,
+    String? contentId,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getContentById,
-          [contentId],
+          [
+            noteId,
+            contentId,
+          ],
         ),
-        returnValue: _i3.Future<_i4.ContentDto?>.value(),
-      ) as _i3.Future<_i4.ContentDto?>);
+        returnValue: _i4.Future<_i2.ContentDto>.value(_FakeContentDto_0(
+          this,
+          Invocation.method(
+            #getContentById,
+            [
+              noteId,
+              contentId,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.ContentDto>);
 
   @override
-  _i3.Future<_i4.ContentDto?> updateContent(
+  _i4.Future<_i2.ContentDto> updateContent(
+    String? noteId,
     String? contentId,
-    _i4.ContentDto? contentDto,
+    _i2.ContentDto? contentDto,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateContent,
           [
+            noteId,
             contentId,
             contentDto,
           ],
         ),
-        returnValue: _i3.Future<_i4.ContentDto?>.value(),
-      ) as _i3.Future<_i4.ContentDto?>);
+        returnValue: _i4.Future<_i2.ContentDto>.value(_FakeContentDto_0(
+          this,
+          Invocation.method(
+            #updateContent,
+            [
+              noteId,
+              contentId,
+              contentDto,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.ContentDto>);
 
   @override
-  _i3.Future<int> getContentsCount(String? noteId) => (super.noSuchMethod(
+  _i4.Future<int> getContentsCount(String? noteId) => (super.noSuchMethod(
         Invocation.method(
           #getContentsCount,
           [noteId],
         ),
-        returnValue: _i3.Future<int>.value(0),
-      ) as _i3.Future<int>);
+        returnValue: _i4.Future<int>.value(0),
+      ) as _i4.Future<int>);
 
   @override
-  _i3.Future<void> switchPositions(
+  _i4.Future<void> switchPositions(
+    String? noteId,
     String? firstContentId,
     String? secondContentId,
   ) =>
@@ -87,11 +123,12 @@ class MockLocalContentService extends _i1.Mock
         Invocation.method(
           #switchPositions,
           [
+            noteId,
             firstContentId,
             secondContentId,
           ],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

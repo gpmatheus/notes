@@ -3,14 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/interfaces/text_content_service.dart'
-    as _i2;
 import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
-    as _i5;
+    as _i3;
 import 'package:notes/data/services/interfaces/model/content/types/text/textcontent_dto.dart'
+    as _i2;
+import 'package:notes/data/services/interfaces/text_content_service.dart'
     as _i4;
 
 // ignore_for_file: type=lint
@@ -26,30 +26,57 @@ import 'package:notes/data/services/interfaces/model/content/types/text/textcont
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [LocalTextContentService].
+class _FakeTextcontentDto_0 extends _i1.SmartFake
+    implements _i2.TextcontentDto {
+  _FakeTextcontentDto_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeContentDto_1 extends _i1.SmartFake implements _i3.ContentDto {
+  _FakeContentDto_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+/// A class which mocks [TextContentService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalTextContentService extends _i1.Mock
-    implements _i2.TextContentService {
-  MockLocalTextContentService() {
+class MockTextContentService extends _i1.Mock
+    implements _i4.TextContentService {
+  MockTextContentService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i4.TextcontentDto?> createTextContent(
-          _i4.TextcontentDto? content) =>
+  _i5.Future<_i2.TextcontentDto> createTextContent(
+          _i2.TextcontentDto? content) =>
       (super.noSuchMethod(
         Invocation.method(
           #createTextContent,
           [content],
         ),
-        returnValue: _i3.Future<_i4.TextcontentDto?>.value(),
-      ) as _i3.Future<_i4.TextcontentDto?>);
+        returnValue: _i5.Future<_i2.TextcontentDto>.value(_FakeTextcontentDto_0(
+          this,
+          Invocation.method(
+            #createTextContent,
+            [content],
+          ),
+        )),
+      ) as _i5.Future<_i2.TextcontentDto>);
 
   @override
-  _i3.Future<_i4.TextcontentDto?> updateTextContent(
+  _i5.Future<_i2.TextcontentDto> updateTextContent(
     String? contentId,
-    _i4.TextcontentDto? content,
+    _i2.TextcontentDto? content,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -59,35 +86,67 @@ class MockLocalTextContentService extends _i1.Mock
             content,
           ],
         ),
-        returnValue: _i3.Future<_i4.TextcontentDto?>.value(),
-      ) as _i3.Future<_i4.TextcontentDto?>);
+        returnValue: _i5.Future<_i2.TextcontentDto>.value(_FakeTextcontentDto_0(
+          this,
+          Invocation.method(
+            #updateTextContent,
+            [
+              contentId,
+              content,
+            ],
+          ),
+        )),
+      ) as _i5.Future<_i2.TextcontentDto>);
 
   @override
-  _i3.Future<_i5.ContentDto?> getContentById(String? id) => (super.noSuchMethod(
+  _i5.Future<_i3.ContentDto> getContentById(
+    String? noteId,
+    String? id,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getContentById,
-          [id],
+          [
+            noteId,
+            id,
+          ],
         ),
-        returnValue: _i3.Future<_i5.ContentDto?>.value(),
-      ) as _i3.Future<_i5.ContentDto?>);
+        returnValue: _i5.Future<_i3.ContentDto>.value(_FakeContentDto_1(
+          this,
+          Invocation.method(
+            #getContentById,
+            [
+              noteId,
+              id,
+            ],
+          ),
+        )),
+      ) as _i5.Future<_i3.ContentDto>);
 
   @override
-  _i3.Future<List<_i5.ContentDto>> getContents(String? noteId) =>
+  _i5.Future<List<_i3.ContentDto>> getContents(String? noteId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getContents,
           [noteId],
         ),
-        returnValue: _i3.Future<List<_i5.ContentDto>>.value(<_i5.ContentDto>[]),
-      ) as _i3.Future<List<_i5.ContentDto>>);
+        returnValue: _i5.Future<List<_i3.ContentDto>>.value(<_i3.ContentDto>[]),
+      ) as _i5.Future<List<_i3.ContentDto>>);
 
   @override
-  _i3.Future<void> deleteTypedContent(String? contentId) => (super.noSuchMethod(
+  _i5.Future<void> deleteTypedContent(
+    String? noteId,
+    String? contentId,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #deleteTypedContent,
-          [contentId],
+          [
+            noteId,
+            contentId,
+          ],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }

@@ -3,19 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
-import 'dart:io' as _i8;
+import 'dart:async' as _i6;
+import 'dart:typed_data' as _i8;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:notes/data/services/interfaces/image_file_service_interface.dart'
-    as _i6;
-import 'package:notes/data/services/interfaces/model/file/imagefile_dto.dart'
-    as _i7;
 import 'package:notes/data/services/interfaces/image_content_service.dart'
-    as _i2;
-import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
     as _i5;
+import 'package:notes/data/services/interfaces/image_file_service_interface.dart'
+    as _i7;
+import 'package:notes/data/services/interfaces/model/content/content_dto.dart'
+    as _i3;
 import 'package:notes/data/services/interfaces/model/content/types/image/imagecontent_dto.dart'
+    as _i2;
+import 'package:notes/data/services/interfaces/model/file/imagefile_dto.dart'
     as _i4;
 
 // ignore_for_file: type=lint
@@ -31,30 +31,68 @@ import 'package:notes/data/services/interfaces/model/content/types/image/imageco
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [LocalImageContentService].
+class _FakeImagecontentDto_0 extends _i1.SmartFake
+    implements _i2.ImagecontentDto {
+  _FakeImagecontentDto_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeContentDto_1 extends _i1.SmartFake implements _i3.ContentDto {
+  _FakeContentDto_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeImagefileDto_2 extends _i1.SmartFake implements _i4.ImagefileDto {
+  _FakeImagefileDto_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+/// A class which mocks [ImageContentService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalImageContentService extends _i1.Mock
-    implements _i2.ImageContentService {
-  MockLocalImageContentService() {
+class MockImageContentService extends _i1.Mock
+    implements _i5.ImageContentService {
+  MockImageContentService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i4.ImagecontentDto?> createImageContent(
-          _i4.ImagecontentDto? content) =>
+  _i6.Future<_i2.ImagecontentDto> createImageContent(
+          _i2.ImagecontentDto? content) =>
       (super.noSuchMethod(
         Invocation.method(
           #createImageContent,
           [content],
         ),
-        returnValue: _i3.Future<_i4.ImagecontentDto?>.value(),
-      ) as _i3.Future<_i4.ImagecontentDto?>);
+        returnValue:
+            _i6.Future<_i2.ImagecontentDto>.value(_FakeImagecontentDto_0(
+          this,
+          Invocation.method(
+            #createImageContent,
+            [content],
+          ),
+        )),
+      ) as _i6.Future<_i2.ImagecontentDto>);
 
   @override
-  _i3.Future<_i4.ImagecontentDto?> updateImageContent(
+  _i6.Future<_i2.ImagecontentDto> updateImageContent(
     String? contentId,
-    _i4.ImagecontentDto? content,
+    _i2.ImagecontentDto? content,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -64,89 +102,137 @@ class MockLocalImageContentService extends _i1.Mock
             content,
           ],
         ),
-        returnValue: _i3.Future<_i4.ImagecontentDto?>.value(),
-      ) as _i3.Future<_i4.ImagecontentDto?>);
+        returnValue:
+            _i6.Future<_i2.ImagecontentDto>.value(_FakeImagecontentDto_0(
+          this,
+          Invocation.method(
+            #updateImageContent,
+            [
+              contentId,
+              content,
+            ],
+          ),
+        )),
+      ) as _i6.Future<_i2.ImagecontentDto>);
 
   @override
-  _i3.Future<_i5.ContentDto?> getContentById(String? id) => (super.noSuchMethod(
+  _i6.Future<_i3.ContentDto> getContentById(
+    String? noteId,
+    String? id,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getContentById,
-          [id],
+          [
+            noteId,
+            id,
+          ],
         ),
-        returnValue: _i3.Future<_i5.ContentDto?>.value(),
-      ) as _i3.Future<_i5.ContentDto?>);
+        returnValue: _i6.Future<_i3.ContentDto>.value(_FakeContentDto_1(
+          this,
+          Invocation.method(
+            #getContentById,
+            [
+              noteId,
+              id,
+            ],
+          ),
+        )),
+      ) as _i6.Future<_i3.ContentDto>);
 
   @override
-  _i3.Future<List<_i5.ContentDto>> getContents(String? noteId) =>
+  _i6.Future<List<_i3.ContentDto>> getContents(String? noteId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getContents,
           [noteId],
         ),
-        returnValue: _i3.Future<List<_i5.ContentDto>>.value(<_i5.ContentDto>[]),
-      ) as _i3.Future<List<_i5.ContentDto>>);
+        returnValue: _i6.Future<List<_i3.ContentDto>>.value(<_i3.ContentDto>[]),
+      ) as _i6.Future<List<_i3.ContentDto>>);
 
   @override
-  _i3.Future<void> deleteTypedContent(String? contentId) => (super.noSuchMethod(
+  _i6.Future<void> deleteTypedContent(
+    String? noteId,
+    String? contentId,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #deleteTypedContent,
-          [contentId],
+          [
+            noteId,
+            contentId,
+          ],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 }
 
 /// A class which mocks [ImageFileServiceInterface].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockImageFileServiceInterface extends _i1.Mock
-    implements _i6.ImageFileServiceInterface {
+    implements _i7.ImageFileServiceInterface {
   MockImageFileServiceInterface() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i7.ImagefileDto?> saveImage(_i8.File? image) =>
+  _i6.Future<_i4.ImagefileDto> saveImage(_i4.ImagefileDto? image) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveImage,
           [image],
         ),
-        returnValue: _i3.Future<_i7.ImagefileDto?>.value(),
-      ) as _i3.Future<_i7.ImagefileDto?>);
+        returnValue: _i6.Future<_i4.ImagefileDto>.value(_FakeImagefileDto_2(
+          this,
+          Invocation.method(
+            #saveImage,
+            [image],
+          ),
+        )),
+      ) as _i6.Future<_i4.ImagefileDto>);
 
   @override
-  _i3.Future<bool> deleteImage(String? fileName) => (super.noSuchMethod(
+  _i6.Future<bool> deleteImage(String? fileName) => (super.noSuchMethod(
         Invocation.method(
           #deleteImage,
           [fileName],
         ),
-        returnValue: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
 
   @override
-  _i3.Future<_i7.ImagefileDto?> substituteImage(
+  _i6.Future<_i4.ImagefileDto> substituteImage(
     String? fileName,
-    String? path,
+    _i4.ImagefileDto? newImage,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
           #substituteImage,
           [
             fileName,
-            path,
+            newImage,
           ],
         ),
-        returnValue: _i3.Future<_i7.ImagefileDto?>.value(),
-      ) as _i3.Future<_i7.ImagefileDto?>);
+        returnValue: _i6.Future<_i4.ImagefileDto>.value(_FakeImagefileDto_2(
+          this,
+          Invocation.method(
+            #substituteImage,
+            [
+              fileName,
+              newImage,
+            ],
+          ),
+        )),
+      ) as _i6.Future<_i4.ImagefileDto>);
 
   @override
-  _i3.Future<_i8.File?> getImage(String? fileName) => (super.noSuchMethod(
+  _i6.Future<_i8.Uint8List> getImage(String? fileName) => (super.noSuchMethod(
         Invocation.method(
           #getImage,
           [fileName],
         ),
-        returnValue: _i3.Future<_i8.File?>.value(),
-      ) as _i3.Future<_i8.File?>);
+        returnValue: _i6.Future<_i8.Uint8List>.value(_i8.Uint8List(0)),
+      ) as _i6.Future<_i8.Uint8List>);
 }
